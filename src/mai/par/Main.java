@@ -4,9 +4,6 @@ import mai.par.parse.TrainParser;
 
 public class Main {
 
-	/**
-	 * @param args
-	 */
 	
 	static String s="Wagons=A,B,C,D\n"
 			+"Initial_state=ON-STATION(A);ON-STATION(B);ON-STATION(D)\nIN-FRONT-OF(C,D);FREE(A);\nFREE(B);FREE(C);FREE-LOCOMOTIVE;EMPTY(B);EMPTY(D);LOADED(A);LOADED(C)\n"

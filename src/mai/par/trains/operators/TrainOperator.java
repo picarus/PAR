@@ -1,6 +1,6 @@
-package mai.par.parse;
+package mai.par.trains.operators;
 
-public enum TrainOperators {
+public enum TrainOperator {
 		OP_COUPLE,
 		OP_ATTACH,
 		OP_PARK,
