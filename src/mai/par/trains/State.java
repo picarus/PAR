@@ -40,6 +40,20 @@ public class State {
 		posMap = new HashMap<String, Integer>();
 	}
 	
+	public State(Map<String, Wagon> wagons2)
+	{
+		this.wagons = wagons2;
+		freeWagonsSet = new HashMap<String, Wagon>();
+		towed = new String();
+		railways = new ArrayList<Stack<Wagon>>();
+		for(int i = 0; i < StateFactory.getMAX_RAILWAYS(); i++){
+			railways.add(new Stack<Wagon>());
+		}
+		onStationSet = new HashMap<String, Wagon>();
+		indexMap = new HashMap<String, Integer>();
+		posMap = new HashMap<String, Integer>();
+	}
+	
 	public void addWagon(String id)
 	{
 		wagons.put(id, new Wagon(id));
@@ -130,5 +144,32 @@ public class State {
 	public Map<String, Wagon> getWagons() 
 	{
 		return this.wagons;
+	}
+
+	public void unloadWagon(String id1) {
+		Wagon wagon = wagons.get(id1);
+		wagon.unload();	
+	}
+
+	public void setToStation(String id1) {
+		Wagon wagon = wagons.get(id1);
+		wagon.setPredecessor(null);
+		onStationSet.put(id1, wagon);
+		indexMap.put(id1, usedRailways);
+		posMap.put(id1, 0);
+		railways.get(usedRailways).add(wagon);
+		usedRailways++;
+	}
+
+	public void setWagonFree(String id1) {
+		Wagon wagon = wagons.get(id1);
+		freeWagonsSet.put(id1, wagon);
+	}
+
+	public void setInFrontOf(String id1, String id2) {
+		Wagon wagon = wagons.get(id1);
+		wagon.setPredecessor(id2);
+		indexMap.put(id1, indexMap.get(id2));
+		posMap.put(id1, indexMap.get(id2)+1);
 	}
 }

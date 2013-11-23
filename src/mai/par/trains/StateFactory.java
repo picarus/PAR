@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import mai.par.trains.predicates.Predicate;
+import mai.par.trains.predicates.TrainPredicate;
 
 public class StateFactory {
 
@@ -32,8 +33,30 @@ public class StateFactory {
 		return MAX_RAILWAYS;
 	}
 	
+//	Problem here: things will only workout if the predicates are given in the correct order. 
+//	It may good enough for now, however it will have to be split in a two step building, where 
+//	we can treat a predecessor before the current and then come back(recursively).
 	public static State createState(List<Predicate> predicates)
 	{
+		State state = new State(wagons);
+		for(Predicate predicate : predicates)
+		{
+			switch (predicate.getPredicate()) {
+			case PR_ONSTATION:
+				state.setToStation(predicate.getId1());
+				break;
+			case PR_INFRONTOF:
+				state.setInFrontOf(predicate.getId1(), predicate.getId2());
+				break;
+			case PR_FREE:
+				state.setWagonFree(predicate.getId1());
+			case PR_EMPTY:
+				state.unloadWagon(predicate.getId1());
+				break;
+			default:
+				break;
+			}
+		}
 		return new State();
 	}
 
