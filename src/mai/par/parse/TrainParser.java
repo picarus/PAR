@@ -1,10 +1,20 @@
 package mai.par.parse;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
+
+import mai.par.trains.State;
+import mai.par.trains.StateFactory;
+import mai.par.trains.Wagon;
+import mai.par.trains.predicates.Predicate;
+import mai.par.trains.predicates.PredicateFactory;
 
 public class TrainParser {
 	
-	public static void tokenize(String input){
+	public static void tokenize(String input)
+	{
 		int idxWagons=input.indexOf(TrainParseConstants.ST_WAGONS);
 		int idxInitialState=input.indexOf(TrainParseConstants.ST_INITIALSTATE);
 		int idxFinalState=input.indexOf(TrainParseConstants.ST_FINALSTATE);
@@ -13,20 +23,22 @@ public class TrainParser {
 		String strInitialState=input.substring(idxInitialState+TrainParseConstants.ST_INITIALSTATE.length(), idxFinalState-1);
 		String strFinalState=input.substring(idxFinalState+TrainParseConstants.ST_FINALSTATE.length());
 		
-		readStation(strWagons);
-		readState(strInitialState);
-		readState(strFinalState);
-		
+		StateFactory.wagons = readStation(strWagons);
+		StateFactory.initialState = StateFactory.createState(readState(strInitialState));
+		StateFactory.finalState = StateFactory.createState(readState(strFinalState));		
 	}
 	
-	protected static void readStation(String strWagons){
+	protected static Map<String, Wagon> readStation(String strWagons){
 		System.out.println(strWagons);
 		StringTokenizer strTkn=new StringTokenizer(strWagons, ",");
 		String str;
+		HashMap<String, Wagon> wagons = new HashMap<String, Wagon>();
 		while (strTkn.hasMoreElements()){
 			str=strTkn.nextToken();
+			wagons.put(str, new Wagon(str));
 			System.out.println(str);
 		}
+		return wagons;
 	}
 	
 	private static String removeParentheses(String str){
@@ -35,48 +47,67 @@ public class TrainParser {
 		return str;
 	}
 	
-	protected static void readOneParameter(String str){
+	protected static String readOneParameter(String str){
 		str=removeParentheses(str);
-		System.out.println(str);
+		return str;
 	}
 	
-	protected static void readTwoParameters(String str){
+	protected static String[] readTwoParameters(String str){
 		String tkn;
+		String params[] = new String[2];
 		str=removeParentheses(str);
 		StringTokenizer strTkn=new StringTokenizer(str,",");
+		int i = 0;
 		while (strTkn.hasMoreElements()){
 			tkn=strTkn.nextToken();
-			System.out.println(tkn);
+			params[i] = tkn;
 		}
-		
+		return params;
 	}
 	
-	protected static void readState(String state){
+	protected static ArrayList<Predicate> readState(String state){
 		System.out.println(state);
 		StringTokenizer strTkn=new StringTokenizer(state, TrainParseConstants.SEPARATORS);
 		String str;
+		ArrayList<Predicate> predicates = new ArrayList<Predicate>();
 		while (strTkn.hasMoreElements()){
 			str=strTkn.nextToken();
 			System.out.println(str);
 			
 			if (str.contains(TrainParseConstants.PR_FREELOCOMOTIVE)) {
-				// nor parameters
+				predicates.add(PredicateFactory.createPredicateFreeLocomotive());
 			} else if (str.contains(TrainParseConstants.PR_ONSTATION)){
-				readOneParameter(str);
+				String param = readOneParameter(str);
+				predicates.add(PredicateFactory.createPredicateOnStation(param));
 			} else if (str.contains(TrainParseConstants.PR_FREE)) {
-				readOneParameter(str);
+				String param = readOneParameter(str);
+				predicates.add(PredicateFactory.createPredicateFree((param)));
 			} else if (str.contains(TrainParseConstants.PR_LOADED)) {
-				readOneParameter(str);
+				String param = readOneParameter(str);
+				predicates.add(PredicateFactory.createPredicateLoaded((param)));
 			} else if (str.contains(TrainParseConstants.PR_EMPTY)) {
-				readOneParameter(str);
+				String param = readOneParameter(str);
+				predicates.add(PredicateFactory.createPredicateEmpty((param)));
 			} else if (str.contains(TrainParseConstants.PR_TOWED)) {
-				readOneParameter(str);
-			} else if (str.contains(TrainParseConstants.PR_ONSTATION)) {
-				readTwoParameters(str);
+				String param = readOneParameter(str);
+				predicates.add(PredicateFactory.createPredicateTowed((param)));
+			} else if (str.contains(TrainParseConstants.PR_USEDRAILWAYS)) {
+				String param = readOneParameter(str);
+				try
+				{
+					int n = Integer.valueOf(param);
+					predicates.add(PredicateFactory.createPredicateUsedRaildways((n)));
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
 			} else if (str.contains(TrainParseConstants.PR_INFRONTOF)) {
-				readTwoParameters(str);
+				String[] params = readTwoParameters(str);
+				predicates.add(PredicateFactory.createPredicateInFrontOf(params[0], params[1]));
 			} 
 		}
+		return predicates;
 	}
 
 }

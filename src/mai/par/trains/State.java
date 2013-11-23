@@ -1,9 +1,13 @@
 package mai.par.trains;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
 import mai.par.trains.operators.Operator;
+import mai.par.trains.predicates.Predicate;
 
 public class State {
 	
@@ -16,10 +20,30 @@ public class State {
 	int usedRailways=0;				// the railways in use				
 	Map<String,Wagon> freeWagonsSet;// the wagons in front of each rail (maybe a Set to break simmetries)
 	String towed;					// the wagon being towed, if any
-	Stack<Wagon>[] railways;		// the railways (maybe a Set to break simmetries)   			
+	List<Stack<Wagon>> railways;	// instantiation of array of wagon stacks aren't allowed. Ordering seems important here, 
+									// so i used List. Subject to change.   			
 	Map<String, Wagon> onStationSet;// the wagons parked in the station 
 	Map<String, Integer> indexMap;	// in what railway is every wagon, railways[index]
 	Map<String, Integer> posMap;	// in what position is every wagon
+	
+	public State()
+	{
+		wagons = new HashMap<String, Wagon>();
+		freeWagonsSet = new HashMap<String, Wagon>();
+		towed = new String();
+		railways = new ArrayList<Stack<Wagon>>();
+		for(int i = 0; i < StateFactory.getMAX_RAILWAYS(); i++){
+			railways.add(new Stack<Wagon>());
+		}
+		onStationSet = new HashMap<String, Wagon>();
+		indexMap = new HashMap<String, Integer>();
+		posMap = new HashMap<String, Integer>();
+	}
+	
+	public void addWagon(String id)
+	{
+		wagons.put(id, new Wagon(id));
+	}
 		
 	// TODO: add a tabu operator to make sure there are no loops (at distance 2: do-undo)
 	//       also the operator will indicate that if a drop operator has been applied
@@ -88,7 +112,23 @@ public class State {
 	
 	////////////////////////
 	// 
-	State apply(Operator operator){
+	State apply(Operator operator)
+	{
 		return null;
+	}
+	
+	public void applyPredicate(Predicate predicate)
+	{
+		
+	}
+
+	public void setWagons(Map<String, Wagon> wagons) 
+	{
+		this.wagons = wagons;
+	}
+	
+	public Map<String, Wagon> getWagons() 
+	{
+		return this.wagons;
 	}
 }
