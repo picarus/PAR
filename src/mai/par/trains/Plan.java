@@ -6,5 +6,13 @@ import mai.par.trains.operators.Operator;
 
 public class Plan extends Stack<Operator>
 {
-		
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		for(Operator op : this)
+		{
+			sb.append(op.toString());
+		}
+		return sb.toString(); 
+	}
 }

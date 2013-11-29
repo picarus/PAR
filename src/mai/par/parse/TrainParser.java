@@ -24,8 +24,10 @@ public class TrainParser {
 		String strFinalState=input.substring(idxFinalState+TrainParseConstants.ST_FINALSTATE.length());
 		
 		StateFactory.wagons = readStation(strWagons);
-		StateFactory.initialState = StateFactory.createState(readState(strInitialState));
-		StateFactory.finalState = StateFactory.createState(readState(strFinalState));		
+		StateFactory.initialState = StateFactory.createState(readState(strInitialState), true);
+		System.out.println(StateFactory.initialState.getWagons());
+		StateFactory.finalState = StateFactory.createState(readState(strFinalState), true);
+		System.out.println(StateFactory.finalState.getWagons());
 	}
 	
 	protected static Map<String, Wagon> readStation(String strWagons){
@@ -61,6 +63,7 @@ public class TrainParser {
 		while (strTkn.hasMoreElements()){
 			tkn=strTkn.nextToken();
 			params[i] = tkn;
+			i++;
 		}
 		return params;
 	}

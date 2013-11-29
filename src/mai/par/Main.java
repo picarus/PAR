@@ -22,6 +22,10 @@ public class Main {
 			StateFactory.initialize();
 			s = readProblemFile();
 			TrainParser.tokenize(s);
+			System.out.println("Initial State:");
+			StateFactory.initialState.drawState();
+			System.out.println("Final State:");
+			StateFactory.finalState.drawState();
 		} 
 		catch (IOException e) {
 			e.printStackTrace();

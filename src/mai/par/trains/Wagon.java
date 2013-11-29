@@ -17,6 +17,11 @@ public class Wagon {
 		loaded=false;
 	}
 	
+	public void setLoad(Boolean loaded)
+	{
+		this.loaded = loaded;
+	}
+	
 	public String getPredecessor() {
 		return predecessor;
 	}
@@ -38,6 +43,14 @@ public class Wagon {
 	public Wagon(String id, String predecessor){
 		this.id=id;
 		this.predecessor=predecessor;
+	}
+	
+	public String toString()
+	{
+		if(loaded)
+			return "("+id+")";
+		else
+			return id;
 	}
 
 }

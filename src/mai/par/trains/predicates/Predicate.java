@@ -56,5 +56,13 @@ public class Predicate implements Stackable {
 		this.id2 = id2;
 	}
 	
-	
+	public String toString()
+	{
+		if(id1 == null)
+			return predicate.name();
+		else if((id2 == null))
+			return predicate.name()+"("+id1+")";
+		else
+			return predicate.name()+"("+id1+", "+id2+")";
+	}
 }

@@ -10,12 +10,10 @@ import mai.par.trains.predicates.TrainPredicate;
 public class StateFactory {
 
 	static private int MAX_RAILWAYS=3;
-	
 	public static State initialState=null;
 	public static State finalState=null;
 	State currentState=null;
-	public static Map<String, Wagon> wagons;		// all the wagons
-	
+	public static Map<String, Wagon> wagons;		// all the wagons	
 	
 	public static void initialize()
 	{
@@ -35,12 +33,14 @@ public class StateFactory {
 	
 //	Problem here: things will only workout if the predicates are given in the correct order. 
 //	It may good enough for now, however it will have to be split in a two step building, where 
-//	we can treat a predecessor before the current and then come back(recursively).
-	public static State createState(List<Predicate> predicates)
+//	we can treat a predecessor before the current and then come back(recursively). May be solved with priorities 
+	public static State createState(List<Predicate> predicates, Boolean clean)
 	{
-		State state = new State(wagons);
+		State state = new State(wagons, clean);
+		state.setPredicateList(predicates);
 		for(Predicate predicate : predicates)
 		{
+			System.out.println(predicate);
 			switch (predicate.getPredicate()) {
 			case PR_ONSTATION:
 				state.setToStation(predicate.getId1());
@@ -50,14 +50,25 @@ public class StateFactory {
 				break;
 			case PR_FREE:
 				state.setWagonFree(predicate.getId1());
+				break;
+			case PR_FREELOCOMOTIVE:
+				state.setFreeLocomotive();
+				break;
+			case PR_TOWED:
+				state.setWagonTowed(predicate.getId1());
+				break;
+			case PR_LOADED:
+				state.loadWagon(predicate.getId1());
+				break;
 			case PR_EMPTY:
 				state.unloadWagon(predicate.getId1());
 				break;
 			default:
 				break;
 			}
+			state.drawState();
 		}
-		return new State();
+		return state;
 	}
 
 	public State getCurrentState() {
