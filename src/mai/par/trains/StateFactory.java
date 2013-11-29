@@ -31,7 +31,7 @@ public class StateFactory {
 		return MAX_RAILWAYS;
 	}
 	
-//	Problem here: things will only workout if the predicates are given in the correct order. 
+//	TODO: Problem here: things will only workout if the predicates are given in the correct order. 
 //	It may good enough for now, however it will have to be split in a two step building, where 
 //	we can treat a predecessor before the current and then come back(recursively). May be solved with priorities 
 	public static State createState(List<Predicate> predicates, Boolean clean)

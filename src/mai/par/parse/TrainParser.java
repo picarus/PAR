@@ -94,7 +94,7 @@ public class TrainParser {
 			} else if (str.contains(TrainParseConstants.PR_TOWED)) {
 				String param = readOneParameter(str);
 				predicates.add(PredicateFactory.createPredicateTowed((param)));
-			} else if (str.contains(TrainParseConstants.PR_USEDRAILWAYS)) {
+/*			} else if (str.contains(TrainParseConstants.PR_USEDRAILWAYS)) {
 				String param = readOneParameter(str);
 				try
 				{
@@ -104,7 +104,7 @@ public class TrainParser {
 				catch(Exception e)
 				{
 					e.printStackTrace();
-				}
+				}*/
 			} else if (str.contains(TrainParseConstants.PR_INFRONTOF)) {
 				String[] params = readTwoParameters(str);
 				predicates.add(PredicateFactory.createPredicateInFrontOf(params[0], params[1]));

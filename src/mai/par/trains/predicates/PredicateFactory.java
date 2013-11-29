@@ -43,19 +43,15 @@ public class PredicateFactory {
 		return new Predicate(TrainPredicate.PR_INFRONTOF, idX, idY);
 	}
 	
-	public static PredicateUsedRailways createPredicateUsedRaildways(int n){
-		return new PredicateUsedRailways(n);
+	public static Predicate createPredicateNotFullUsedRailways(){
+		return new Predicate(TrainPredicate.PR_USEDRAILWAYS_NOTFULL);
 	}
 	
-	public static PredicateUsedRailways createPredicateNotFullUsedRailways(){
-		return new PredicateUsedRailways(TrainPredicateUsedRailways.PR_USEDRAILWAYS_NOTFULL);
+	public static Predicate createPredicateDecreaseUsedRailways(){
+		return new Predicate(TrainPredicate.PR_USEDRAILWAYS_DECREASE);
 	}
 	
-	public static PredicateUsedRailways createPredicateDecreaseUsedRailways(){
-		return new PredicateUsedRailways(TrainPredicateUsedRailways.PR_USEDRAILWAYS_DECREASE);
-	}
-	
-	public static PredicateUsedRailways createPredicateIncreaseUsedRailways(){
-		return new PredicateUsedRailways(TrainPredicateUsedRailways.PR_USEDRAILWAYS_INCREASE);
+	public static Predicate createPredicateIncreaseUsedRailways(){
+		return new Predicate(TrainPredicate.PR_USEDRAILWAYS_INCREASE);
 	}
 }

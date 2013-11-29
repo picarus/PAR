@@ -2,17 +2,18 @@ package mai.par.trains;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
 import mai.par.trains.operators.Operator;
+import mai.par.trains.operators.Stackable;
 import mai.par.trains.predicates.Predicate;
 
-public class State {
+public class State implements Stackable{
 	
 	// predicates that apply
+
 	private List<Predicate> predicateList;
 	
 	// state:
@@ -29,22 +30,15 @@ public class State {
 	
 	public State()
 	{
-		wagons = new HashMap<String, Wagon>();
-		freeWagonsSet = new HashMap<String, Wagon>();
-		towed = new String();
-		railways = new ArrayList<Stack<Wagon>>();
-		for(int i = 0; i < StateFactory.getMAX_RAILWAYS(); i++){
-			railways.add(new Stack<Wagon>());
-		}
-		onStationSet = new HashMap<String, Wagon>();
-		indexMap = new HashMap<String, Integer>();
-		posMap = new HashMap<String, Integer>();
+		init();
+		wagons = new HashMap<String, Wagon>();	
 	}
 	
 	// The parameter clean, if set to false, will create the state with the wagons in the same state (loaded, predecessor)
 	// otherwise will create copies of the last state
 	public State(Map<String, Wagon> wagons2, Boolean clean)
 	{
+		init();
 		this.wagons = new HashMap<String, Wagon>();
 		if(clean)
 		{
@@ -62,8 +56,10 @@ public class State {
 				w.setLoad(wagon.isLoaded());
 				this.wagons.put(w.getId(), w);
 			}
-		}
-		
+		}	
+	}
+	
+	protected void init(){
 		freeWagonsSet = new HashMap<String, Wagon>();
 		towed = new String();
 		railways = new ArrayList<Stack<Wagon>>();
@@ -73,6 +69,25 @@ public class State {
 		onStationSet = new HashMap<String, Wagon>();
 		indexMap = new HashMap<String, Integer>();
 		posMap = new HashMap<String, Integer>();
+	}
+	
+	public  List<Predicate> getPredicates(){
+		return predicateList;
+	}
+	
+	public List<Predicate> difference(List<Predicate> listPred){
+		List<Predicate> diffListPred=new ArrayList<Predicate>();
+		for (Predicate pred:listPred){
+			if (!isCompliant(pred)){
+				diffListPred.add(pred);
+			}
+		}
+		return diffListPred;
+	}
+	
+	public List<Predicate> difference(State state){
+		List<Predicate> listPred=state.getPredicates();
+		return difference(listPred);
 	}
 	
 	public void addWagon(String id)
@@ -101,8 +116,30 @@ public class State {
 		return onStationSet.containsKey(wagonId);
 	}
 	
+	protected boolean isTowed(String wagonId){
+		return towed.equals(wagonId);
+	}
+	
 	protected boolean isWagonLoaded(String wagonId){
 		return wagons.get(wagonId).isLoaded();
+	}
+	
+	protected boolean isWagonFree(String wagonId){
+		return freeWagonsSet.containsKey( wagonId );
+	}
+	
+	protected boolean isRailwayFree() {
+		return usedRailways < StateFactory.getMAX_RAILWAYS();
+	}
+	
+	protected boolean isOnSameRailway(String wagonIDx, String wagonIDy){
+		return indexMap.get( wagonIDx )==indexMap.get( wagonIDy );
+	}
+	
+	protected boolean isInFrontOf(String wagonIDx, String wagonIDy){
+		if ( !isOnSameRailway(wagonIDx, wagonIDy) )
+			return false;										// not in the same railway
+		return (posMap.get( wagonIDx )-1)==posMap.get( wagonIDy ); 	// attached to each other
 	}
 	
 	//////////////////////////////////////////
@@ -114,21 +151,19 @@ public class State {
 	}
 	
 	boolean canPark(String wagonId){
-		if ( ! ( usedRailways < StateFactory.getMAX_RAILWAYS() ) )
+		if ( ! isRailwayFree() )
 			return false;
 		return canDrop(wagonId);
 	}
 	
 	boolean canDetach(String wagonIDx, String wagonIDy){
-		if ( ! canTake( wagonIDx ) )
+		if ( !canTake( wagonIDx ) )
 			return false;
-		if ( indexMap.get( wagonIDx )!=indexMap.get( wagonIDy ) )
-			return false;										// not in the same railway
-		return (posMap.get( wagonIDx )-1)==posMap.get( wagonIDy ); 	// attached to each other
+		return isInFrontOf(wagonIDx, wagonIDy);
 	}
 	
 	boolean canAttach(String wagonIDx, String wagonIDy){
-		if ( ! freeWagonsSet.containsKey( wagonIDy ) )
+		if ( ! isWagonFree(wagonIDy) )
 			return false;
 		return canDrop(wagonIDx);
 	}
@@ -145,17 +180,42 @@ public class State {
 		return isOnStation(wagonId);
 	}
 	
-	
 	////////////////////////
 	// 
 	State apply(Operator operator)
 	{
-		return null;
+		return null; // TODO: complete
 	}
 	
-	public void applyPredicate(Predicate predicate)
+	public boolean isCompliant(Predicate predicate)
 	{
-		
+		// TODO: compliant with partially instantiated predicates? can this happen?
+		String id1, id2;
+		id1=predicate.getId1();
+		switch (predicate.getPredicate()){
+			case PR_EMPTY:
+				return !isWagonLoaded(id1); 
+			case PR_LOADED:
+				return isWagonLoaded(id1);
+			case PR_FREELOCOMOTIVE:
+				return freeLocomotive;
+			case PR_FREE:
+				return isWagonFree(id1);
+			case PR_INFRONTOF:
+				id2=predicate.getId2();
+				return isInFrontOf(id1, id2);
+			case PR_ONSTATION:
+				return isOnStation(id1);
+			case PR_TOWED:
+				return isTowed(id1);
+			case PR_USEDRAILWAYS_NOTFULL: 
+				return usedRailways<StateFactory.getMAX_RAILWAYS();
+			case PR_USEDRAILWAYS_DECREASE:
+			case PR_USEDRAILWAYS_INCREASE:
+			// should not appear
+			break;		
+		}
+		return false; // default: false
 	}
 
 	public void setWagons(Map<String, Wagon> wagons) 

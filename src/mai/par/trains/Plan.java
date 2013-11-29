@@ -1,11 +1,12 @@
 package mai.par.trains;
 
-import java.util.Stack;
+import java.util.ArrayList;
 
 import mai.par.trains.operators.Operator;
 
-public class Plan extends Stack<Operator>
-{
+
+@SuppressWarnings("serial")
+public class Plan extends ArrayList<Operator>{
 	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
@@ -15,4 +16,5 @@ public class Plan extends Stack<Operator>
 		}
 		return sb.toString(); 
 	}
+
 }

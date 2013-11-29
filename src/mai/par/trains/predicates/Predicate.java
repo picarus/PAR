@@ -8,7 +8,16 @@ public class Predicate implements Stackable {
 	TrainPredicate predicate;
 	String id1;
 	String id2;
+	int priority;
 	
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+
 	Predicate(TrainPredicate predicate){
 		this.predicate=predicate;
 	}

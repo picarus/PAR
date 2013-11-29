@@ -11,7 +11,16 @@ public abstract class Operator implements Stackable {
 	TrainOperator operator;
 	String id1;
 	String id2;
+	int priority;
 	
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+
 	ArrayList<Predicate> precondPredicate=new ArrayList<Predicate>();
 	ArrayList<Predicate> addPredicate=new ArrayList<Predicate>();
 	ArrayList<Predicate> delPredicate=new ArrayList<Predicate>();
