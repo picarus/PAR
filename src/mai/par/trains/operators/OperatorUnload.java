@@ -1,5 +1,6 @@
 package mai.par.trains.operators;
 
+import mai.par.trains.State;
 import mai.par.trains.predicates.Predicate;
 import mai.par.trains.predicates.PredicateFactory;
 
@@ -17,4 +18,5 @@ public class OperatorUnload extends Operator {
 		// delete list
 		delPredicate.add(loaded);
 	}
+
 }

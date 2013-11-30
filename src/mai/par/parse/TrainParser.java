@@ -1,11 +1,10 @@
 package mai.par.parse;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import mai.par.trains.StateFactory;
 import mai.par.trains.Wagon;
+import mai.par.trains.WagonMap;
 import mai.par.trains.predicates.PredicateFactory;
 import mai.par.trains.predicates.PredicateGroup;
 
@@ -28,11 +27,11 @@ public class TrainParser {
 		System.out.println(StateFactory.finalState.getWagons());
 	}
 	
-	protected static Map<String, Wagon> readStation(String strWagons){
+	protected static WagonMap readStation(String strWagons){
 		System.out.println(strWagons);
 		StringTokenizer strTkn=new StringTokenizer(strWagons, ",");
 		String str;
-		HashMap<String, Wagon> wagons = new HashMap<String, Wagon>();
+		WagonMap wagons = new WagonMap();
 		while (strTkn.hasMoreElements()){
 			str=strTkn.nextToken();
 			wagons.put(str, new Wagon(str));

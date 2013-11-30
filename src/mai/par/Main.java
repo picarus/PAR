@@ -9,6 +9,7 @@ import java.util.List;
 
 import mai.par.parse.TrainParser;
 import mai.par.trains.LinealPlanner;
+import mai.par.trains.State;
 import mai.par.trains.StateFactory;
 
 public class Main {
@@ -18,6 +19,7 @@ public class Main {
 	public static void main(String[] args) 
 	{
 		String s;
+		State copyState;
 		try {
 			StateFactory.initialize();
 			s = readProblemFile();
@@ -26,9 +28,10 @@ public class Main {
 			StateFactory.initialState.drawState();
 			System.out.println("Final State:");
 			StateFactory.finalState.drawState();
-			
+			System.out.println("Copy Final State:");
+			copyState=new State(StateFactory.finalState);
+			copyState.drawState();
 			LinealPlanner.createPlan(StateFactory.initialState, StateFactory.finalState);
-			
 		} 
 		catch (IOException e) {
 			e.printStackTrace();

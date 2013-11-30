@@ -2,7 +2,6 @@ package mai.par.trains.operators;
 
 import java.util.ArrayList;
 
-import mai.par.trains.State;
 import mai.par.trains.predicates.Predicate;
 
 public abstract class Operator implements Stackable {
@@ -13,13 +12,7 @@ public abstract class Operator implements Stackable {
 	String id2;
 	int priority;
 	
-	public int getPriority() {
-		return priority;
-	}
-
-	public void setPriority(int priority) {
-		this.priority = priority;
-	}
+	
 
 	ArrayList<Predicate> precondPredicate=new ArrayList<Predicate>();
 	ArrayList<Predicate> addPredicate=new ArrayList<Predicate>();
@@ -44,13 +37,16 @@ public abstract class Operator implements Stackable {
 		this.id2=id2;
 	}
 	
-	boolean canBeAppliedTo(State state){
-		// if the state is compliant with all the preconditions
-		return true;
+	public TrainOperator getOperator(){
+		return operator;
 	}
 	
-	State applyTo(State state){
-		return null;
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 	
 	public void instatiate(String id1){

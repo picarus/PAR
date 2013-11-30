@@ -1,8 +1,5 @@
 package mai.par.trains;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import mai.par.trains.predicates.Predicate;
 import mai.par.trains.predicates.PredicateGroup;
 
@@ -12,13 +9,13 @@ public class StateFactory {
 	public static State initialState=null;
 	public static State finalState=null;
 	State currentState=null;
-	public static Map<String, Wagon> wagons;		// all the wagons	
+	public static WagonMap wagons;		// all the wagons	
 	
 	public static void initialize()
 	{
 		initialState = new State();
 		finalState = new State();
-		wagons = new HashMap<String, Wagon>();
+		wagons = new WagonMap();
 	}
 	
 	public static void setMAX_RAILWAYS(int max_RAILWAYS) {

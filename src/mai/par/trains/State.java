@@ -37,7 +37,7 @@ public class State implements Stackable{
 	
 	// The parameter clean, if set to false, will create the state with the wagons in the same state (loaded, predecessor)
 	// otherwise will create copies of the last state
-	public State(Map<String, Wagon> wagons2, Boolean clean)
+	public State(WagonMap wagons2, Boolean clean)
 	{
 		init();
 		this.wagons = new WagonMap();
@@ -58,6 +58,34 @@ public class State implements Stackable{
 				this.wagons.put(w.getId(), w);
 			}
 		}	
+	}
+	
+	public State(State state){
+		this(state.getWagons(),false);
+		predicateGroup=new PredicateGroup(state.getPredicateGroup());
+		freeLocomotive=state.isFreeLocomotive();
+		indexMap=new HashMap<String, Integer>(state.indexMap);
+		posMap=new HashMap<String, Integer>(state.posMap);
+		towed=state.towed;
+		usedRailways=state.usedRailways;
+		freeWagonsSet=new WagonMap(state.freeWagonsSet, wagons);
+		onStationSet=new WagonMap(state.onStationSet, wagons);
+		copyRailways(state.railways, wagons);
+	}
+	
+	private void copyRailways(List<Stack<Wagon>> original, WagonMap elements){
+		railways=new ArrayList<Stack<Wagon>>();
+		Stack<Wagon> newStack;
+		String id;
+		for (Stack<Wagon> stack: original){
+			newStack=new Stack<Wagon>();
+			for (Wagon w: stack){
+				id=w.getId();
+				newStack.push(elements.get(id));
+			}
+			railways.add(newStack);
+		}
+		
 	}
 	
 	protected void init(){
@@ -209,7 +237,22 @@ public class State implements Stackable{
 	////////////////////////
 	// 
 	State apply(Operator operator) {
-		return null; // TODO: complete, consider move to StateFactory
+		State state=null;
+		switch (operator.getOperator()){
+		case OP_ATTACH:
+			break;
+		case OP_COUPLE:
+			break;
+		case OP_DETACH:
+			break;
+		case OP_LOAD:
+			break;
+		case OP_PARK:
+			break;
+		case OP_UNLOAD:
+			break;
+		}
+		return state; // TODO: complete, consider move to StateFactory
 	}
 	
 	public boolean isCompliant(Predicate predicate) {
@@ -222,7 +265,7 @@ public class State implements Stackable{
 			case PR_LOADED:
 				return isWagonLoaded(id1);
 			case PR_FREELOCOMOTIVE:
-				return freeLocomotive;
+				return isFreeLocomotive();
 			case PR_FREE:
 				return isWagonFree(id1);
 			case PR_INFRONTOF:
@@ -242,11 +285,15 @@ public class State implements Stackable{
 		return false; // default: false
 	}
 
+	public boolean isFreeLocomotive(){
+		return freeLocomotive;
+	}
+	
 	public void setWagons(WagonMap wagons) {
 		this.wagons = wagons;
 	}
 	
-	public Map<String, Wagon> getWagons() {
+	public WagonMap getWagons() {
 		return this.wagons;
 	}
 
