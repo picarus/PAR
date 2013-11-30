@@ -1,6 +1,5 @@
 package mai.par.trains.predicates;
 
-import mai.par.trains.State;
 import mai.par.trains.operators.Stackable;
 
 public class Predicate implements Stackable {
@@ -10,21 +9,16 @@ public class Predicate implements Stackable {
 	String id2;
 	int priority;
 	
-	public int getPriority() {
-		return priority;
-	}
-
-	public void setPriority(int priority) {
-		this.priority = priority;
-	}
-
 	Predicate(TrainPredicate predicate){
 		this.predicate=predicate;
+		this.id1="";
+		this.id2="";
 	}
 	
 	Predicate(TrainPredicate predicate, String id1){
 		this.predicate=predicate;
 		this.id1=id1;
+		this.id2="";
 	}
 	
 	Predicate(TrainPredicate predicate, String id1, String id2){
@@ -33,12 +27,22 @@ public class Predicate implements Stackable {
 		this.id2=id2;
 	}
 	
-	public boolean isCompliant(State state){
-		return true;
+	public boolean equals(Predicate p){
+		if (p.predicate!=predicate)
+			return false;
+		if (!p.id1.equals(id1))
+			return false;
+		if (!p.id2.equals(id2))
+			return false;
+		return p.priority==priority;
 	}
 	
-	public void instatiate(String id1){
-		
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 
 	public TrainPredicate getPredicate() {
@@ -66,9 +70,9 @@ public class Predicate implements Stackable {
 	}
 	
 	public String toString() {
-		if(id1 == null)
+		if(id1 == "")
 			return predicate.toString();
-		else if((id2 == null))
+		else if((id2 == ""))
 			return predicate.toString()+"("+id1+")";
 		else
 			return predicate.toString()+"("+id1+","+id2+")";

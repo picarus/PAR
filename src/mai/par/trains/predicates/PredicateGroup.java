@@ -13,4 +13,13 @@ public class PredicateGroup extends ArrayList<Predicate> implements Stackable {
 	public PredicateGroup() {
 		super();
 	}
+	
+	public Predicate contains(Predicate pred){
+		for (Predicate p: this){
+			if (pred.equals(p))
+				return p;
+		}
+		return null;
+	}
+	
 }

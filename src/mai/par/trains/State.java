@@ -93,7 +93,6 @@ public class State implements Stackable{
 			}
 			railways.add(newStack);
 		}
-		
 	}
 	
 	protected void init(){
@@ -278,31 +277,41 @@ public class State implements Stackable{
 		*/
 	}
 	
-	State apply(Operator operator) {
+	public State apply(Operator operator) {
 		State state=null;
 		if (canApply(operator)) {
 			state=new State(this);
-			PredicateGroup addPredGroup=operator.getAddPredicate();
-			for (Predicate pred:addPredGroup){
-				state.apply(pred);		// apply the ADD list
-			}
-			PredicateGroup delPredGroup=operator.getDelPredicate();
-			for (Predicate pred:delPredGroup){
-				if (predicateGroup.contains(pred))
-					predicateGroup.remove(pred);  // remove from the DEL list
-				else
-					System.err.println("ERROR: predicate not found");
-			}
+			state.applyADD(operator);
+			state.applyDEL(operator);
 		}
 		return state; 
 	}
+
+	private void applyDEL(Operator operator) {
+		PredicateGroup delPredGroup=operator.getDelPredicate();
+		Predicate p;
+		for (Predicate pred:delPredGroup){
+			p=predicateGroup.contains(pred);
+			if (p!=null){
+				predicateGroup.remove(p);  // remove from the DEL list
+			} else
+				System.err.println("ERROR: predicate not found");
+		}
+	}
+
+	private void applyADD(Operator operator) {
+		PredicateGroup addPredGroup=operator.getAddPredicate();
+		for (Predicate pred:addPredGroup){
+			applyADD(pred);		// apply the ADD list
+		}
+	}
 	
-	protected void apply(Predicate pred){
+	protected void applyADD(Predicate pred){
 		// the predicates will be the ones in the add list
 		// some of the predicates will not appear
 		// some can be ignored because will be "obtained" indirectly when applying others
 		String id=pred.getId1();
-		predicateGroup.add(pred);
+		boolean add=true;
 		switch (pred.getPredicate()){
 		case PR_EMPTY:
 			unloadWagon(id);
@@ -321,15 +330,20 @@ public class State implements Stackable{
 			setWagonTowed(id);
 			break;
 		case PR_FREE:
+			setFree(id);
+			break;
 		case PR_FREELOCOMOTIVE:
+			setFreeLocomotive();
+			break;
 		case PR_USEDRAILWAYS_DECREASE:
 		case PR_USEDRAILWAYS_INCREASE:
-			// will be obtained indirectly
+			add=false;
 			break;
 		case PR_USEDRAILWAYS_NOTFULL:
 			// will not appear in the add list
 			break;
 		}
+		if (add) predicateGroup.add(pred);
 	}
 	
 	public boolean isCompliant(Predicate predicate) {
@@ -388,12 +402,17 @@ public class State implements Stackable{
 		Wagon wagon = wagons.get(id1);
 		wagon.setPredecessor(null);
 		onStationSet.put(id1, wagon);
-		indexMap.put(id1, usedRailways);
+		indexMap.put(id1, usedRailways); // TODO: usedRailways must recycle empty railways
 		posMap.put(id1, 0);
-		railways.get(usedRailways).add(wagon);
+		railways.get(usedRailways).add(wagon); // TODO: usedRailways cannot be the index sometimes there will be empty positions
 		usedRailways++;
 	}
 
+	public void setFree(String id){
+		Wagon wagon=wagons.get(id);
+		freeWagonsSet.put(id,wagon);
+	}
+	
 	public void setWagonFree(String id1) {
 		Wagon wagon = wagons.get(id1);
 		freeWagonsSet.put(id1, wagon);
@@ -416,8 +435,24 @@ public class State implements Stackable{
 	public void setWagonTowed(String id1) {
 		freeLocomotive = false;
 		towed = id1;
+		Integer railwayNumber=indexMap.get(id1);
+		if (railwayNumber!=null){ // the wagon is on the system
+			int railwayPosition=posMap.get(id1);
+			Stack<Wagon> railway=railways.get(railwayNumber);
+			Wagon wagon=railway.pop(); // remove
+			// the wagon is not removed from the Free Set
+			if (railwayPosition==0) {
+				usedRailways--;			// if last wagon, release one railway
+			} else {
+				wagon=railway.peek();
+				freeWagonsSet.put(wagon.getId(),wagon); // if not last wagon, set free
+			}
+		}
 	}
-
+	///////////////////////////////////////////////////////////////////
+	
+	
+	
 	public PredicateGroup getPredicateGroup() {
 		return predicateGroup;
 	}
