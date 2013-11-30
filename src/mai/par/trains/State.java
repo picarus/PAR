@@ -204,7 +204,7 @@ public class State implements Stackable{
 	}
 	
 	//////////////////////////////////////////
-	//    OPERATORS CHECK
+	//    OPERATORS CHECK (not based on PREDICATES but on the STATE: NOT USED)
 	boolean canCouple(String wagonId){
 		if ( ! canTake( wagonId ) )
 			return false;
@@ -244,7 +244,6 @@ public class State implements Stackable{
 	////////////////////////
 	// 
 	boolean canApply(Operator operator){
-		// TODO: rewrite to use the precondition list of the operators
 		boolean can=true;
 		PredicateGroup precondPredGroup=operator.getPrecondPredicate();
 		for (Predicate pred: precondPredGroup){
@@ -399,15 +398,26 @@ public class State implements Stackable{
 	///////////////////////////////////////////////////////////////////////////
 	// used to create the state from the initial predicates on the text file
 	public void setToStation(String id1) {
-		Wagon wagon = wagons.get(id1);
-		wagon.setPredecessor(null);
-		onStationSet.put(id1, wagon);
-		indexMap.put(id1, usedRailways); // TODO: usedRailways must recycle empty railways
-		posMap.put(id1, 0);
-		railways.get(usedRailways).add(wagon); // TODO: usedRailways cannot be the index sometimes there will be empty positions
-		usedRailways++;
+		int railwayNumber;
+		if (usedRailways<StateFactory.getMAX_RAILWAYS()){
+			Wagon wagon = wagons.get(id1);
+			wagon.setPredecessor(null);
+			onStationSet.put(id1, wagon);
+			railwayNumber=getEmptyRailway(); // we take the first empty railway, knowing that there is one because of the if
+			indexMap.put(id1, railwayNumber); 
+			posMap.put(id1, 0);
+			railways.get(railwayNumber).add(wagon); 
+			usedRailways++;
+		}
 	}
 
+	private int getEmptyRailway(){
+		int number=0;
+		while (railways.get(number).size()>0)
+			number++;
+		return number;
+	}
+	
 	public void setFree(String id){
 		Wagon wagon=wagons.get(id);
 		freeWagonsSet.put(id,wagon);
