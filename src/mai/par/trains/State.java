@@ -97,7 +97,7 @@ public class State implements Stackable{
 	
 	protected void init(){
 		freeWagonsSet = new WagonMap();
-		towed = new String();
+		towed = "";
 		railways = new ArrayList<Stack<Wagon>>();
 		for(int i = 0; i < StateFactory.getMAX_RAILWAYS(); i++){
 			railways.add(new Stack<Wagon>());
@@ -248,6 +248,7 @@ public class State implements Stackable{
 		PredicateGroup precondPredGroup=operator.getPrecondPredicate();
 		for (Predicate pred: precondPredGroup){
 			can &= isCompliant(pred);
+			//System.out.println(can+" "+pred);
 		}
 		return can;
 		/*
@@ -439,7 +440,7 @@ public class State implements Stackable{
 
 	public void setFreeLocomotive() {
 		freeLocomotive = true;
-		towed = null;
+		towed = "";
 	}
 
 	public void setWagonTowed(String id1) {

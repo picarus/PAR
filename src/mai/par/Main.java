@@ -16,6 +16,7 @@ import mai.par.trains.operators.OperatorAttach;
 import mai.par.trains.operators.OperatorCouple;
 import mai.par.trains.operators.OperatorDetach;
 import mai.par.trains.operators.OperatorLoad;
+import mai.par.trains.operators.OperatorPark;
 import mai.par.trains.operators.OperatorUnload;
 
 public class Main {
@@ -49,8 +50,9 @@ public class Main {
 	
 	public static void testApplyOperators(State state){
 		//testApplyLoadOperators(state);
-		testApplyTakeOperators(state);
-		testApplyDropOperators(state);
+		//testApplyTakeOperators(state);
+		//testApplyDropOperators(state);
+		testApplyDropOperators2(state);
 	}
 	
 	public static void testApplyDropOperators(State state){
@@ -96,6 +98,62 @@ public class Main {
 		
 	}
 	
+	public static void testApplyDropOperators2(State state){
+		Operator op;
+		State newState,newState2,newState3;
+		
+		op=new OperatorDetach("E","B"); // ok
+		state=state.apply(op);
+		System.out.println(state.getPredicateGroup());
+		
+		op=new OperatorAttach("E","G"); // ok
+		newState=state.apply(op);
+		if (newState!=null){
+			System.out.println("E is attached to G");
+			newState.drawState();
+			System.out.println(newState.getPredicateGroup());
+		}
+		else {
+			System.out.println("ERROR:E cannot be attached to G");
+		}
+		
+		op=new OperatorCouple("B"); // ok
+		newState2=newState.apply(op);
+		if (newState2!=null){
+			System.out.println("B is coupled");
+			newState2.drawState();
+			System.out.println(newState2.getPredicateGroup());
+		}
+		else {
+			System.out.println("ERROR:B cannot be coupled");
+		}
+		
+		
+		
+		op=new OperatorPark("B"); // ok
+		newState3=newState2.apply(op);
+		if (newState3!=null){
+			System.out.println("B is parked");
+			newState3.drawState();
+			System.out.println(newState3.getPredicateGroup());
+		}
+		else {
+			System.out.println("ERROR:B cannot be parked");
+			System.out.println(newState.getPredicateGroup());
+		}
+		
+		op=new OperatorAttach("E","A"); // wrong
+		newState2=newState.apply(op);
+		if (newState2!=null){
+			System.out.println("ERROR: E cannot be attached to A");
+			newState2.drawState();
+			System.out.println(newState2.getPredicateGroup());
+		}
+		else {
+			System.out.println("E cannot be attached to A");
+		}
+		
+	}
 	
 	public static void testApplyTakeOperators(State state){
 		Operator op;

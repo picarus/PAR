@@ -12,7 +12,6 @@ public class OperatorCouple extends OperatorTake {
 		precondPredicate.add(onStation);
 		// add list
 		addPredicate.add(PredicateFactory.createPredicateDecreaseUsedRailways());
-		addPredicate.add(PredicateFactory.createPredicateDecreaseUsedRailways());
 		// delete list
 		delPredicate.add(onStation);
 	}
