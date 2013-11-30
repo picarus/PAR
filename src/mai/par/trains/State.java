@@ -9,29 +9,30 @@ import java.util.Stack;
 import mai.par.trains.operators.Operator;
 import mai.par.trains.operators.Stackable;
 import mai.par.trains.predicates.Predicate;
+import mai.par.trains.predicates.PredicateGroup;
 
 public class State implements Stackable{
 	
 	// predicates that apply
 
-	private List<Predicate> predicateList;
+	private PredicateGroup predicateGroup;
 	
 	// state:
-	Map<String, Wagon> wagons;		// all the wagons
+	WagonMap wagons;				// all the wagons
 	boolean freeLocomotive=true;	// is the locomotive free?
 	int usedRailways=0;				// the railways in use				
-	Map<String,Wagon> freeWagonsSet;// the wagons in front of each rail (maybe a Set to break simmetries)
+	WagonMap freeWagonsSet;			// the wagons in front of each rail (maybe a Set to break simmetries)
 	String towed;					// the wagon being towed, if any
 	List<Stack<Wagon>> railways;	// instantiation of array of wagon stacks aren't allowed. Ordering seems important here, 
 									// so i used List. Subject to change.   			
-	Map<String, Wagon> onStationSet;// the wagons parked in the station 
+	WagonMap onStationSet;			// the wagons parked in the station 
 	Map<String, Integer> indexMap;	// in what railway is every wagon, railways[index]
 	Map<String, Integer> posMap;	// in what position is every wagon
 	
 	public State()
 	{
 		init();
-		wagons = new HashMap<String, Wagon>();	
+		wagons = new WagonMap();	
 	}
 	
 	// The parameter clean, if set to false, will create the state with the wagons in the same state (loaded, predecessor)
@@ -39,7 +40,7 @@ public class State implements Stackable{
 	public State(Map<String, Wagon> wagons2, Boolean clean)
 	{
 		init();
-		this.wagons = new HashMap<String, Wagon>();
+		this.wagons = new WagonMap();
 		if(clean)
 		{
 			for(Wagon wagon: wagons2.values())
@@ -60,19 +61,46 @@ public class State implements Stackable{
 	}
 	
 	protected void init(){
-		freeWagonsSet = new HashMap<String, Wagon>();
+		freeWagonsSet = new WagonMap();
 		towed = new String();
 		railways = new ArrayList<Stack<Wagon>>();
 		for(int i = 0; i < StateFactory.getMAX_RAILWAYS(); i++){
 			railways.add(new Stack<Wagon>());
 		}
-		onStationSet = new HashMap<String, Wagon>();
+		onStationSet = new WagonMap();
 		indexMap = new HashMap<String, Integer>();
 		posMap = new HashMap<String, Integer>();
 	}
 	
-	public  List<Predicate> getPredicates(){
-		return predicateList;
+	/**
+	 * Returns the list of wagons that require a load/unload operation compared to the state parameter
+	 * @param state state to compare to obtain the wagon list
+	 * @return the list of Wagons that have a different load state compared to the state given as parameter 
+	 */
+	public WagonMap getWagonsRequiringLoadUnload(State state){
+		WagonMap wagonRequiringLoadUnloadMap=new WagonMap();
+		Wagon w;
+		String id;
+		for (Wagon wagon: state.getWagons().values()){
+			id=wagon.getId();
+			w=wagons.get(id);
+			if (w.isLoaded()!=wagon.isLoaded())
+				wagonRequiringLoadUnloadMap.put(id,w);
+		}
+		return wagonRequiringLoadUnloadMap;
+	}
+	
+	public WagonMap getWagonsOnStation(WagonMap wagonList){
+		// we only care about the Wagon id, not its load
+		WagonMap wagonOnStationMap=new WagonMap();
+		String id;
+		for (Wagon wagon: wagonList.values()){
+			id=wagon.getId();
+			if (isOnStation(wagon.getId())){
+				wagonOnStationMap.put(id, wagon);
+			}
+		}
+		return wagonOnStationMap;
 	}
 	
 	public List<Predicate> difference(List<Predicate> listPred){
@@ -86,12 +114,11 @@ public class State implements Stackable{
 	}
 	
 	public List<Predicate> difference(State state){
-		List<Predicate> listPred=state.getPredicates();
+		PredicateGroup listPred=state.getPredicateGroup();
 		return difference(listPred);
 	}
 	
-	public void addWagon(String id)
-	{
+	public void addWagon(String id){
 		wagons.put(id, new Wagon(id));
 	}
 		
@@ -101,8 +128,7 @@ public class State implements Stackable{
 	//		 if a take operator has been applied the next will be a drop
 	
 	// can the operators be applied???
-	protected boolean canTake(String wagonId)
-	{
+	protected boolean canTake(String wagonId){
 		if ( ! freeLocomotive )
 			return false;
 		return freeWagonsSet.containsKey(wagonId);
@@ -182,13 +208,11 @@ public class State implements Stackable{
 	
 	////////////////////////
 	// 
-	State apply(Operator operator)
-	{
-		return null; // TODO: complete
+	State apply(Operator operator) {
+		return null; // TODO: complete, consider move to StateFactory
 	}
 	
-	public boolean isCompliant(Predicate predicate)
-	{
+	public boolean isCompliant(Predicate predicate) {
 		// TODO: compliant with partially instantiated predicates? can this happen?
 		String id1, id2;
 		id1=predicate.getId1();
@@ -209,7 +233,7 @@ public class State implements Stackable{
 			case PR_TOWED:
 				return isTowed(id1);
 			case PR_USEDRAILWAYS_NOTFULL: 
-				return usedRailways<StateFactory.getMAX_RAILWAYS();
+				return isRailwayFree();
 			case PR_USEDRAILWAYS_DECREASE:
 			case PR_USEDRAILWAYS_INCREASE:
 			// should not appear
@@ -218,13 +242,11 @@ public class State implements Stackable{
 		return false; // default: false
 	}
 
-	public void setWagons(Map<String, Wagon> wagons) 
-	{
+	public void setWagons(WagonMap wagons) {
 		this.wagons = wagons;
 	}
 	
-	public Map<String, Wagon> getWagons() 
-	{
+	public Map<String, Wagon> getWagons() {
 		return this.wagons;
 	}
 
@@ -260,8 +282,7 @@ public class State implements Stackable{
 		
 	}
 
-	public void setFreeLocomotive() 
-	{
+	public void setFreeLocomotive() {
 		freeLocomotive = true;
 		towed = null;
 	}
@@ -271,16 +292,15 @@ public class State implements Stackable{
 		towed = id1;
 	}
 
-	public List<Predicate> getPredicateList() {
-		return predicateList;
+	public PredicateGroup getPredicateGroup() {
+		return predicateGroup;
 	}
 
-	public void setPredicateList(List<Predicate> predicateList) {
-		this.predicateList = predicateList;
+	public void setPredicateGroup(PredicateGroup predicateList) {
+		this.predicateGroup = predicateList;
 	}
 
-	public void drawState() 
-	{
+	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		for (Stack<Wagon> railway: railways)
 		{
@@ -309,8 +329,14 @@ public class State implements Stackable{
 		}
 		else
 		{
-			sb.append("Loc[]\n");
+			sb.append("Loc[]");
 		}
-		System.out.println(sb.toString());
+		return sb.toString();
+	}
+	
+	public void drawState() 
+	{
+		
+		System.out.println(toString()+"\n");
 	}
 }

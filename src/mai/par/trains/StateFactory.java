@@ -1,15 +1,14 @@
 package mai.par.trains;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import mai.par.trains.predicates.Predicate;
-import mai.par.trains.predicates.TrainPredicate;
+import mai.par.trains.predicates.PredicateGroup;
 
 public class StateFactory {
 
-	static private int MAX_RAILWAYS=3;
+	static private int MAX_RAILWAYS=3;	// TODO: allow have MAX_RAILWAYS > 3
 	public static State initialState=null;
 	public static State finalState=null;
 	State currentState=null;
@@ -34,10 +33,10 @@ public class StateFactory {
 //	TODO: Problem here: things will only workout if the predicates are given in the correct order. 
 //	It may good enough for now, however it will have to be split in a two step building, where 
 //	we can treat a predecessor before the current and then come back(recursively). May be solved with priorities 
-	public static State createState(List<Predicate> predicates, Boolean clean)
+	public static State createState(PredicateGroup predicates, Boolean clean)
 	{
 		State state = new State(wagons, clean);
-		state.setPredicateList(predicates);
+		state.setPredicateGroup(predicates);
 		for(Predicate predicate : predicates)
 		{
 			System.out.println(predicate);

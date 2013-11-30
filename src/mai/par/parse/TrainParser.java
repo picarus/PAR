@@ -1,15 +1,13 @@
 package mai.par.parse;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import mai.par.trains.State;
 import mai.par.trains.StateFactory;
 import mai.par.trains.Wagon;
-import mai.par.trains.predicates.Predicate;
 import mai.par.trains.predicates.PredicateFactory;
+import mai.par.trains.predicates.PredicateGroup;
 
 public class TrainParser {
 	
@@ -68,11 +66,11 @@ public class TrainParser {
 		return params;
 	}
 	
-	protected static ArrayList<Predicate> readState(String state){
+	protected static PredicateGroup readState(String state){
 		System.out.println(state);
 		StringTokenizer strTkn=new StringTokenizer(state, TrainParseConstants.SEPARATORS);
 		String str;
-		ArrayList<Predicate> predicates = new ArrayList<Predicate>();
+		PredicateGroup predicates = new PredicateGroup();
 		while (strTkn.hasMoreElements()){
 			str=strTkn.nextToken();
 			System.out.println(str);

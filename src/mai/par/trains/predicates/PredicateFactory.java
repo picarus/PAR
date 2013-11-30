@@ -1,5 +1,11 @@
 package mai.par.trains.predicates;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import mai.par.trains.Wagon;
+import mai.par.trains.WagonMap;
+
 
 public class PredicateFactory {
 	
@@ -53,5 +59,21 @@ public class PredicateFactory {
 	
 	public static Predicate createPredicateIncreaseUsedRailways(){
 		return new Predicate(TrainPredicate.PR_USEDRAILWAYS_INCREASE);
+	}
+	
+	public static List<Predicate> createPredicatesLoadUnload(WagonMap wagonMap){
+		List<Predicate> lp=new ArrayList<Predicate>();
+		String id;
+		Predicate p;
+		for (Wagon wagon: wagonMap.values()){
+			id=wagon.getId();
+			if (wagon.isLoaded()) { // wagon is loaded
+				p=createPredicateLoaded(id);
+			} else { // wagon is not loaded
+				p=createPredicateEmpty(id);
+			}
+			lp.add(p);	
+		}
+		return lp;
 	}
 }

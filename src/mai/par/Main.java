@@ -8,13 +8,13 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import mai.par.parse.TrainParser;
+import mai.par.trains.LinealPlanner;
 import mai.par.trains.StateFactory;
 
 public class Main {
 
 	static String file = "./problem.txt";
 	 
-	
 	public static void main(String[] args) 
 	{
 		String s;
@@ -26,6 +26,9 @@ public class Main {
 			StateFactory.initialState.drawState();
 			System.out.println("Final State:");
 			StateFactory.finalState.drawState();
+			
+			LinealPlanner.createPlan(StateFactory.initialState, StateFactory.finalState);
+			
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
