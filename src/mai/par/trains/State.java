@@ -14,8 +14,11 @@ import mai.par.trains.predicates.PredicateGroup;
 public class State implements Stackable{
 	
 	// predicates that apply
-
 	private PredicateGroup predicateGroup;
+	
+	// operator
+	private Operator operator=null;	// the operator that brough to this state
+									// null for initial and final state
 	
 	// state:
 	WagonMap wagons;				// all the wagons
@@ -24,10 +27,12 @@ public class State implements Stackable{
 	WagonMap freeWagonsSet;			// the wagons in front of each rail (maybe a Set to break simmetries)
 	String towed;					// the wagon being towed, if any
 	List<Stack<Wagon>> railways;	// instantiation of array of wagon stacks aren't allowed. Ordering seems important here, 
-									// so i used List. Subject to change.   			
+									// so I used List. Subject to change.   			
 	WagonMap onStationSet;			// the wagons parked in the station 
 	Map<String, Integer> indexMap;	// in what railway is every wagon, railways[index]
 	Map<String, Integer> posMap;	// in what position is every wagon
+	
+	
 	
 	public State()
 	{
@@ -68,6 +73,9 @@ public class State implements Stackable{
 		posMap=new HashMap<String, Integer>(state.posMap);
 		towed=state.towed;
 		usedRailways=state.usedRailways;
+		operator=state.operator;
+		// the structures are used including the wagons created for this state 
+		// to avoid strange propagation issues if something is modified in other state
 		freeWagonsSet=new WagonMap(state.freeWagonsSet, wagons);
 		onStationSet=new WagonMap(state.onStationSet, wagons);
 		copyRailways(state.railways, wagons);
@@ -236,23 +244,92 @@ public class State implements Stackable{
 	
 	////////////////////////
 	// 
-	State apply(Operator operator) {
-		State state=null;
-		switch (operator.getOperator()){
+	boolean canApply(Operator operator){
+		// TODO: rewrite to use the precondition list of the operators
+		boolean can=true;
+		PredicateGroup precondPredGroup=operator.getPrecondPredicate();
+		for (Predicate pred: precondPredGroup){
+			can &= isCompliant(pred);
+		}
+		return can;
+		/*
+		String id=operator.getID1();
+		String id2=operator.getID2();
+		switch (operator.getOperator()) {
 		case OP_ATTACH:
+			can=canAttach(id,id2);
 			break;
 		case OP_COUPLE:
+			can=canCouple(id);
 			break;
 		case OP_DETACH:
+			can=canDetach(id,id2);
 			break;
 		case OP_LOAD:
+			can=canLoad(id);
 			break;
 		case OP_PARK:
+			can=canPark(id);
 			break;
 		case OP_UNLOAD:
+			can=canUnload(id);
 			break;
 		}
-		return state; // TODO: complete, consider move to StateFactory
+		*/
+	}
+	
+	State apply(Operator operator) {
+		State state=null;
+		if (canApply(operator)) {
+			state=new State(this);
+			PredicateGroup addPredGroup=operator.getAddPredicate();
+			for (Predicate pred:addPredGroup){
+				state.apply(pred);		// apply the ADD list
+			}
+			PredicateGroup delPredGroup=operator.getDelPredicate();
+			for (Predicate pred:delPredGroup){
+				if (predicateGroup.contains(pred))
+					predicateGroup.remove(pred);  // remove from the DEL list
+				else
+					System.err.println("ERROR: predicate not found");
+			}
+		}
+		return state; 
+	}
+	
+	protected void apply(Predicate pred){
+		// the predicates will be the ones in the add list
+		// some of the predicates will not appear
+		// some can be ignored because will be "obtained" indirectly when applying others
+		String id=pred.getId1();
+		predicateGroup.add(pred);
+		switch (pred.getPredicate()){
+		case PR_EMPTY:
+			unloadWagon(id);
+			break;
+		case PR_INFRONTOF:
+			String id2=pred.getId2();
+			setInFrontOf(id, id2);
+			break;
+		case PR_LOADED:
+			loadWagon(id);
+			break;
+		case PR_ONSTATION:
+			setToStation(id);
+			break;
+		case PR_TOWED:
+			setWagonTowed(id);
+			break;
+		case PR_FREE:
+		case PR_FREELOCOMOTIVE:
+		case PR_USEDRAILWAYS_DECREASE:
+		case PR_USEDRAILWAYS_INCREASE:
+			// will be obtained indirectly
+			break;
+		case PR_USEDRAILWAYS_NOTFULL:
+			// will not appear in the add list
+			break;
+		}
 	}
 	
 	public boolean isCompliant(Predicate predicate) {
@@ -304,7 +381,9 @@ public class State implements Stackable{
 	public void loadWagon(String id1) {
 		this.wagons.get(id1).load();
 	}
-
+	
+	///////////////////////////////////////////////////////////////////////////
+	// used to create the state from the initial predicates on the text file
 	public void setToStation(String id1) {
 		Wagon wagon = wagons.get(id1);
 		wagon.setPredecessor(null);
@@ -323,10 +402,10 @@ public class State implements Stackable{
 	public void setInFrontOf(String id1, String id2) {
 		Wagon wagon = wagons.get(id1);
 		wagon.setPredecessor(id2);
-		indexMap.put(id1, indexMap.get(id2));
+		int railwayPos=indexMap.get(id2);
+		indexMap.put(id1, railwayPos );
 		posMap.put(id1, posMap.get(id2)+1);
-		railways.get(indexMap.get(id2)).add(wagon);
-		
+		railways.get(railwayPos).add(wagon);
 	}
 
 	public void setFreeLocomotive() {
@@ -349,8 +428,7 @@ public class State implements Stackable{
 
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
-		for (Stack<Wagon> railway: railways)
-		{
+		for (Stack<Wagon> railway: railways) {
 			sb.append("|");
 			for (Wagon w : railway)
 			{
@@ -383,7 +461,6 @@ public class State implements Stackable{
 	
 	public void drawState() 
 	{
-		
 		System.out.println(toString()+"\n");
 	}
 }

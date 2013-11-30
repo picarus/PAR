@@ -21,15 +21,17 @@ public class GoalStack extends Stack<Stackable>{
 		int i=0;
 		str = "------------------------\n";
 		for (Stackable s: this){
-			if (!(s instanceof PredicateGroup)) // predicate Groups are not printed
-				
-				if (s instanceof State ){
-					str += s.toString() ;
-				} else {
-					str += i+ "|" + s.toString();
-				}
-				str += "\n------------------------\n";
-				i++;
+			if (s instanceof PredicateGroup){
+				// predicate Groups are not printed
+				str += s.toString();
+			}	
+			else if (s instanceof State ){
+				str += s.toString() ;
+			} else {
+				str += i+ "|" + s.toString();
+			}
+			str += "\n------------------------\n";
+			i++;
 		}
 		
 		return str;

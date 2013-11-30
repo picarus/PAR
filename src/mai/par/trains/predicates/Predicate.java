@@ -71,6 +71,6 @@ public class Predicate implements Stackable {
 		else if((id2 == null))
 			return predicate.toString()+"("+id1+")";
 		else
-			return predicate.toString()+"("+id1+", "+id2+")";
+			return predicate.toString()+"("+id1+","+id2+")";
 	}
 }

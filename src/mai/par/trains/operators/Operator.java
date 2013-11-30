@@ -1,8 +1,7 @@
 package mai.par.trains.operators;
 
-import java.util.ArrayList;
 
-import mai.par.trains.predicates.Predicate;
+import mai.par.trains.predicates.PredicateGroup;
 
 public abstract class Operator implements Stackable {
 	
@@ -12,12 +11,9 @@ public abstract class Operator implements Stackable {
 	String id2;
 	int priority;
 	
-	
-
-	ArrayList<Predicate> precondPredicate=new ArrayList<Predicate>();
-	ArrayList<Predicate> addPredicate=new ArrayList<Predicate>();
-	ArrayList<Predicate> delPredicate=new ArrayList<Predicate>();
-	
+	PredicateGroup precondPredicate=new PredicateGroup();
+	PredicateGroup addPredicate=new PredicateGroup();
+	PredicateGroup delPredicate=new PredicateGroup();
 	
 	Operator(TrainOperator operator, OperatorType type){
 		this.operator=operator;
@@ -41,6 +37,26 @@ public abstract class Operator implements Stackable {
 		return operator;
 	}
 	
+	public String getID1(){
+		return id1;
+	}
+	
+	public String getID2(){
+		return id2;
+	}
+	
+	public PredicateGroup getPrecondPredicate() {
+		return precondPredicate;
+	}
+
+	public PredicateGroup getAddPredicate() {
+		return addPredicate;
+	}
+
+	public PredicateGroup getDelPredicate() {
+		return delPredicate;
+	}
+
 	public int getPriority() {
 		return priority;
 	}

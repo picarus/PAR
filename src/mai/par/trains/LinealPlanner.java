@@ -24,7 +24,7 @@ public final class LinealPlanner {
 		// TODO: Test with more railways
 		
 		goalStack.push(finalState);
-		//goalStack.push(finalState.getPredicateGroup());
+		goalStack.push(finalState.getPredicateGroup());
 		
 		List<Predicate> lp;
 		WagonMap wagonsLU=finalState.getWagonsRequiringLoadUnload(initialState);
@@ -39,11 +39,13 @@ public final class LinealPlanner {
 		
 		lp=PredicateFactory.createPredicatesLoadUnload(onStationOnFinalState);
 		goalStack.pushList(lp);
+		System.out.println(goalStack.toString());
 		// push all railways configuration 1 by 1 starting from the station (even the ones that are satisfied now)
 		// in order
 		// wagons to load / unload not at initial not final state
 		lp=PredicateFactory.createPredicatesLoadUnload(wagonsLU);
 		goalStack.pushList(lp); // TODO: optimize the order
+		System.out.println(goalStack.toString());
 		// wagons to load / unload at initial state
 		lp=PredicateFactory.createPredicatesLoadUnload(onStationOnInitialState);
 		goalStack.pushList(lp);
