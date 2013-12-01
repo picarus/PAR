@@ -1,6 +1,6 @@
 package mai.par.trains.predicates;
 
-import mai.par.trains.operators.Stackable;
+import mai.par.trains.Stackable;
 
 public class Predicate implements Stackable {
 	

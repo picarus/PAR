@@ -7,9 +7,11 @@ import java.util.Map;
 import java.util.Stack;
 
 import mai.par.trains.operators.Operator;
-import mai.par.trains.operators.Stackable;
+import mai.par.trains.operators.OperatorLoad;
+import mai.par.trains.operators.OperatorUnload;
 import mai.par.trains.predicates.Predicate;
 import mai.par.trains.predicates.PredicateGroup;
+import mai.par.trains.predicates.TrainPredicate;
 
 public class State implements Stackable{
 	
@@ -344,6 +346,57 @@ public class State implements Stackable{
 			break;
 		}
 		if (add) predicateGroup.add(pred);
+	}
+	
+	public Operator accomplish(Predicate predicate){
+		// we can assume that the predicate is not satisfied
+		Operator operator=null;
+		TrainPredicate tp=predicate.getPredicate();
+		String id=predicate.getId1();
+		switch(tp){
+		///////////////LOAD/UNLOAD///////////////////////////////////////////////
+		// Our order should guarantee that when this predicate is tried to be accomplished
+		// the wagon is onstation, if not it will raise from operator checking
+		case PR_EMPTY:
+			operator=new OperatorUnload(id);
+			break;
+		case PR_LOADED:
+			operator=new OperatorLoad(id);
+			break;
+		//////////////////////////////////////////////////////////////////////
+		case PR_FREE:
+			break;
+		case PR_TOWED:
+			break;
+		case PR_FREELOCOMOTIVE:
+			break;
+		case PR_INFRONTOF:
+			break;
+		case PR_ONSTATION:
+			break;
+		case PR_USEDRAILWAYS_NOTFULL:
+			break;
+		case PR_USEDRAILWAYS_DECREASE:
+		case PR_USEDRAILWAYS_INCREASE:
+			// should not occur here
+			break;
+		}
+		return operator;
+	}
+	
+	public boolean isCompliant(State state){
+		return isCompliant(state.getPredicateGroup());
+	}
+	
+	public boolean isCompliant(PredicateGroup predicateGroup){
+		for (Predicate pred:predicateGroup){
+			if (!isCompliant(pred)){
+				System.out.println("ERROR: Predicate not compliant in Group");
+				System.out.println(pred);
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public boolean isCompliant(Predicate predicate) {

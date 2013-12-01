@@ -1,6 +1,7 @@
 package mai.par.trains.operators;
 
 
+import mai.par.trains.Stackable;
 import mai.par.trains.predicates.PredicateGroup;
 
 public abstract class Operator implements Stackable {

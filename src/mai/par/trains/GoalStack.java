@@ -2,7 +2,6 @@ package mai.par.trains;
 
 import java.util.List;
 import java.util.Stack;
-import mai.par.trains.operators.Stackable;
 import mai.par.trains.predicates.Predicate;
 import mai.par.trains.predicates.PredicateGroup;
 

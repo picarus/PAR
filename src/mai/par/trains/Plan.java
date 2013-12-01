@@ -7,6 +7,7 @@ import mai.par.trains.operators.Operator;
 
 @SuppressWarnings("serial")
 public class Plan extends ArrayList<Operator>{
+	
 	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();

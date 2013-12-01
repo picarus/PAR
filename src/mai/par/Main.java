@@ -38,9 +38,11 @@ public class Main {
 			System.out.println("Copy Final State:");
 			copyState=new State(StateFactory.finalState);
 			copyState.drawState();
-			LinealPlanner.createPlan(StateFactory.initialState, StateFactory.finalState);
 			
-			testApplyOperators(StateFactory.finalState);
+			LinealPlanner.init(StateFactory.initialState, StateFactory.finalState);
+			LinealPlanner.createPlan();
+			
+			//testApplyOperators(StateFactory.finalState);
 			
 		} 
 		catch (IOException e) {
@@ -49,9 +51,9 @@ public class Main {
 	}
 	
 	public static void testApplyOperators(State state){
-		//testApplyLoadOperators(state);
-		//testApplyTakeOperators(state);
-		//testApplyDropOperators(state);
+		testApplyLoadOperators(state);
+		testApplyTakeOperators(state);
+		testApplyDropOperators(state);
 		testApplyDropOperators2(state);
 	}
 	

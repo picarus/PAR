@@ -61,8 +61,8 @@ public class PredicateFactory {
 		return new Predicate(TrainPredicate.PR_USEDRAILWAYS_INCREASE);
 	}
 	
-	public static List<Predicate> createPredicatesLoadUnload(WagonMap wagonMap){
-		List<Predicate> lp=new ArrayList<Predicate>();
+	public static PredicateGroup createPredicatesLoadUnload(WagonMap wagonMap){
+		PredicateGroup pg=new PredicateGroup();
 		String id;
 		Predicate p;
 		for (Wagon wagon: wagonMap.values()){
@@ -72,8 +72,8 @@ public class PredicateFactory {
 			} else { // wagon is not loaded
 				p=createPredicateEmpty(id);
 			}
-			lp.add(p);	
+			pg.add(p);	
 		}
-		return lp;
+		return pg;
 	}
 }
