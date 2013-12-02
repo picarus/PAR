@@ -2,12 +2,18 @@ package mai.par.trains;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import mai.par.trains.operators.Operator;
+import mai.par.trains.operators.OperatorAttach;
+import mai.par.trains.operators.OperatorCouple;
+import mai.par.trains.operators.OperatorDetach;
 import mai.par.trains.operators.OperatorLoad;
+import mai.par.trains.operators.OperatorPark;
 import mai.par.trains.operators.OperatorUnload;
 import mai.par.trains.predicates.Predicate;
 import mai.par.trains.predicates.PredicateGroup;
@@ -19,8 +25,13 @@ public class State implements Stackable{
 	private PredicateGroup predicateGroup;
 	
 	// operator
-	private Operator operator=null;	// the operator that brough to this state
+	//private Operator operator=null;	// the operator that brough to this state
 									// null for initial and final state
+	
+	// TODO: add a tabu operator to make sure there are no loops (at distance 2: do-undo)
+	//       also the operator will indicate that if a drop operator has been applied
+	//       the next will be a take operator (or a load/unload)
+	//		 if a take operator has been applied the next will be a drop
 	
 	// state:
 	WagonMap wagons;				// all the wagons
@@ -68,6 +79,10 @@ public class State implements Stackable{
 	}
 	
 	public State(State state){
+		this(state,null);
+	}
+	
+	public State(State state, Operator operator){
 		this(state.getWagons(),false);
 		predicateGroup=new PredicateGroup(state.getPredicateGroup());
 		freeLocomotive=state.isFreeLocomotive();
@@ -75,12 +90,16 @@ public class State implements Stackable{
 		posMap=new HashMap<String, Integer>(state.posMap);
 		towed=state.towed;
 		usedRailways=state.usedRailways;
-		operator=state.operator;
+		
 		// the structures are used including the wagons created for this state 
 		// to avoid strange propagation issues if something is modified in other state
 		freeWagonsSet=new WagonMap(state.freeWagonsSet, wagons);
 		onStationSet=new WagonMap(state.onStationSet, wagons);
 		copyRailways(state.railways, wagons);
+		//this.operator=operator;
+		state.applyADD(operator);
+		state.applyDEL(operator);
+		
 	}
 	
 	private void copyRailways(List<Stack<Wagon>> original, WagonMap elements){
@@ -158,13 +177,9 @@ public class State implements Stackable{
 	public void addWagon(String id){
 		wagons.put(id, new Wagon(id));
 	}
-		
-	// TODO: add a tabu operator to make sure there are no loops (at distance 2: do-undo)
-	//       also the operator will indicate that if a drop operator has been applied
-	//       the next will be a take operator (or a load/unload)
-	//		 if a take operator has been applied the next will be a drop
 	
 	// can the operators be applied???
+	
 	protected boolean canTake(String wagonId){
 		if ( ! freeLocomotive )
 			return false;
@@ -205,44 +220,6 @@ public class State implements Stackable{
 		return (posMap.get( wagonIDx )-1)==posMap.get( wagonIDy ); 	// attached to each other
 	}
 	
-	//////////////////////////////////////////
-	//    OPERATORS CHECK (not based on PREDICATES but on the STATE: NOT USED)
-	boolean canCouple(String wagonId){
-		if ( ! canTake( wagonId ) )
-			return false;
-		return isOnStation(wagonId);	
-	}
-	
-	boolean canPark(String wagonId){
-		if ( ! isRailwayFree() )
-			return false;
-		return canDrop(wagonId);
-	}
-	
-	boolean canDetach(String wagonIDx, String wagonIDy){
-		if ( !canTake( wagonIDx ) )
-			return false;
-		return isInFrontOf(wagonIDx, wagonIDy);
-	}
-	
-	boolean canAttach(String wagonIDx, String wagonIDy){
-		if ( ! isWagonFree(wagonIDy) )
-			return false;
-		return canDrop(wagonIDx);
-	}
-	
-	boolean canLoad(String wagonId){
-		if (isWagonLoaded(wagonId))
-			return false;		// already loaded
-		return isOnStation(wagonId);
-	}
-	
-	boolean canUnload(String wagonId){
-		if (!isWagonLoaded(wagonId))	
-			return false;		// already unloaded
-		return isOnStation(wagonId);
-	}
-	
 	////////////////////////
 	// 
 	boolean canApply(Operator operator){
@@ -253,38 +230,12 @@ public class State implements Stackable{
 			//System.out.println(can+" "+pred);
 		}
 		return can;
-		/*
-		String id=operator.getID1();
-		String id2=operator.getID2();
-		switch (operator.getOperator()) {
-		case OP_ATTACH:
-			can=canAttach(id,id2);
-			break;
-		case OP_COUPLE:
-			can=canCouple(id);
-			break;
-		case OP_DETACH:
-			can=canDetach(id,id2);
-			break;
-		case OP_LOAD:
-			can=canLoad(id);
-			break;
-		case OP_PARK:
-			can=canPark(id);
-			break;
-		case OP_UNLOAD:
-			can=canUnload(id);
-			break;
-		}
-		*/
 	}
 	
 	public State apply(Operator operator) {
 		State state=null;
 		if (canApply(operator)) {
-			state=new State(this);
-			state.applyADD(operator);
-			state.applyDEL(operator);
+			state=new State(this,operator);
 		}
 		return state; 
 	}
@@ -308,7 +259,7 @@ public class State implements Stackable{
 		}
 	}
 	
-	protected void applyADD(Predicate pred){
+	private void applyADD(Predicate pred){
 		// the predicates will be the ones in the add list
 		// some of the predicates will not appear
 		// some can be ignored because will be "obtained" indirectly when applying others
@@ -365,16 +316,67 @@ public class State implements Stackable{
 			break;
 		//////////////////////////////////////////////////////////////////////
 		case PR_FREE:
+			// should be satisfied indirectly applying the Take/Drop alternance
+			// low priority
 			break;
 		case PR_TOWED:
+			// we can assume is free
+			operator = tow(id);	
 			break;
 		case PR_FREELOCOMOTIVE:
+			// should be satisfied indirectly applying the Take/Drop alternance
+			// low priority
 			break;
-		case PR_INFRONTOF:
+		case PR_INFRONTOF:{
+				String id2=predicate.getId2();
+				boolean free1=isWagonFree(id);
+				boolean free2=isWagonFree(id2);
+				if (!free1 || !free2) {
+					int destRailway=getNonDisturbingRailway(id, id2);
+					String idDest=getFirstWagonInRailway(destRailway);
+					String idOrigin;
+					if (!free2)
+						idOrigin=getFirstWagonInRailway(id2);
+					else  // not free1
+						idOrigin=getFirstWagonInRailway(id);
+					operator=new OperatorAttach(idOrigin, idDest);
+				} else  // both are free
+					operator = new OperatorAttach(id,id2);
+			}
 			break;
-		case PR_ONSTATION:
+		case PR_ONSTATION:{
+				// TODO: we must make sure that we don't undo a railway that has already been configured
+				boolean freeRW=isRailwayFree();
+				boolean free1=isWagonFree(id);
+				String id2=predicate.getId2();
+				String idOrigin,idDest;
+				if (!free1 || !freeRW){
+					int originRailway,destRailway;
+					if (freeRW) 
+						// One railway is empty. 
+						// We cannot move there what is on top of the wagon we are trying to move to OnStation
+						destRailway=getEmptyRailway();
+					else
+						// No railway empty
+						// We need to empty the shortest one
+						destRailway=getEmptiestRailway();
+					if(!freeRW)
+						// the railway is not empty, first we empty
+						idOrigin=getFirstWagonInRailway(id2);
+					else
+						// we need to release what is on top of the block we want to move
+						idOrigin=getFirstWagonInRailway(id);
+					originRailway=getRailwayForWagon(id); // we get where the block to move OnStation is
+					idDest=getFirstWagonInRailway(getNonDisturbingRailwayNonEmpty(originRailway, destRailway));	
+					operator=new OperatorAttach(idOrigin,idDest);
+				} else 
+					operator=new OperatorPark(id);	
+			}
 			break;
 		case PR_USEDRAILWAYS_NOTFULL:
+			// should be satisfied indirectly applying the Take/Drop alternance
+			// low priority
+			// even if the final state requires it in its definition
 			break;
 		case PR_USEDRAILWAYS_DECREASE:
 		case PR_USEDRAILWAYS_INCREASE:
@@ -382,6 +384,79 @@ public class State implements Stackable{
 			break;
 		}
 		return operator;
+	}
+	
+	private int getNonDisturbingRailway(String id1, String id2) {
+		// finds any railway where nor id1 nor id2 are parked
+		int railwayNr;
+		if (isRailwayFree()){
+			railwayNr = getEmptyRailway();
+		} else {
+			railwayNr = getNonDisturbingRailwayNonEmpty(id1, id2); 
+		}
+		return railwayNr;
+	}
+
+	private int getNonDisturbingRailwayNonEmpty(int pos1, int pos2){
+		int railwayNr;
+		Set<Integer> pos=new HashSet<Integer>(3);
+		for (int i=0;i<StateFactory.getMAX_RAILWAYS();i++){
+			// TODO: do we need to guarantee that the railway is not empty?
+			pos.add(i);
+		}
+		pos.remove(pos1);
+		pos.remove(pos2);
+		// take one element, because the minimum nr of railways is 3, we know there will be one
+		railwayNr=pos.iterator().next();
+		return railwayNr;
+	}
+	
+	private int getNonDisturbingRailwayNonEmpty(String id1, String id2) {
+		return getNonDisturbingRailwayNonEmpty(indexMap.get(id1), indexMap.get(id2));
+	}
+	
+	private Operator tow(String id) {
+		Operator operator;
+		if (isOnStation(id))
+			operator = new OperatorCouple(id);
+		else {
+			String predecessor=wagons.get(id).getPredecessor();
+			operator = new OperatorDetach(id,predecessor);
+		}
+		return operator;
+	}
+	
+	private int getEmptiestRailway(){
+		int min=0;
+		int len;
+		int minlen=railways.get(0).size();
+		for (int i=1;i<railways.size();i++){
+			len=railways.get(i).size();
+			if (len<minlen){
+				minlen=len;
+				min=i;
+			}
+		}
+		return min;
+	}
+	
+	private String getFirstWagonInRailway(int i){
+		return railways.get(i).peek().getId();
+	}
+	
+	private String getFirstWagonInRailway(String id){
+		return getFirstWagonInRailway(indexMap.get(id));
+	}
+	
+	private int getEmptyRailway(){
+		int number=0;
+		while (railways.get(number).size()>0)
+			number++;
+		return number;
+	}
+	
+	public int getRailwayForWagon(String id){
+		return indexMap.get(id);
 	}
 	
 	public boolean isCompliant(State state){
@@ -451,6 +526,7 @@ public class State implements Stackable{
 	
 	///////////////////////////////////////////////////////////////////////////
 	// used to create the state from the initial predicates on the text file
+	// and extended to be used to modify the state to apply the ADD list
 	public void setToStation(String id1) {
 		int railwayNumber;
 		if (usedRailways<StateFactory.getMAX_RAILWAYS()){
@@ -463,13 +539,6 @@ public class State implements Stackable{
 			railways.get(railwayNumber).add(wagon); 
 			usedRailways++;
 		}
-	}
-
-	private int getEmptyRailway(){
-		int number=0;
-		while (railways.get(number).size()>0)
-			number++;
-		return number;
 	}
 	
 	public void setFree(String id){
@@ -490,7 +559,7 @@ public class State implements Stackable{
 		posMap.put(id1, posMap.get(id2)+1);
 		railways.get(railwayPos).add(wagon);
 	}
-
+	
 	public void setFreeLocomotive() {
 		freeLocomotive = true;
 		towed = "";
@@ -514,8 +583,6 @@ public class State implements Stackable{
 		}
 	}
 	///////////////////////////////////////////////////////////////////
-	
-	
 	
 	public PredicateGroup getPredicateGroup() {
 		return predicateGroup;

@@ -1,7 +1,5 @@
 package mai.par.trains;
 
-import java.util.List;
-
 import mai.par.trains.operators.Operator;
 import mai.par.trains.predicates.Predicate;
 import mai.par.trains.predicates.PredicateFactory;
@@ -102,13 +100,13 @@ public final class LinealPlanner {
 			case Predicate:
 				predicate=(Predicate)stackable;
 				if (!currentState.isCompliant(predicate)){
-					// TODO: look for an operator to satisfy
+					// look for an operator to satisfy
 					operator=currentState.accomplish(predicate);
 					goalStack.push(operator.getPrecondPredicate());
 					goalStack.push(operator);
 				}
 				break;
-			case PredicateGroup:  // from an operator
+			case PredicateGroup:  // from an operator ( or state ?)
 				predicateGroup=(PredicateGroup)stackable;
 				if (!currentState.isCompliant(predicateGroup)) {
 					// if not: ERROR --> our implementation should guarantee when we get here we satisfy all predicates

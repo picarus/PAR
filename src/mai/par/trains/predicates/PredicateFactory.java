@@ -1,10 +1,9 @@
 package mai.par.trains.predicates;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import mai.par.trains.Wagon;
 import mai.par.trains.WagonMap;
+
+
 
 
 public class PredicateFactory {
