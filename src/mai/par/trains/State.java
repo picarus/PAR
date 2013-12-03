@@ -24,22 +24,13 @@ public class State implements Stackable{
 	// predicates that apply
 	private PredicateGroup predicateGroup;
 	
-	// operator
-	//private Operator operator=null;	// the operator that brough to this state
-										// null for initial and final state
-	
-	// TODO: add a tabu operator to make sure there are no loops (at distance 2: do-undo)
-	//       also the operator will indicate that if a drop operator has been applied
-	//       the next will be a take operator (or a load/unload)
-	//		 if a take operator has been applied the next will be a drop
-	
 	// state:
 	WagonMap wagons;				// all the wagons
 	boolean freeLocomotive=true;	// is the locomotive free?
 	int usedRailways=0;				// the railways in use				
 	WagonMap freeWagonsSet;			// the wagons in front of each rail (maybe a Set to break simmetries)
 	String towed;					// the wagon being towed, if any
-	List<Stack<Wagon>> railways;	// instantiation of array of wagon stacks aren't allowed. Ordering seems important here, 
+	Railways railways;				// instantiation of array of wagon stacks aren't allowed. Ordering seems important here, 
 									// so I used List. Subject to change.   			
 	WagonMap onStationSet;			// the wagons parked in the station 
 	Map<String, Integer> indexMap;	// in what railway is every wagon, railways[index]
@@ -79,7 +70,7 @@ public class State implements Stackable{
 	}
 	
 	public State(State state){
-		this(state.getWagons(),false); // TODO: some work is replicate as this calls to init
+		this(state.getWagons(),false); // TODO: some work is duplicated as this calls to init
 		predicateGroup=new PredicateGroup(state.getPredicateGroup());
 		freeLocomotive=state.isFreeLocomotive();
 		indexMap=new HashMap<String, Integer>(state.indexMap);
@@ -90,7 +81,7 @@ public class State implements Stackable{
 		// to avoid strange propagation issues if something is modified in other state
 		freeWagonsSet=new WagonMap(state.freeWagonsSet, wagons);
 		onStationSet=new WagonMap(state.onStationSet, wagons);
-		copyRailways(state.railways, wagons);
+		railways= new Railways(state.railways, wagons);
 	}
 	
 	public State(State state, Operator operator){
@@ -100,27 +91,12 @@ public class State implements Stackable{
 		applyDEL(operator);
 	}
 	
-	private void copyRailways(List<Stack<Wagon>> original, WagonMap elements){
-		railways=new ArrayList<Stack<Wagon>>();
-		Stack<Wagon> newStack;
-		String id;
-		for (Stack<Wagon> stack: original){
-			newStack=new Stack<Wagon>();
-			for (Wagon w: stack){
-				id=w.getId();
-				newStack.push(elements.get(id));
-			}
-			railways.add(newStack);
-		}
-	}
+	
 	
 	protected void init(){
 		freeWagonsSet = new WagonMap();
 		towed = "";
-		railways = new ArrayList<Stack<Wagon>>();
-		for(int i = 0; i < StateFactory.getMAX_RAILWAYS(); i++){
-			railways.add(new Stack<Wagon>());
-		}
+		railways = new Railways();
 		onStationSet = new WagonMap();
 		indexMap = new HashMap<String, Integer>();
 		posMap = new HashMap<String, Integer>();
@@ -232,7 +208,7 @@ public class State implements Stackable{
 	
 	public State apply(Operator operator) {
 		State state=null;
-		if (canApply(operator)) {  // TODO: unnecessary but safe
+		if (canApply(operator)) {  // unnecessary but safe
 			state=new State(this,operator);
 		}
 		//System.out.println(freeWagonsSet);
@@ -437,7 +413,7 @@ public class State implements Stackable{
 		return min;
 	}
 	
-	private String getFirstWagonInRailway(int i){
+	public String getFirstWagonInRailway(int i){
 		return railways.get(i).peek().getId();
 	}
 	
@@ -472,7 +448,6 @@ public class State implements Stackable{
 	}
 	
 	public boolean isCompliant(Predicate predicate) {
-		// TODO: compliant with partially instantiated predicates? can this happen?
 		String id1, id2;
 		id1=predicate.getId1();
 		switch (predicate.getPredicate()){
@@ -584,6 +559,11 @@ public class State implements Stackable{
 	}
 	///////////////////////////////////////////////////////////////////
 	
+	public List<PredicateGroup> getWagonsPositions(){
+		return railways.getWagonsPosition();
+	}
+	
+	////////////////////////////////////////////////////////////////////
 	public PredicateGroup getPredicateGroup() {
 		return predicateGroup;
 	}

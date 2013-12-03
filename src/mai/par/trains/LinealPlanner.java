@@ -1,5 +1,7 @@
 package mai.par.trains;
 
+import java.util.List;
+
 import mai.par.trains.operators.Operator;
 import mai.par.trains.predicates.Predicate;
 import mai.par.trains.predicates.PredicateFactory;
@@ -23,7 +25,6 @@ public final class LinealPlanner {
 	public static void createPlanLoad(WagonMap wagonsToLoad){
 		PredicateGroup pg=PredicateFactory.createPredicatesLoadUnload(wagonsToLoad);
 		goalStack.push(pg); // "final state"
-		System.out.println(goalStack);
 	}
 	
 	public static void createPlanMove(){
@@ -31,6 +32,10 @@ public final class LinealPlanner {
 		//(even the ones that are satisfied now)
 		// in order: longer first
 		// note that the wagons are not in the initial state order
+		List<PredicateGroup> lPG=finalState.getWagonsPositions();
+		for (PredicateGroup pg: lPG)
+			goalStack.push(pg);
+	
 	}
 	
 	public static void createPlan() {
@@ -41,43 +46,30 @@ public final class LinealPlanner {
 		WagonMap onStationOnInitialState=initialState.getWagonsOnStation(wagonsLU);
 		wagonsLU.difference(onStationOnFinalState);
 		wagonsLU.difference(onStationOnInitialState);
-						
-		// wagons to load / unload at initial state
-		if (!onStationOnInitialState.isEmpty()){
-			createPlanLoad(onStationOnInitialState);
-			solve();
-			System.out.println(goalStack);
+		
+		goalStack.push(finalState);
+		
+		if (!onStationOnFinalState.isEmpty()){
+			createPlanLoad(onStationOnFinalState);	
 		}
+		
+		createPlanMove(); // we will assume this is always required
 		
 		// wagons to load / unload not at initial not final state
 		if (!wagonsLU.isEmpty()){
 			createPlanLoad(wagonsLU); // TODO: consider sort the wagons
-			solve();
-			System.out.println(goalStack);
 		}
 		
-		createPlanMove(); // we will assume this is always required
-		//solve();
-		
-		if (!onStationOnFinalState.isEmpty()){
-			createPlanLoad(onStationOnFinalState);
-			//solve();
+		// wagons to load / unload at initial state
+		if (!onStationOnInitialState.isEmpty()){
+			createPlanLoad(onStationOnInitialState);
 		}
 		
-		// Compare target and initial state
-		// Prioritize differences: detect wagons out of order (by railway)
-		//     first load/unload
-		//			some heuristic to decide order??
-		//     sort wagons by railway 
-		//	   		some heuristic to decide railway order???
-		// TODO: Test with more railways
-		
-		goalStack.push(finalState);
-		goalStack.push(finalState.getPredicateGroup());
+		solve();
 		
 		// solution
-		//System.out.println(goalStack);
-		//System.out.println(plan);
+		System.out.println(goalStack);
+		System.out.println(plan);
 	}
 	
 	protected static void solve(){
@@ -88,17 +80,24 @@ public final class LinealPlanner {
 		Predicate predicate;
 		State state;
 		PredicateGroup predicateGroup;
+		boolean changePlan;
+		boolean changeGoalStack;
+		boolean verbose=false;
 		
 		while ( !goalStack.empty() ){
+			changePlan = false;
+			changeGoalStack= false;
 			stackable=goalStack.pop();
 			stackableTypes=StackableTypes.getStackableType(stackable);
 			switch(stackableTypes){
 			case Operator:
 				operator=(Operator)stackable;
-				System.out.println("Operator:"+operator);
+				if (verbose) 
+					System.out.println("Operator:"+operator);
 				if (currentState.canApply(operator)){
 					plan.add(operator); // the operator is added to the plan
 					currentState=currentState.apply(operator); // the current state is updated
+					changePlan=true;
 				} else {
 					System.out.println("ERROR: OPERATOR NOT APPLICABLE");
 				}
@@ -110,32 +109,45 @@ public final class LinealPlanner {
 					goalStack.push(predicate); // push back
 					operator=currentState.accomplish(predicate);
 					goalStack.push(operator);
-					System.out.println("Operator selected:"+operator);
+					if (verbose)
+						System.out.println("Operator selected:"+operator);
+					changeGoalStack=true;
 				}
-				System.out.println("Predicate:"+predicate);
+				if (verbose)
+					System.out.println("Predicate:"+predicate);
 				break;
 			case PredicateGroup:  // from an operator ( or state ?)
 				predicateGroup=(PredicateGroup)stackable;
-				System.out.println("PredicateGroup:"+predicateGroup);
+				if (verbose)
+					System.out.println("PredicateGroup:"+predicateGroup);
 				if (!currentState.isCompliant(predicateGroup)) {
 					// if not: ERROR --> our implementation should guarantee when we get here we satisfy all predicates
 					System.out.println("ERROR:Predicate Group NOT compliant");
-				}	
+				} else {
+					changeGoalStack=true;
+				}
+				
 				break;
 			case State:
 				state=(State)stackable;
-				if (currentState.isCompliant(state))
+				if (currentState.isCompliant(state)){
 					currentState=state;
+					changeGoalStack=true;
+				}
 				else {
 					System.out.println("ERROR:STATE NOT compliant");
 				}
-				// TODO: we are done if it is the final state
-				// what other state is stacked? I think none.
 				break;
 			}
-			//System.out.println(goalStack);
-			System.out.println(plan.size()+"-->"+plan);
-			System.out.println(currentState);
+			
+			if (changeGoalStack){
+				if (verbose)
+					System.out.println(goalStack);
+			}
+			if (changePlan){
+				System.out.println(plan.size()+"->"+plan);
+				System.out.println(currentState);
+			}
 		}
 	}
 	
