@@ -133,8 +133,8 @@ public final class LinealPlanner {
 				// what other state is stacked? I think none.
 				break;
 			}
-			System.out.println(goalStack);
-			System.out.println(plan);
+			//System.out.println(goalStack);
+			System.out.println(plan.size()+"-->"+plan);
 			System.out.println(currentState);
 		}
 	}

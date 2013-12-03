@@ -26,7 +26,7 @@ public class State implements Stackable{
 	
 	// operator
 	//private Operator operator=null;	// the operator that brough to this state
-									// null for initial and final state
+										// null for initial and final state
 	
 	// TODO: add a tabu operator to make sure there are no loops (at distance 2: do-undo)
 	//       also the operator will indicate that if a drop operator has been applied
@@ -225,17 +225,17 @@ public class State implements Stackable{
 		PredicateGroup precondPredGroup=operator.getPrecondPredicate();
 		for (Predicate pred: precondPredGroup){
 			can &= isCompliant(pred);
-			//System.out.println(can+" "+pred);
+			//System.out.println(can+" "+pred); 
 		}
 		return can;
 	}
 	
 	public State apply(Operator operator) {
 		State state=null;
-		if (canApply(operator)) {
+		if (canApply(operator)) {  // TODO: unnecessary but safe
 			state=new State(this,operator);
 		}
-		System.out.println(freeWagonsSet);
+		//System.out.println(freeWagonsSet);
 		return state; 
 	}
 
@@ -247,7 +247,7 @@ public class State implements Stackable{
 			if (p!=null){
 				predicateGroup.remove(p);  // remove from the DEL list
 			} else
-				System.err.println("ERROR: predicate not found");
+				System.err.println("ERROR: predicate not found:"+pred);
 		}
 	}
 
@@ -571,10 +571,11 @@ public class State implements Stackable{
 			int railwayPosition=posMap.get(id1);
 			Stack<Wagon> railway=railways.get(railwayNumber);
 			Wagon wagon=railway.pop(); // remove
+			//System.out.println("Removed from Station:"+wagon.getId()+":"+onStationSet);
 			// the wagon is not removed from the Free Set
 			if (railwayPosition==0) {
 				usedRailways--;			// if last wagon, release one railway
-				onStationSet.remove(wagon); // not on station any more
+				onStationSet.remove(id1); // not on station any more
 			} else {
 				wagon=railway.peek();
 				freeWagonsSet.put(wagon.getId(),wagon); // if not last wagon, set free
@@ -621,7 +622,7 @@ public class State implements Stackable{
 		{
 			sb.append("Loc[]");
 		}
-		return sb.toString()+getPG();
+		return sb.toString();//+onStationSet;//+getPG();
 	}
 	
 	public void drawState() {
