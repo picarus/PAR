@@ -23,8 +23,7 @@ public final class LinealPlanner {
 	public static void createPlanLoad(WagonMap wagonsToLoad){
 		PredicateGroup pg=PredicateFactory.createPredicatesLoadUnload(wagonsToLoad);
 		goalStack.push(pg); // "final state"
-		goalStack.pushList(pg);
-		System.out.println(goalStack.toString());
+		System.out.println(goalStack);
 	}
 	
 	public static void createPlanMove(){
@@ -47,20 +46,22 @@ public final class LinealPlanner {
 		if (!onStationOnInitialState.isEmpty()){
 			createPlanLoad(onStationOnInitialState);
 			solve();
+			System.out.println(goalStack);
 		}
 		
 		// wagons to load / unload not at initial not final state
 		if (!wagonsLU.isEmpty()){
 			createPlanLoad(wagonsLU); // TODO: consider sort the wagons
 			solve();
+			System.out.println(goalStack);
 		}
 		
 		createPlanMove(); // we will assume this is always required
+		//solve();
 		
-		solve();
 		if (!onStationOnFinalState.isEmpty()){
 			createPlanLoad(onStationOnFinalState);
-			solve();
+			//solve();
 		}
 		
 		// Compare target and initial state
@@ -75,12 +76,12 @@ public final class LinealPlanner {
 		goalStack.push(finalState.getPredicateGroup());
 		
 		// solution
-		System.out.println(goalStack.toString());
-		System.out.println(plan.toString());
+		//System.out.println(goalStack);
+		//System.out.println(plan);
 	}
 	
 	protected static void solve(){
-		boolean end=false;
+		
 		Stackable stackable;
 		StackableTypes stackableTypes;
 		Operator operator;
@@ -88,41 +89,53 @@ public final class LinealPlanner {
 		State state;
 		PredicateGroup predicateGroup;
 		
-		while (!goalStack.empty() && !end){
+		while ( !goalStack.empty() ){
 			stackable=goalStack.pop();
 			stackableTypes=StackableTypes.getStackableType(stackable);
 			switch(stackableTypes){
 			case Operator:
 				operator=(Operator)stackable;
-				plan.add(operator); // the operator is added to the plan
-				currentState=currentState.apply(operator); // the current state is updated
+				System.out.println("Operator:"+operator);
+				if (currentState.canApply(operator)){
+					plan.add(operator); // the operator is added to the plan
+					currentState=currentState.apply(operator); // the current state is updated
+				} else {
+					System.out.println("ERROR: OPERATOR NOT APPLICABLE");
+				}
 				break;
 			case Predicate:
 				predicate=(Predicate)stackable;
 				if (!currentState.isCompliant(predicate)){
-					// look for an operator to satisfy
+					// look for an operator to satisfy the predicate
+					goalStack.push(predicate); // push back
 					operator=currentState.accomplish(predicate);
-					goalStack.push(operator.getPrecondPredicate());
 					goalStack.push(operator);
+					System.out.println("Operator selected:"+operator);
 				}
+				System.out.println("Predicate:"+predicate);
 				break;
 			case PredicateGroup:  // from an operator ( or state ?)
 				predicateGroup=(PredicateGroup)stackable;
+				System.out.println("PredicateGroup:"+predicateGroup);
 				if (!currentState.isCompliant(predicateGroup)) {
 					// if not: ERROR --> our implementation should guarantee when we get here we satisfy all predicates
 					System.out.println("ERROR:Predicate Group NOT compliant");
-					System.out.println(predicateGroup);
-					System.out.println(currentState);
 				}	
 				break;
 			case State:
 				state=(State)stackable;
 				if (currentState.isCompliant(state))
 					currentState=state;
+				else {
+					System.out.println("ERROR:STATE NOT compliant");
+				}
 				// TODO: we are done if it is the final state
 				// what other state is stacked? I think none.
 				break;
-			}	
+			}
+			System.out.println(goalStack);
+			System.out.println(plan);
+			System.out.println(currentState);
 		}
 	}
 	

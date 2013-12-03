@@ -79,27 +79,25 @@ public class State implements Stackable{
 	}
 	
 	public State(State state){
-		this(state,null);
-	}
-	
-	public State(State state, Operator operator){
-		this(state.getWagons(),false);
+		this(state.getWagons(),false); // TODO: some work is replicate as this calls to init
 		predicateGroup=new PredicateGroup(state.getPredicateGroup());
 		freeLocomotive=state.isFreeLocomotive();
 		indexMap=new HashMap<String, Integer>(state.indexMap);
 		posMap=new HashMap<String, Integer>(state.posMap);
 		towed=state.towed;
 		usedRailways=state.usedRailways;
-		
 		// the structures are used including the wagons created for this state 
 		// to avoid strange propagation issues if something is modified in other state
 		freeWagonsSet=new WagonMap(state.freeWagonsSet, wagons);
 		onStationSet=new WagonMap(state.onStationSet, wagons);
 		copyRailways(state.railways, wagons);
+	}
+	
+	public State(State state, Operator operator){
+		this(state);
 		//this.operator=operator;
-		state.applyADD(operator);
-		state.applyDEL(operator);
-		
+		applyADD(operator);
+		applyDEL(operator);
 	}
 	
 	private void copyRailways(List<Stack<Wagon>> original, WagonMap elements){
@@ -237,6 +235,7 @@ public class State implements Stackable{
 		if (canApply(operator)) {
 			state=new State(this,operator);
 		}
+		System.out.println(freeWagonsSet);
 		return state; 
 	}
 
@@ -348,24 +347,22 @@ public class State implements Stackable{
 				// TODO: we must make sure that we don't undo a railway that has already been configured
 				boolean freeRW=isRailwayFree();
 				boolean free1=isWagonFree(id);
-				String id2=predicate.getId2();
+				
 				String idOrigin,idDest;
 				if (!free1 || !freeRW){
 					int originRailway,destRailway;
-					if (freeRW) 
+					if (freeRW) {
 						// One railway is empty. 
 						// We cannot move there what is on top of the wagon we are trying to move to OnStation
 						destRailway=getEmptyRailway();
-					else
+						// we need to release what is on top of the block we want to move
+						idOrigin=getFirstWagonInRailway(id);
+					} else {
 						// No railway empty
 						// We need to empty the shortest one
 						destRailway=getEmptiestRailway();
-					if(!freeRW)
-						// the railway is not empty, first we empty
-						idOrigin=getFirstWagonInRailway(id2);
-					else
-						// we need to release what is on top of the block we want to move
-						idOrigin=getFirstWagonInRailway(id);
+						idOrigin=getFirstWagonInRailway(destRailway);
+					}						
 					originRailway=getRailwayForWagon(id); // we get where the block to move OnStation is
 					idDest=getFirstWagonInRailway(getNonDisturbingRailwayNonEmpty(originRailway, destRailway));	
 					operator=new OperatorAttach(idOrigin,idDest);
@@ -513,15 +510,15 @@ public class State implements Stackable{
 	}
 	
 	public WagonMap getWagons() {
-		return this.wagons;
+		return wagons;
 	}
 
 	public void unloadWagon(String id1) {
-		this.wagons.get(id1).unload();
+		wagons.get(id1).unload();
 	}
 	
 	public void loadWagon(String id1) {
-		this.wagons.get(id1).load();
+		wagons.get(id1).load();
 	}
 	
 	///////////////////////////////////////////////////////////////////////////
@@ -555,6 +552,7 @@ public class State implements Stackable{
 		Wagon wagon = wagons.get(id1);
 		wagon.setPredecessor(id2);
 		int railwayPos=indexMap.get(id2);
+		freeWagonsSet.remove(id2);
 		indexMap.put(id1, railwayPos );
 		posMap.put(id1, posMap.get(id2)+1);
 		railways.get(railwayPos).add(wagon);
@@ -576,6 +574,7 @@ public class State implements Stackable{
 			// the wagon is not removed from the Free Set
 			if (railwayPosition==0) {
 				usedRailways--;			// if last wagon, release one railway
+				onStationSet.remove(wagon); // not on station any more
 			} else {
 				wagon=railway.peek();
 				freeWagonsSet.put(wagon.getId(),wagon); // if not last wagon, set free
@@ -622,11 +621,14 @@ public class State implements Stackable{
 		{
 			sb.append("Loc[]");
 		}
-		return sb.toString();
+		return sb.toString()+getPG();
 	}
 	
-	public void drawState() 
-	{
+	public void drawState() {
 		System.out.println(toString()+"\n");
+	}
+	
+	public String getPG(){
+		return predicateGroup.toString();
 	}
 }

@@ -16,11 +16,6 @@ public abstract class Operator implements Stackable {
 	PredicateGroup addPredicate=new PredicateGroup();
 	PredicateGroup delPredicate=new PredicateGroup();
 	
-	Operator(TrainOperator operator, OperatorType type){
-		this.operator=operator;
-		this.type=type;
-	}
-	
 	Operator(TrainOperator operator, OperatorType type, String id1){
 		this.operator=operator;
 		this.type=type;
@@ -71,7 +66,7 @@ public abstract class Operator implements Stackable {
 	}
 	
 	public String toString(){
-		return operator + "("+id1+(id2.equals("")?"":","+id2)+")";
+		return operator + "("+id1+(id2==null?"":","+id2)+")";
 	}
 	
 }
