@@ -1,9 +1,10 @@
 package mai.par.trains.predicates;
 
+import mai.par.parse.TrainParseConstants;
 import mai.par.trains.Stackable;
 
-public class Predicate implements Stackable {
-	
+public class Predicate implements Stackable, Comparable<Predicate>
+{	
 	TrainPredicate predicate;
 	String id1;
 	String id2;
@@ -76,5 +77,15 @@ public class Predicate implements Stackable {
 			return predicate.toString()+"("+id1+")";
 		else
 			return predicate.toString()+"("+id1+","+id2+")";
+	}
+
+	@Override
+	public int compareTo(Predicate o) {
+		if(this.predicate == TrainPredicate.PR_INFRONTOF && o.predicate == TrainPredicate.PR_ONSTATION)
+			return -1;
+		else if(this.predicate == TrainPredicate.PR_ONSTATION && o.predicate == TrainPredicate.PR_INFRONTOF)
+			return 1;
+		else
+			return 0;
 	}
 }

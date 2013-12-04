@@ -312,7 +312,10 @@ public class State implements Stackable{
 						idOrigin=getFirstWagonInRailway(id2);
 					else  // not free1
 						idOrigin=getFirstWagonInRailway(id);
-					operator=new OperatorAttach(idOrigin, idDest);
+					if(idDest != null)
+						operator=new OperatorAttach(idOrigin, idDest);	
+					else
+						operator=new OperatorPark(idOrigin);
 				} else  // both are free
 					operator = new OperatorAttach(id,id2);
 			}
@@ -421,8 +424,12 @@ public class State implements Stackable{
 		return min;
 	}
 	
-	public String getFirstWagonInRailway(int i){
-		return railways.get(i).peek().getId();
+	public String getFirstWagonInRailway(int i)
+	{
+		if(railways.get(i).size() > 0)
+			return railways.get(i).peek().getId();
+		else
+			return null;
 	}
 	
 	private String getFirstWagonInRailway(String id){

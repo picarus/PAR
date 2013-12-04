@@ -1,5 +1,8 @@
 package mai.par.trains;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import mai.par.trains.operators.Operator;
@@ -24,7 +27,8 @@ public final class LinealPlanner {
 	
 	public static void createPlanLoad(WagonMap wagonsToLoad)
 	{
-		sortLUWagons(wagonsToLoad);
+		//sortLUWagons(wagonsToLoad);
+		//TODO:Consider sorting 
 		PredicateGroup pg=PredicateFactory.createPredicatesLoadUnload(wagonsToLoad);
 		goalStack.push(pg); // "final state"
 	}
@@ -40,19 +44,31 @@ public final class LinealPlanner {
 		//(even the ones that are satisfied now)
 		// in order: longer first
 		// note that the wagons are not in the initial state order
-		sortMoveWagons();
 		List<PredicateGroup> lPG=finalState.getWagonsPositions();
+		//	sortMoveWagons(lPG);
 		for (PredicateGroup pg: lPG)
 			goalStack.push(pg);
 	
 	}
 	
-	private static void sortMoveWagons() 
+	private static List<PredicateGroup> sortMoveWagons(List<PredicateGroup> lPG)
 	{
-		// TODO They should be sorted like we agreed to avoid rearranging
+		List<PredicateGroup> preds = new ArrayList<PredicateGroup>();
+		Railways clone = new Railways(currentState.railways, currentState.wagons);
+		Collections.sort(clone);
+		Collections.reverse(clone);
+		for(Railway rail :clone)
+		{
+			for(PredicateGroup pg : lPG)
+			{
+				Collections.sort(pg);
+			}
+		}
+		return preds;
 	}
 
-	public static void createPlan() {
+	public static void createPlan() 
+	{
 		
 		// define intermediate state objective
 		WagonMap wagonsLU=finalState.getWagonsRequiringLoadUnload(initialState);
@@ -97,7 +113,7 @@ public final class LinealPlanner {
 		PredicateGroup predicateGroup;
 		boolean changePlan;
 		boolean changeGoalStack;
-		boolean verbose=true;
+		boolean verbose=false;
 		
 		while ( !goalStack.empty() ){
 			changePlan = false;
@@ -119,11 +135,14 @@ public final class LinealPlanner {
 				break;
 			case Predicate:
 				predicate=(Predicate)stackable;
+				if (verbose)
+					System.out.println("Predicate:"+predicate);
 				if (!currentState.isCompliant(predicate)){
 					// look for an operator to satisfy the predicate
 					operator=currentState.accomplish(predicate);
 					if(operator != null)
 					{
+						System.out.println("Current Objective: " + predicate);
 						goalStack.push(predicate); // push back
 						goalStack.push(operator);
 						if (verbose)
@@ -131,8 +150,6 @@ public final class LinealPlanner {
 						changeGoalStack=true;	
 					}
 				}
-				if (verbose)
-					System.out.println("Predicate:"+predicate);
 				break;
 			case PredicateGroup:  // from an operator ( or state ?)
 				predicateGroup=(PredicateGroup)stackable;

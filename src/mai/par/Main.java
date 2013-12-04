@@ -15,7 +15,7 @@ import mai.par.trains.StateFactory;
 
 public class Main {
 
-	static String file = "./problem2.txt";
+	static String file = "./problem3.txt";
 	 
 	public static void main(String[] args) 
 	{
