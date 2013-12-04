@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 
 import mai.par.trains.operators.Operator;
 import mai.par.trains.operators.OperatorAttach;
@@ -69,7 +68,7 @@ public class State implements Stackable{
 	}
 	
 	public State(State state){
-		this(state.getWagons(),false); // TODO: some work is duplicated as this calls to init
+		this(state.getWagons(),false); // some work is duplicated as this calls to init
 		predicateGroup=new PredicateGroup(state.getPredicateGroup());
 		freeLocomotive=state.isFreeLocomotive();
 		indexMap=new HashMap<String, Integer>(state.indexMap);
@@ -305,6 +304,7 @@ public class State implements Stackable{
 				if (!free1 || !free2) {
 					int destRailway=getNonDisturbingRailway(id, id2);
 					String idDest=getFirstWagonInRailway(destRailway);
+					//idDest can be null because the railway may be empty
 					String idOrigin;
 					if (!free2)
 						idOrigin=getFirstWagonInRailway(id2);
@@ -617,14 +617,11 @@ public class State implements Stackable{
 		{
 			sb.append("Loc[]");
 		}
-		return sb.toString();//+onStationSet;//+getPG();
+		return sb.toString();//+onStationSet;
 	}
 	
 	public void drawState() {
 		System.out.println(toString()+"\n");
 	}
 	
-	public String getPG(){
-		return predicateGroup.toString();
-	}
 }

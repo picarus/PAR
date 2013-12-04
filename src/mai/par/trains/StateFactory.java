@@ -5,7 +5,7 @@ import mai.par.trains.predicates.PredicateGroup;
 
 public class StateFactory {
 
-	static private int MAX_RAILWAYS=3;	// TODO: allow have MAX_RAILWAYS > 3
+	static private int MAX_RAILWAYS=3;	// TODO: allow have MAX_RAILWAYS > 3 (as parameter?)
 	public static State initialState=null;
 	public static State finalState=null;
 	State currentState=null;
