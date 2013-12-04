@@ -19,6 +19,7 @@ import mai.par.trains.predicates.PredicateGroup;
 import mai.par.trains.predicates.TrainPredicate;
 
 public class State implements Stackable{
+		
 	
 	// predicates that apply
 	private PredicateGroup predicateGroup;
@@ -84,12 +85,9 @@ public class State implements Stackable{
 	
 	public State(State state, Operator operator){
 		this(state);
-		//this.operator=operator;
 		applyADD(operator);
 		applyDEL(operator);
 	}
-	
-	
 	
 	protected void init(){
 		freeWagonsSet = new WagonMap();
