@@ -1,7 +1,6 @@
 package mai.par.trains;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,12 +24,12 @@ public final class LinealPlanner {
 		LinealPlanner.currentState=initialState;
 	}
 	
-	public static void createPlanLoad(WagonMap wagonsToLoad)
+	public static void createPlanLoad(WagonMap wagonsToLoad, PredicateGroup pg)
 	{
 		//sortLUWagons(wagonsToLoad);
 		//TODO:Consider sorting 
-		PredicateGroup pg=PredicateFactory.createPredicatesLoadUnload(wagonsToLoad);
-		goalStack.push(pg); // "final state"
+		PredicateGroup pgNew=PredicateFactory.createPredicatesLoadUnload(wagonsToLoad);
+		pg.addAll(pgNew);
 	}
 	
 	private static void sortLUWagons(WagonMap wagonsToLoad) 
@@ -39,15 +38,15 @@ public final class LinealPlanner {
 		
 	}
 
-	public static void createPlanMove(){
+	public static void createPlanMove(PredicateGroup pg){
 		// push all railways configuration 1 by 1 starting from the station 
 		//(even the ones that are satisfied now)
 		// in order: longer first
 		// note that the wagons are not in the initial state order
 		List<PredicateGroup> lPG=finalState.getWagonsPositions();
 		//	sortMoveWagons(lPG);
-		for (PredicateGroup pg: lPG)
-			goalStack.push(pg);
+		for (PredicateGroup pgNew: lPG)
+			pg.addAll(pgNew);
 	
 	}
 	
@@ -78,24 +77,28 @@ public final class LinealPlanner {
 		wagonsLU.difference(onStationOnInitialState);
 		
 		goalStack.push(finalState);
+		PredicateGroup pg=new PredicateGroup();
 		
 		if (!onStationOnFinalState.isEmpty()){
-			createPlanLoad(onStationOnFinalState);	
+			createPlanLoad(onStationOnFinalState,pg);	
 		}
 		
-		createPlanMove(); // we will assume this is always required
+		createPlanMove(pg); // we will assume this is always required
 		
 		// wagons to load / unload not at initial not final state
 		if (!wagonsLU.isEmpty())
 		{
-			createPlanLoad(wagonsLU);
+			createPlanLoad(wagonsLU,pg);
 		}
 		
 		// wagons to load / unload at initial state
 		if (!onStationOnInitialState.isEmpty()){
-			createPlanLoad(onStationOnInitialState);
+			createPlanLoad(onStationOnInitialState,pg);
 		}
 		
+		PredicateGroup cpg=pg.removeDuplicates(finalState);
+		goalStack.push(cpg);
+		goalStack.push(pg);
 		System.out.println(goalStack);
 		
 		solve();
@@ -104,7 +107,7 @@ public final class LinealPlanner {
 		System.out.println(goalStack);
 		System.out.println(plan);
 	}
-	
+
 	protected static void solve(){
 		
 		Stackable stackable;

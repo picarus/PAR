@@ -22,7 +22,7 @@ public class GoalStack extends Stack<Stackable>{
 	
 	public void push(State state){
 		super.push(state);
-		push(state.getPredicateGroup());
+		//push(state.getPredicateGroup());
 	}
 	
 	@Override
