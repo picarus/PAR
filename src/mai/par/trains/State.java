@@ -1,7 +1,6 @@
 package mai.par.trains;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.ArrayList;import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +34,6 @@ public class State implements Stackable{
 	WagonMap onStationSet;			// the wagons parked in the station 
 	Map<String, Integer> indexMap;	// in what railway is every wagon, railways[index]
 	Map<String, Integer> posMap;	// in what position is every wagon
-	
 	
 	
 	public State()
@@ -320,7 +318,10 @@ public class State implements Stackable{
 			}
 			break;
 		case PR_ONSTATION:{
-				// TODO: we must make sure that we don't undo a railway that has already been configured
+				// TODO: Solved, however did not deleted until I'm sure it doesnt apply anymore: 
+				//	we must make sure that we don't undo a railway that has already been configured
+				//	TODO: It would be even better if you could check that is compliant and not only done.
+				// TODO: Check if by sorting is solved.
 				boolean freeRW=isRailwayFree();
 				boolean free1=isWagonFree(id);
 				
@@ -336,9 +337,9 @@ public class State implements Stackable{
 					} else {
 						// No railway empty
 						// We need to empty the shortest one
-						destRailway=getEmptiestRailway();
+						destRailway=getBestRailway();
 						idOrigin=getFirstWagonInRailway(destRailway);
-					}						
+					}
 					originRailway=getRailwayForWagon(id); // we get where the block to move OnStation is
 					idDest=getFirstWagonInRailway(getNonDisturbingRailwayNonEmpty(originRailway, destRailway));	
 					operator=new OperatorAttach(idOrigin,idDest);
@@ -399,14 +400,21 @@ public class State implements Stackable{
 		return operator;
 	}
 	
-	private int getEmptiestRailway(){
+	private int getBestRailway()
+	{
+		return getEmptiestNotDoneRailway();
+	}
+	
+	private int getEmptiestNotDoneRailway()
+	{
 		int min=0;
-		int len;
-		int minlen=railways.get(0).size();
-		for (int i=1;i<railways.size();i++){
-			len=railways.get(i).size();
-			if (len<minlen){
-				minlen=len;
+		int minlen= 100000;
+		for (int i=0;i<railways.size();i++)
+		{
+			Railway curRail = railways.get(i);
+			if (curRail.size()<minlen && !curRail.done)
+			{
+				minlen=curRail.size();
 				min=i;
 			}
 		}
@@ -544,7 +552,7 @@ public class State implements Stackable{
 		Integer railwayNumber=indexMap.get(id1);
 		if (railwayNumber!=null){ // the wagon is on the system
 			int railwayPosition=posMap.get(id1);
-			Stack<Wagon> railway=railways.get(railwayNumber);
+			Railway railway=railways.get(railwayNumber);
 			Wagon wagon=railway.pop(); // remove
 			//System.out.println("Removed from Station:"+wagon.getId()+":"+onStationSet);
 			// the wagon is not removed from the Free Set
@@ -574,7 +582,7 @@ public class State implements Stackable{
 
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
-		for (Stack<Wagon> railway: railways) {
+		for (Railway railway: railways) {
 			sb.append("|");
 			for (Wagon w : railway)
 			{

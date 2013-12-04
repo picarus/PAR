@@ -22,22 +22,36 @@ public final class LinealPlanner {
 		LinealPlanner.currentState=initialState;
 	}
 	
-	public static void createPlanLoad(WagonMap wagonsToLoad){
+	public static void createPlanLoad(WagonMap wagonsToLoad)
+	{
+		sortLUWagons(wagonsToLoad);
 		PredicateGroup pg=PredicateFactory.createPredicatesLoadUnload(wagonsToLoad);
 		goalStack.push(pg); // "final state"
 	}
 	
+	private static void sortLUWagons(WagonMap wagonsToLoad) 
+	{
+		// TODO They should be sorted like we agreed to avoid rearranging
+		
+	}
+
 	public static void createPlanMove(){
 		// push all railways configuration 1 by 1 starting from the station 
 		//(even the ones that are satisfied now)
 		// in order: longer first
 		// note that the wagons are not in the initial state order
+		sortMoveWagons();
 		List<PredicateGroup> lPG=finalState.getWagonsPositions();
 		for (PredicateGroup pg: lPG)
 			goalStack.push(pg);
 	
 	}
 	
+	private static void sortMoveWagons() 
+	{
+		// TODO They should be sorted like we agreed to avoid rearranging
+	}
+
 	public static void createPlan() {
 		
 		// define intermediate state objective
@@ -56,8 +70,9 @@ public final class LinealPlanner {
 		createPlanMove(); // we will assume this is always required
 		
 		// wagons to load / unload not at initial not final state
-		if (!wagonsLU.isEmpty()){
-			createPlanLoad(wagonsLU); // TODO: consider sort the wagons
+		if (!wagonsLU.isEmpty())
+		{
+			createPlanLoad(wagonsLU);
 		}
 		
 		// wagons to load / unload at initial state
@@ -82,7 +97,7 @@ public final class LinealPlanner {
 		PredicateGroup predicateGroup;
 		boolean changePlan;
 		boolean changeGoalStack;
-		boolean verbose=false;
+		boolean verbose=true;
 		
 		while ( !goalStack.empty() ){
 			changePlan = false;
@@ -106,12 +121,15 @@ public final class LinealPlanner {
 				predicate=(Predicate)stackable;
 				if (!currentState.isCompliant(predicate)){
 					// look for an operator to satisfy the predicate
-					goalStack.push(predicate); // push back
 					operator=currentState.accomplish(predicate);
-					goalStack.push(operator);
-					if (verbose)
-						System.out.println("Operator selected:"+operator);
-					changeGoalStack=true;
+					if(operator != null)
+					{
+						goalStack.push(predicate); // push back
+						goalStack.push(operator);
+						if (verbose)
+							System.out.println("Operator selected:"+operator);
+						changeGoalStack=true;	
+					}
 				}
 				if (verbose)
 					System.out.println("Predicate:"+predicate);

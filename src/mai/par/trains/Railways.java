@@ -12,19 +12,21 @@ import mai.par.trains.predicates.PredicateFactory;
 import mai.par.trains.predicates.PredicateGroup;
 
 @SuppressWarnings("serial")
-public class Railways extends ArrayList<Stack<Wagon>> {
+public class Railways extends ArrayList<Railway> {
+	
 	public Railways(){
 		super();
 		for(int i = 0; i < StateFactory.getMAX_RAILWAYS(); i++){
-			add(new Stack<Wagon>());
+			add(new Railway());
 		}
 	}
 	
 	public Railways(Railways original, WagonMap elements){
-		Stack<Wagon> newStack;
+		Railway newStack;
 		String id;
-		for (Stack<Wagon> stack: original){
-			newStack=new Stack<Wagon>();
+		for (Railway stack: original)
+		{
+			newStack=new Railway(stack.done);
 			for (Wagon w: stack){
 				id=w.getId();
 				newStack.push(elements.get(id));
@@ -40,7 +42,7 @@ public class Railways extends ArrayList<Stack<Wagon>> {
 		Wagon wagon;
 		String idWagon="",idWagon2;
 		Iterator<Wagon> itWagon;
-		for (Stack<Wagon> stackWagon :this){
+		for (Railway stackWagon :this){
 			pg = new PredicateGroup();
 			itWagon=stackWagon.iterator();
 			if (itWagon.hasNext()){
