@@ -12,13 +12,19 @@ public class TrainParser {
 	
 	public static void tokenize(String input)
 	{
+		int idxMaxRailways=input.indexOf(TrainParseConstants.ST_MAX_RAILWAYS);
 		int idxWagons=input.indexOf(TrainParseConstants.ST_WAGONS);
 		int idxInitialState=input.indexOf(TrainParseConstants.ST_INITIALSTATE);
 		int idxFinalState=input.indexOf(TrainParseConstants.ST_FINALSTATE);
-		
+		if(idxMaxRailways >= 0)
+		{
+			String strMaxRailways=input.substring(idxMaxRailways+TrainParseConstants.ST_MAX_RAILWAYS.length(), idxWagons-1);
+			StateFactory.setMAX_RAILWAYS(readMaxRailways(strMaxRailways));
+		}
 		String strWagons=input.substring(idxWagons+TrainParseConstants.ST_WAGONS.length(), idxInitialState-1);
 		String strInitialState=input.substring(idxInitialState+TrainParseConstants.ST_INITIALSTATE.length(), idxFinalState-1);
 		String strFinalState=input.substring(idxFinalState+TrainParseConstants.ST_FINALSTATE.length());
+		
 		
 		StateFactory.wagons = readStation(strWagons);
 		StateFactory.initialState = StateFactory.createState(readState(strInitialState), true);
@@ -27,7 +33,13 @@ public class TrainParser {
 		System.out.println(StateFactory.finalState.getWagons());
 	}
 	
-	protected static WagonMap readStation(String strWagons){
+	private static int readMaxRailways(String strMaxRailways) {
+		System.out.println(strMaxRailways);
+		return Integer.valueOf(strMaxRailways);
+	}
+
+	protected static WagonMap readStation(String strWagons)
+	{
 		System.out.println(strWagons);
 		StringTokenizer strTkn=new StringTokenizer(strWagons, ",");
 		String str;

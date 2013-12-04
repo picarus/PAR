@@ -96,6 +96,8 @@ public final class LinealPlanner {
 			createPlanLoad(onStationOnInitialState);
 		}
 		
+		System.out.println(goalStack);
+		
 		solve();
 		
 		// solution
@@ -113,7 +115,7 @@ public final class LinealPlanner {
 		PredicateGroup predicateGroup;
 		boolean changePlan;
 		boolean changeGoalStack;
-		boolean verbose=false;
+		boolean verbose=true;
 		
 		while ( !goalStack.empty() ){
 			changePlan = false;

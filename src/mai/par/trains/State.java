@@ -378,11 +378,11 @@ public class State implements Stackable{
 		int railwayNr;
 		Set<Integer> pos=new HashSet<Integer>(3);
 		for (int i=0;i<StateFactory.getMAX_RAILWAYS();i++){
-			// TODO: do we need to guarantee that the railway is not empty?
 			pos.add(i);
 		}
 		pos.remove(pos1);
 		pos.remove(pos2);
+		//
 		// take one element, because the minimum nr of railways is 3, we know there will be one
 		railwayNr=pos.iterator().next();
 		return railwayNr;
@@ -405,12 +405,14 @@ public class State implements Stackable{
 	
 	private int getBestRailway()
 	{
+		//TODO: Get first non-match, the one with the first letter, 
+		//where load/unload/onstation/infrontof
 		return getEmptiestNotDoneRailway();
 	}
 	
 	private int getEmptiestNotDoneRailway()
 	{
-		int min=0;
+		int min=-1;
 		int minlen= 100000;
 		for (int i=0;i<railways.size();i++)
 		{

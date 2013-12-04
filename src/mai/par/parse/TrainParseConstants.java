@@ -25,6 +25,7 @@ public class TrainParseConstants {
 	
 	// STATE HEADERS
 	static final String ST_WAGONS="Wagons=";
+	static final String ST_MAX_RAILWAYS="Max_railways=";
 	static final String ST_INITIALSTATE="Initial_state=";
 	static final String ST_FINALSTATE="Goal_state=";
 	

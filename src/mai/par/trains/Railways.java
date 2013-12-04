@@ -42,7 +42,6 @@ public class Railways extends ArrayList<Railway> {
 		Wagon wagon;
 		String idWagon="",idWagon2;
 		Iterator<Wagon> itWagon;
-		//TODO: Call order here
 		for (Railway stackWagon :this){
 			pg = new PredicateGroup();
 			itWagon=stackWagon.iterator();

@@ -19,8 +19,7 @@ public class StateFactory {
 	}
 	
 	public static void setMAX_RAILWAYS(int max_RAILWAYS) {
-		if ((initialState==null) && (finalState==null))
-			MAX_RAILWAYS = max_RAILWAYS;
+		MAX_RAILWAYS = max_RAILWAYS;
 	}
 	
 	public static int getMAX_RAILWAYS() {
