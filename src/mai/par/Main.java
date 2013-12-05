@@ -15,7 +15,7 @@ import mai.par.trains.StateFactory;
 
 public class Main {
 
-	static String file = "./problem6.txt"; // TODO: get file as parameter in args
+	static String file = "./problem5.txt"; // TODO: get file as parameter in args
 	 
 	public static void main(String[] args) 
 	{
