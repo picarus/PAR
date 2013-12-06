@@ -19,6 +19,13 @@ public class Main {
 	 
 	public static void main(String[] args) 
 	{
+		if(args.length > 1)
+		{
+			if(new String("-t").equalsIgnoreCase(args[0]))
+			{
+				file = args[1];
+			}	
+		}
 		String s;
 		try 
 		{
@@ -47,7 +54,7 @@ public class Main {
 	
 	public static String readProblemFile() throws IOException
 	{
-		Path path = Paths.get(file);
+		Path path = Paths.get("./tests/" + file);
 	    List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 	    StringBuilder sb = new StringBuilder();
 	    for(String line:lines){
