@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import mai.par.Log;
 import mai.par.trains.operators.Operator;
 import mai.par.trains.operators.OperatorAttach;
 import mai.par.trains.operators.OperatorCouple;
@@ -14,6 +15,7 @@ import mai.par.trains.operators.OperatorLoad;
 import mai.par.trains.operators.OperatorPark;
 import mai.par.trains.operators.OperatorUnload;
 import mai.par.trains.predicates.Predicate;
+import mai.par.trains.predicates.PredicateFactory;
 import mai.par.trains.predicates.PredicateGroup;
 import mai.par.trains.predicates.TrainPredicate;
 
@@ -401,27 +403,97 @@ public class State implements Stackable{
 		return operator;
 	}
 	
+	// Returns the shortest railway, if there is a tie, 
+	// returns the one that stops satisfying goal predicates first
 	private int getBestRailway()
 	{
-		//TODO: Get first non-match, the one with the first letter, 
-		//where load/unload/onstation/infrontof
-		return getEmptiestNotDoneRailway();
+		ArrayList<Integer> rails = getEmptiestRailways();
+		if(rails.size() == 1)
+			return rails.get(0);
+		else if(rails.size() == 0)
+		{
+			System.out.println("No hay lista menor?");
+			System.exit(1);
+		}
+		return getFirstBreakingRailway(rails);		
 	}
 	
-	private int getEmptiestNotDoneRailway()
+	// Get first non-match, the one with the first letter, 
+	// where load/unload/onstation/infrontof
+	private int getFirstBreakingRailway(ArrayList<Integer> railIds) 
 	{
-		int min=-1;
+		ArrayList<Railway> rails = new ArrayList<Railway>();
+		for(int index : railIds)
+		{
+			rails.add(railways.get(index));	
+		}
+		
+		for(int i = 0; i < rails.get(0).size(); i++)
+		{
+			int k = 0;
+			for(Railway r : rails)
+			{
+				if(!compliesCondition(r, i))
+					return railIds.get(k);
+				k++;
+			}
+		}
+		return railIds.get(0);
+	}
+
+	// match unsatisfied load/unload/onstation/infrontof
+	private boolean compliesCondition(Railway r, int pos) 
+	{
+		Boolean complies = true;
+		Wagon w = r.get(pos);
+		
+		if(w.isLoaded())
+		{
+			Predicate loaded = PredicateFactory.createPredicateLoaded(w.getId());
+			complies = LinealPlanner.finalState.isCompliant(loaded);
+		}
+		else
+		{
+			Predicate empty = PredicateFactory.createPredicateEmpty(w.getId());
+			complies = LinealPlanner.finalState.isCompliant(empty);
+		}
+		
+		if(!complies)
+			return complies;
+		
+		if(pos == 0)
+		{
+			Predicate onstation = PredicateFactory.createPredicateOnStation(w.getId());
+			complies = LinealPlanner.finalState.isCompliant(onstation);
+		}
+		else
+		{
+			Predicate infrontof = PredicateFactory.createPredicateInFrontOf(r.get(pos-1).getId(), w.getId());
+			complies = LinealPlanner.finalState.isCompliant(infrontof);
+		}
+		return complies;
+	}
+
+	private ArrayList<Integer> getEmptiestRailways()
+	{
+		ArrayList<Integer> mins = new ArrayList<Integer>();
 		int minlen= 100000;
 		for (int i=0;i<railways.size();i++)
 		{
 			Railway curRail = railways.get(i);
-			if (curRail.size()<minlen && !curRail.done)
+			if (curRail.size()<minlen)
 			{
+				mins.clear();
 				minlen=curRail.size();
-				min=i;
+				mins.add(i);
+				
+			}
+			else if (curRail.size()==minlen)
+			{
+				mins.add(i);
 			}
 		}
-		return min;
+		return mins;
 	}
 	
 	public String getFirstWagonInRailway(int i)
@@ -622,6 +694,16 @@ public class State implements Stackable{
 	
 	public void drawState() {
 		System.out.println(toString()+"\n");
+	}
+	
+	public String getPredicatesAsString()
+	{
+		StringBuilder sb = new StringBuilder();
+		for(Predicate p : predicateGroup)
+		{
+			sb.append(p.toString() + "; ");
+		}
+		return sb.toString();
 	}
 	
 }

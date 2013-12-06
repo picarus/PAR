@@ -1,0 +1,134 @@
+Initial State: 
+ |-G-(A)
+|-B-(E)
+|-D-C-(F)
+Loc[]
+ON-STATION(G); ON-STATION(B); ON-STATION(D); IN-FRONT-OF(A,G); IN-FRONT-OF(E,B); IN-FRONT-OF(C,D); IN-FRONT-OF(F,C); FREE(A); FREE(E); FREE(F); FREE-LOCOMOTIVE; LOADED(A); LOADED(E); LOADED(F); EMPTY(G); EMPTY(B); EMPTY(C); EMPTY(D); 
+
+Final State: 
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+ON-STATION(A); ON-STATION(B); ON-STATION(D); IN-FRONT-OF(G,A); IN-FRONT-OF(E,B); IN-FRONT-OF(C,D); IN-FRONT-OF(F,C); FREE(G); FREE(E); FREE(F); FREE-LOCOMOTIVE; LOADED(A); LOADED(E); LOADED(F); EMPTY(G); EMPTY(B); EMPTY(C); EMPTY(D); 
+
+Initial Stack: 
+--VVVV--GOAL  STACK--VVVV--
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+0|FREE(G)
+------------------------
+1|FREE(E)
+------------------------
+2|FREE(F)
+------------------------
+3|FREE-LOCOMOTIVE
+------------------------
+4|LOADED(A)
+------------------------
+5|LOADED(E)
+------------------------
+6|LOADED(F)
+------------------------
+7|EMPTY(G)
+------------------------
+8|EMPTY(B)
+------------------------
+9|EMPTY(C)
+------------------------
+10|EMPTY(D)
+------------------------
+11|IN-FRONT-OF(F,C)
+------------------------
+12|IN-FRONT-OF(C,D)
+------------------------
+13|ON-STATION(D)
+------------------------
+14|IN-FRONT-OF(G,A)
+------------------------
+15|ON-STATION(A)
+------------------------
+16|IN-FRONT-OF(E,B)
+------------------------
+17|ON-STATION(B)
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+
+Solution Step by Step: 
+
+Current Objective: ON-STATION(A)
+Apply operator: ATTACH(A,E)
+Current Objective: TOWED(A)
+Apply operator: DETACH(A,G)
+Plan: 1->DETACH(A,G)
+|-G
+|-B-(E)
+|-D-C-(F)
+Loc[A]
+
+
+Plan: 2->ATTACH(A,E)DETACH(A,G)
+|-G
+|-B-(E)-(A)
+|-D-C-(F)
+Loc[]
+
+
+Current Objective: ON-STATION(A)
+Apply operator: ATTACH(G,F)
+Current Objective: TOWED(G)
+Apply operator: COUPLE(G)
+Plan: 3->COUPLE(G)ATTACH(A,E)DETACH(A,G)
+|
+|-B-(E)-(A)
+|-D-C-(F)
+Loc[G]
+
+
+Plan: 4->ATTACH(G,F)COUPLE(G)ATTACH(A,E)DETACH(A,G)
+|
+|-B-(E)-(A)
+|-D-C-(F)-G
+Loc[]
+
+
+Current Objective: ON-STATION(A)
+Apply operator: PARK(A)
+Current Objective: TOWED(A)
+Apply operator: DETACH(A,E)
+Plan: 5->DETACH(A,E)ATTACH(G,F)COUPLE(G)ATTACH(A,E)DETACH(A,G)
+|
+|-B-(E)
+|-D-C-(F)-G
+Loc[A]
+
+
+Plan: 6->PARK(A)DETACH(A,E)ATTACH(G,F)COUPLE(G)ATTACH(A,E)DETACH(A,G)
+|-(A)
+|-B-(E)
+|-D-C-(F)-G
+Loc[]
+
+
+Current Objective: IN-FRONT-OF(G,A)
+Apply operator: ATTACH(G,A)
+Current Objective: TOWED(G)
+Apply operator: DETACH(G,F)
+Plan: 7->DETACH(G,F)PARK(A)DETACH(A,E)ATTACH(G,F)COUPLE(G)ATTACH(A,E)DETACH(A,G)
+|-(A)
+|-B-(E)
+|-D-C-(F)
+Loc[G]
+
+
+Plan: 8->ATTACH(G,A)DETACH(G,F)PARK(A)DETACH(A,E)ATTACH(G,F)COUPLE(G)ATTACH(A,E)DETACH(A,G)
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+
+

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import mai.par.Log;
 import mai.par.trains.operators.Operator;
 import mai.par.trains.predicates.Predicate;
 import mai.par.trains.predicates.PredicateFactory;
@@ -100,12 +101,20 @@ public final class LinealPlanner {
 		goalStack.push(cpg);
 		goalStack.push(pg);
 		System.out.println(goalStack);
+		Log.log("\nInitial Stack: \n" + goalStack);
 		
+		Log.log("\nSolution Step by Step: \n");
 		solve();
 		
 		// solution
 		System.out.println(goalStack);
-		System.out.println(plan);
+		Collections.reverse(plan);
+		System.out.print("Resolution plan: ");
+		for(Operator step: plan)
+		{
+			System.out.print(step + "; ");
+		}
+		System.out.println("\nSteps: "+plan.size());
 	}
 
 	protected static void solve(){
@@ -118,7 +127,7 @@ public final class LinealPlanner {
 		PredicateGroup predicateGroup;
 		boolean changePlan;
 		boolean changeGoalStack;
-		boolean verbose=true;
+		boolean verbose=false;
 		
 		while ( !goalStack.empty() ){
 			changePlan = false;
@@ -147,11 +156,13 @@ public final class LinealPlanner {
 					operator=currentState.accomplish(predicate);
 					if(operator != null)
 					{
-						System.out.println("Current Objective: " + predicate);
+						System.out.println("Current Goal: " + predicate);
+						Log.log("Current Objective: " + predicate);
 						goalStack.push(predicate); // push back
 						goalStack.push(operator);
 						if (verbose)
 							System.out.println("Operator selected:"+operator);
+						Log.log("Apply operator: " + operator);
 						changeGoalStack=true;	
 					}
 				}
@@ -185,6 +196,9 @@ public final class LinealPlanner {
 					System.out.println(goalStack);
 			}
 			if (changePlan){
+				Log.log("Plan: " + plan.size()+"->"+plan);
+				Log.log(currentState.toString());
+				Log.log("\n");
 				System.out.println(plan.size()+"->"+plan);
 				System.out.println(currentState);
 			}

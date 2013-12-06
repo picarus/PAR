@@ -15,31 +15,30 @@ import mai.par.trains.StateFactory;
 
 public class Main {
 
-	static String file = "./problem5.txt"; // TODO: get file as parameter in args
+	static String file = "sussman.txt"; // TODO: get file as parameter in args
 	 
 	public static void main(String[] args) 
 	{
 		String s;
-		
-		try {
+		try 
+		{
+			Log.init(file);
 			StateFactory.initialize();
 			s = readProblemFile();
 			TrainParser.tokenize(s);
-			System.out.println("Initial State:");
+			
+			Log.log("Initial State: \n " + StateFactory.initialState.toString());
+			Log.log(StateFactory.initialState.getPredicatesAsString());
 			StateFactory.initialState.drawState();
-			System.out.println("Final State:");
+			Log.log("");
+			Log.log("Final State: \n" + StateFactory.finalState.toString());
+			Log.log(StateFactory.finalState.getPredicatesAsString());
 			StateFactory.finalState.drawState();
-			/*
-			State copyState;
-			System.out.println("Copy Final State:");
-			copyState=new State(StateFactory.finalState);
-			copyState.drawState();
-			*/
+			
 			LinealPlanner.init(StateFactory.initialState, StateFactory.finalState);
 			LinealPlanner.createPlan();
 			
-			//Test.testApplyOperators(StateFactory.finalState);
-			
+			Log.close();
 		} 
 		catch (IOException e) {
 			e.printStackTrace();

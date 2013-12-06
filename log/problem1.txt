@@ -1,0 +1,135 @@
+Initial State: 
+ |-(A)
+|-B
+|-D-(C)
+Loc[]
+ON-STATION(A); ON-STATION(B); ON-STATION(D); IN-FRONT-OF(C,D); FREE(A); FREE(B); FREE(C); FREE-LOCOMOTIVE; EMPTY(B); EMPTY(D); LOADED(A); LOADED(C); 
+
+Final State: 
+|-(B)
+|-A
+|-(C)-(D)
+Loc[]
+ON-STATION(B); ON-STATION(A); ON-STATION(C); IN-FRONT-OF(D,C); FREE(B); FREE(A); FREE(D); FREE-LOCOMOTIVE; LOADED(B); LOADED(C); LOADED(D); EMPTY(A); 
+
+Initial Stack: 
+--VVVV--GOAL  STACK--VVVV--
+|-(B)
+|-A
+|-(C)-(D)
+Loc[]
+------------------------
+0|FREE(B)
+------------------------
+1|FREE(A)
+------------------------
+2|FREE(D)
+------------------------
+3|FREE-LOCOMOTIVE
+------------------------
+4|LOADED(C)
+------------------------
+5|EMPTY(A)
+------------------------
+6|LOADED(B)
+------------------------
+7|IN-FRONT-OF(D,C)
+------------------------
+8|ON-STATION(C)
+------------------------
+9|ON-STATION(B)
+------------------------
+10|ON-STATION(A)
+------------------------
+11|LOADED(D)
+------------------------
+12|EMPTY(A)
+------------------------
+13|LOADED(B)
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+
+Solution Step by Step: 
+
+Current Objective: LOADED(B)
+Apply operator: LOAD(B)
+Plan: 1->LOAD(B)
+|-(A)
+|-(B)
+|-D-(C)
+Loc[]
+
+
+Current Objective: EMPTY(A)
+Apply operator: UNLOAD(A)
+Plan: 2->UNLOAD(A)LOAD(B)
+|-A
+|-(B)
+|-D-(C)
+Loc[]
+
+
+Current Objective: LOADED(D)
+Apply operator: LOAD(D)
+Plan: 3->LOAD(D)UNLOAD(A)LOAD(B)
+|-A
+|-(B)
+|-(D)-(C)
+Loc[]
+
+
+Current Objective: ON-STATION(C)
+Apply operator: ATTACH(A,B)
+Current Objective: TOWED(A)
+Apply operator: COUPLE(A)
+Plan: 4->COUPLE(A)LOAD(D)UNLOAD(A)LOAD(B)
+|
+|-(B)
+|-(D)-(C)
+Loc[A]
+
+
+Plan: 5->ATTACH(A,B)COUPLE(A)LOAD(D)UNLOAD(A)LOAD(B)
+|
+|-(B)-A
+|-(D)-(C)
+Loc[]
+
+
+Current Objective: ON-STATION(C)
+Apply operator: PARK(C)
+Current Objective: TOWED(C)
+Apply operator: DETACH(C,D)
+Plan: 6->DETACH(C,D)ATTACH(A,B)COUPLE(A)LOAD(D)UNLOAD(A)LOAD(B)
+|
+|-(B)-A
+|-(D)
+Loc[C]
+
+
+Plan: 7->PARK(C)DETACH(C,D)ATTACH(A,B)COUPLE(A)LOAD(D)UNLOAD(A)LOAD(B)
+|-(C)
+|-(B)-A
+|-(D)
+Loc[]
+
+
+Current Objective: IN-FRONT-OF(D,C)
+Apply operator: ATTACH(D,C)
+Current Objective: TOWED(D)
+Apply operator: COUPLE(D)
+Plan: 8->COUPLE(D)PARK(C)DETACH(C,D)ATTACH(A,B)COUPLE(A)LOAD(D)UNLOAD(A)LOAD(B)
+|-(C)
+|-(B)-A
+|
+Loc[D]
+
+
+Plan: 9->ATTACH(D,C)COUPLE(D)PARK(C)DETACH(C,D)ATTACH(A,B)COUPLE(A)LOAD(D)UNLOAD(A)LOAD(B)
+|-(C)-(D)
+|-(B)-A
+|
+Loc[]
+
+
