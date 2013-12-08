@@ -1,5 +1,6 @@
 package mai.par.trains;
 
+import java.util.Collections;
 import java.util.Stack;
 
 import mai.par.trains.operators.Operator;
@@ -30,7 +31,10 @@ public class GoalStack extends Stack<Stackable>{
 		String str;
 		int i=0;
 		str = "--VVVV--GOAL  STACK--VVVV--\n";
-		for (Stackable s: this){
+		Stack<Stackable> clone = new Stack<Stackable>();
+		clone.addAll(this);
+		Collections.reverse(clone);
+		for (Stackable s: clone){
 			if (s instanceof PredicateGroup){
 				str += s;
 			} else if (s instanceof State ){

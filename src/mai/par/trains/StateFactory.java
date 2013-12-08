@@ -35,7 +35,7 @@ public class StateFactory {
 		state.setPredicateGroup(predicates);
 		for(Predicate predicate : predicates)
 		{
-			System.out.println(predicate);
+			//System.out.println(predicate);
 			switch (predicate.getPredicate()) {
 			case PR_ONSTATION:
 				state.setToStation(predicate.getId1());
@@ -61,7 +61,7 @@ public class StateFactory {
 			default:
 				break;
 			}
-			state.drawState();
+			//state.drawState();
 		}
 		return state;
 	}

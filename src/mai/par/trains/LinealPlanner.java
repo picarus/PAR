@@ -100,21 +100,32 @@ public final class LinealPlanner {
 		PredicateGroup cpg=pg.removeDuplicates(finalState);
 		goalStack.push(cpg);
 		goalStack.push(pg);
-		System.out.println(goalStack);
-		Log.log("\nInitial Stack: \n" + goalStack);
-		
-		Log.log("\nSolution Step by Step: \n");
+		//System.out.println(goalStack);
+		logIntroduction();
 		solve();
 		
 		// solution
-		System.out.println(goalStack);
+		//System.out.println(goalStack);
+		//System.out.println("\nSteps: "+plan.size());
+		logResolution();
+	}
+
+	private static void logResolution() {
+		Log.log("\nThe plan has been created. It has "+plan.size()+" steps.");
 		Collections.reverse(plan);
-		System.out.print("Resolution plan: ");
+		Log.log("The resolution plan is: ");
 		for(Operator step: plan)
-		{
-			System.out.print(step + "; ");
+		{	
+			Log.log(step + "; ");
 		}
-		System.out.println("\nSteps: "+plan.size());
+	}
+
+	private static void logIntroduction() {
+		Log.log("\nThe first stack element to be addressed is at the " +
+				"top  of the stack. Maintaining consistency with our visual examples in the course.");
+		Log.log("\nInitial Stack: \n" + goalStack);
+		
+		Log.log("\nSolution Step by Step: \n");
 	}
 
 	protected static void solve(){
@@ -129,7 +140,8 @@ public final class LinealPlanner {
 		boolean changeGoalStack;
 		boolean verbose=false;
 		
-		while ( !goalStack.empty() ){
+		while ( !goalStack.empty() )
+		{
 			changePlan = false;
 			changeGoalStack= false;
 			stackable=goalStack.pop();
@@ -137,8 +149,8 @@ public final class LinealPlanner {
 			switch(stackableTypes){
 			case Operator:
 				operator=(Operator)stackable;
-				if (verbose) 
-					System.out.println("Operator:"+operator);
+				//if (verbose) 
+				//	System.out.println("Operator:"+operator);
 				if (currentState.canApply(operator)){
 					plan.add(operator); // the operator is added to the plan
 					currentState=currentState.apply(operator); // the current state is updated
@@ -149,28 +161,31 @@ public final class LinealPlanner {
 				break;
 			case Predicate:
 				predicate=(Predicate)stackable;
-				if (verbose)
-					System.out.println("Predicate:"+predicate);
+				//if (verbose)
+				//	System.out.println("Predicate:"+predicate);
 				if (!currentState.isCompliant(predicate)){
 					// look for an operator to satisfy the predicate
 					operator=currentState.accomplish(predicate);
 					if(operator != null)
 					{
-						System.out.println("Current Goal: " + predicate);
+					//	System.out.println("Current Goal: " + predicate);
 						Log.log("Current Objective: " + predicate);
 						goalStack.push(predicate); // push back
 						goalStack.push(operator);
-						if (verbose)
-							System.out.println("Operator selected:"+operator);
+					//	if (verbose)
+					//		System.out.println("Operator selected:"+operator);
 						Log.log("Apply operator: " + operator);
 						changeGoalStack=true;	
 					}
 				}
+				else
+					Log.log(predicate + " is satisfied.");
 				break;
 			case PredicateGroup:  // from an operator ( or state ?)
 				predicateGroup=(PredicateGroup)stackable;
-				if (verbose)
-					System.out.println("PredicateGroup:"+predicateGroup);
+				//if (verbose)
+				//	System.out.println("PredicateGroup:"+predicateGroup);
+				Log.log("Current Objective: " + predicateGroup);
 				if (!currentState.isCompliant(predicateGroup)) {
 					// if not: ERROR --> our implementation should guarantee when we get here we satisfy all predicates
 					System.out.println("ERROR:Predicate Group NOT compliant");
@@ -191,16 +206,19 @@ public final class LinealPlanner {
 				break;
 			}
 			
-			if (changeGoalStack){
-				if (verbose)
-					System.out.println(goalStack);
+			if (changeGoalStack)
+			{
+				Log.log("New Stack:");
+				Log.log(goalStack.toString());
+				//if (verbose)
+				//	System.out.println(goalStack);
 			}
 			if (changePlan){
 				Log.log("Plan: " + plan.size()+"->"+plan);
 				Log.log(currentState.toString());
 				Log.log("\n");
-				System.out.println(plan.size()+"->"+plan);
-				System.out.println(currentState);
+				//System.out.println(plan.size()+"->"+plan);
+				//System.out.println(currentState);
 			}
 		}
 	}

@@ -527,7 +527,7 @@ public class State implements Stackable{
 		for (Predicate pred:predicateGroup){
 			if (!isCompliant(pred)){
 				System.out.println("ERROR: Predicate not compliant in Group");
-				System.out.println(pred);
+				//System.out.println(pred);
 				return false;
 			}
 		}

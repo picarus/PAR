@@ -1,3 +1,5 @@
+This is the log for problem2.txt, Here we will find the resolution plan found by the solver.
+The Initial State is the State the world begins in, the Final State, The State we wish to achieve through our plan
 Initial State: 
  |-B-(A)
 |-E-D-(C)
@@ -12,48 +14,50 @@ Final State:
 Loc[]
 ON-STATION(A); ON-STATION(B); ON-STATION(D); IN-FRONT-OF(G,A); IN-FRONT-OF(E,B); IN-FRONT-OF(C,D); IN-FRONT-OF(F,C); FREE(G); FREE(E); FREE(F); FREE-LOCOMOTIVE; LOADED(A); LOADED(E); LOADED(F); EMPTY(G); EMPTY(B); EMPTY(C); EMPTY(D); 
 
+The first stack element to be addressed is at the top  of the stack. Maintaining consistency with our visual examples in the course.
+
 Initial Stack: 
 --VVVV--GOAL  STACK--VVVV--
+0|EMPTY(G)
+------------------------
+1|LOADED(E)
+------------------------
+2|EMPTY(C)
+------------------------
+3|LOADED(F)
+------------------------
+4|ON-STATION(B)
+------------------------
+5|IN-FRONT-OF(E,B)
+------------------------
+6|ON-STATION(A)
+------------------------
+7|IN-FRONT-OF(G,A)
+------------------------
+8|ON-STATION(D)
+------------------------
+9|IN-FRONT-OF(C,D)
+------------------------
+10|IN-FRONT-OF(F,C)
+------------------------
+11|EMPTY(D)
+------------------------
+12|EMPTY(B)
+------------------------
+13|LOADED(A)
+------------------------
+14|FREE-LOCOMOTIVE
+------------------------
+15|FREE(F)
+------------------------
+16|FREE(E)
+------------------------
+17|FREE(G)
+------------------------
 |-(A)-G
 |-B-(E)
 |-D-C-(F)
 Loc[]
-------------------------
-0|FREE(G)
-------------------------
-1|FREE(E)
-------------------------
-2|FREE(F)
-------------------------
-3|FREE-LOCOMOTIVE
-------------------------
-4|LOADED(A)
-------------------------
-5|EMPTY(B)
-------------------------
-6|EMPTY(D)
-------------------------
-7|IN-FRONT-OF(F,C)
-------------------------
-8|IN-FRONT-OF(C,D)
-------------------------
-9|ON-STATION(D)
-------------------------
-10|IN-FRONT-OF(G,A)
-------------------------
-11|ON-STATION(A)
-------------------------
-12|IN-FRONT-OF(E,B)
-------------------------
-13|ON-STATION(B)
-------------------------
-14|LOADED(F)
-------------------------
-15|EMPTY(C)
-------------------------
-16|LOADED(E)
-------------------------
-17|EMPTY(G)
 ------------------------
 -^^^^-GOAL STACK END-^^^^-
 
@@ -62,6 +66,59 @@ Solution Step by Step:
 
 Current Objective: EMPTY(G)
 Apply operator: UNLOAD(G)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|ON-STATION(G)
+------------------------
+1|LOADED(G)
+------------------------
+OP|UNLOAD(G)[LOADED(G), ON-STATION(G)]
+------------------------
+2|EMPTY(G)
+------------------------
+3|LOADED(E)
+------------------------
+4|EMPTY(C)
+------------------------
+5|LOADED(F)
+------------------------
+6|ON-STATION(B)
+------------------------
+7|IN-FRONT-OF(E,B)
+------------------------
+8|ON-STATION(A)
+------------------------
+9|IN-FRONT-OF(G,A)
+------------------------
+10|ON-STATION(D)
+------------------------
+11|IN-FRONT-OF(C,D)
+------------------------
+12|IN-FRONT-OF(F,C)
+------------------------
+13|EMPTY(D)
+------------------------
+14|EMPTY(B)
+------------------------
+15|LOADED(A)
+------------------------
+16|FREE-LOCOMOTIVE
+------------------------
+17|FREE(F)
+------------------------
+18|FREE(E)
+------------------------
+19|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+ON-STATION(G) is satisfied.
+LOADED(G) is satisfied.
 Plan: 1->UNLOAD(G)
 |-B-(A)
 |-E-D-(C)
@@ -69,8 +126,60 @@ Plan: 1->UNLOAD(G)
 Loc[]
 
 
+EMPTY(G) is satisfied.
 Current Objective: LOADED(E)
 Apply operator: LOAD(E)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|ON-STATION(E)
+------------------------
+1|EMPTY(E)
+------------------------
+OP|LOAD(E)[EMPTY(E), ON-STATION(E)]
+------------------------
+2|LOADED(E)
+------------------------
+3|EMPTY(C)
+------------------------
+4|LOADED(F)
+------------------------
+5|ON-STATION(B)
+------------------------
+6|IN-FRONT-OF(E,B)
+------------------------
+7|ON-STATION(A)
+------------------------
+8|IN-FRONT-OF(G,A)
+------------------------
+9|ON-STATION(D)
+------------------------
+10|IN-FRONT-OF(C,D)
+------------------------
+11|IN-FRONT-OF(F,C)
+------------------------
+12|EMPTY(D)
+------------------------
+13|EMPTY(B)
+------------------------
+14|LOADED(A)
+------------------------
+15|FREE-LOCOMOTIVE
+------------------------
+16|FREE(F)
+------------------------
+17|FREE(E)
+------------------------
+18|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+ON-STATION(E) is satisfied.
+EMPTY(E) is satisfied.
 Plan: 2->LOAD(E)UNLOAD(G)
 |-B-(A)
 |-(E)-D-(C)
@@ -78,12 +187,176 @@ Plan: 2->LOAD(E)UNLOAD(G)
 Loc[]
 
 
+LOADED(E) is satisfied.
 Current Objective: EMPTY(C)
 Apply operator: UNLOAD(C)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|ON-STATION(C)
+------------------------
+1|LOADED(C)
+------------------------
+OP|UNLOAD(C)[LOADED(C), ON-STATION(C)]
+------------------------
+2|EMPTY(C)
+------------------------
+3|LOADED(F)
+------------------------
+4|ON-STATION(B)
+------------------------
+5|IN-FRONT-OF(E,B)
+------------------------
+6|ON-STATION(A)
+------------------------
+7|IN-FRONT-OF(G,A)
+------------------------
+8|ON-STATION(D)
+------------------------
+9|IN-FRONT-OF(C,D)
+------------------------
+10|IN-FRONT-OF(F,C)
+------------------------
+11|EMPTY(D)
+------------------------
+12|EMPTY(B)
+------------------------
+13|LOADED(A)
+------------------------
+14|FREE-LOCOMOTIVE
+------------------------
+15|FREE(F)
+------------------------
+16|FREE(E)
+------------------------
+17|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
 Current Objective: ON-STATION(C)
 Apply operator: ATTACH(F,A)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(A)
+------------------------
+1|TOWED(F)
+------------------------
+OP|ATTACH(F,A)[TOWED(F), FREE(A)]
+------------------------
+2|ON-STATION(C)
+------------------------
+3|LOADED(C)
+------------------------
+OP|UNLOAD(C)[LOADED(C), ON-STATION(C)]
+------------------------
+4|EMPTY(C)
+------------------------
+5|LOADED(F)
+------------------------
+6|ON-STATION(B)
+------------------------
+7|IN-FRONT-OF(E,B)
+------------------------
+8|ON-STATION(A)
+------------------------
+9|IN-FRONT-OF(G,A)
+------------------------
+10|ON-STATION(D)
+------------------------
+11|IN-FRONT-OF(C,D)
+------------------------
+12|IN-FRONT-OF(F,C)
+------------------------
+13|EMPTY(D)
+------------------------
+14|EMPTY(B)
+------------------------
+15|LOADED(A)
+------------------------
+16|FREE-LOCOMOTIVE
+------------------------
+17|FREE(F)
+------------------------
+18|FREE(E)
+------------------------
+19|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(A) is satisfied.
 Current Objective: TOWED(F)
 Apply operator: DETACH(F,G)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(F,G)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(F)
+------------------------
+OP|DETACH(F,G)[FREE(F), FREE-LOCOMOTIVE, IN-FRONT-OF(F,G)]
+------------------------
+3|TOWED(F)
+------------------------
+OP|ATTACH(F,A)[TOWED(F), FREE(A)]
+------------------------
+4|ON-STATION(C)
+------------------------
+5|LOADED(C)
+------------------------
+OP|UNLOAD(C)[LOADED(C), ON-STATION(C)]
+------------------------
+6|EMPTY(C)
+------------------------
+7|LOADED(F)
+------------------------
+8|ON-STATION(B)
+------------------------
+9|IN-FRONT-OF(E,B)
+------------------------
+10|ON-STATION(A)
+------------------------
+11|IN-FRONT-OF(G,A)
+------------------------
+12|ON-STATION(D)
+------------------------
+13|IN-FRONT-OF(C,D)
+------------------------
+14|IN-FRONT-OF(F,C)
+------------------------
+15|EMPTY(D)
+------------------------
+16|EMPTY(B)
+------------------------
+17|LOADED(A)
+------------------------
+18|FREE-LOCOMOTIVE
+------------------------
+19|FREE(F)
+------------------------
+20|FREE(E)
+------------------------
+21|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(F,G) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(F) is satisfied.
 Plan: 3->DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)
 |-(E)-D-(C)
@@ -91,6 +364,7 @@ Plan: 3->DETACH(F,G)LOAD(E)UNLOAD(G)
 Loc[F]
 
 
+TOWED(F) is satisfied.
 Plan: 4->ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)-F
 |-(E)-D-(C)
@@ -100,8 +374,124 @@ Loc[]
 
 Current Objective: ON-STATION(C)
 Apply operator: ATTACH(G,F)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(F)
+------------------------
+1|TOWED(G)
+------------------------
+OP|ATTACH(G,F)[TOWED(G), FREE(F)]
+------------------------
+2|ON-STATION(C)
+------------------------
+3|LOADED(C)
+------------------------
+OP|UNLOAD(C)[LOADED(C), ON-STATION(C)]
+------------------------
+4|EMPTY(C)
+------------------------
+5|LOADED(F)
+------------------------
+6|ON-STATION(B)
+------------------------
+7|IN-FRONT-OF(E,B)
+------------------------
+8|ON-STATION(A)
+------------------------
+9|IN-FRONT-OF(G,A)
+------------------------
+10|ON-STATION(D)
+------------------------
+11|IN-FRONT-OF(C,D)
+------------------------
+12|IN-FRONT-OF(F,C)
+------------------------
+13|EMPTY(D)
+------------------------
+14|EMPTY(B)
+------------------------
+15|LOADED(A)
+------------------------
+16|FREE-LOCOMOTIVE
+------------------------
+17|FREE(F)
+------------------------
+18|FREE(E)
+------------------------
+19|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(F) is satisfied.
 Current Objective: TOWED(G)
 Apply operator: COUPLE(G)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|ON-STATION(G)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(G)
+------------------------
+OP|COUPLE(G)[FREE(G), FREE-LOCOMOTIVE, ON-STATION(G)]
+------------------------
+3|TOWED(G)
+------------------------
+OP|ATTACH(G,F)[TOWED(G), FREE(F)]
+------------------------
+4|ON-STATION(C)
+------------------------
+5|LOADED(C)
+------------------------
+OP|UNLOAD(C)[LOADED(C), ON-STATION(C)]
+------------------------
+6|EMPTY(C)
+------------------------
+7|LOADED(F)
+------------------------
+8|ON-STATION(B)
+------------------------
+9|IN-FRONT-OF(E,B)
+------------------------
+10|ON-STATION(A)
+------------------------
+11|IN-FRONT-OF(G,A)
+------------------------
+12|ON-STATION(D)
+------------------------
+13|IN-FRONT-OF(C,D)
+------------------------
+14|IN-FRONT-OF(F,C)
+------------------------
+15|EMPTY(D)
+------------------------
+16|EMPTY(B)
+------------------------
+17|LOADED(A)
+------------------------
+18|FREE-LOCOMOTIVE
+------------------------
+19|FREE(F)
+------------------------
+20|FREE(E)
+------------------------
+21|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+ON-STATION(G) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(G) is satisfied.
 Plan: 5->COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)-F
 |-(E)-D-(C)
@@ -109,6 +499,7 @@ Plan: 5->COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 Loc[G]
 
 
+TOWED(G) is satisfied.
 Plan: 6->ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)-F-G
 |-(E)-D-(C)
@@ -118,8 +509,124 @@ Loc[]
 
 Current Objective: ON-STATION(C)
 Apply operator: PARK(C)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|USEDRAILWAYS_NOTFULL
+------------------------
+1|TOWED(C)
+------------------------
+OP|PARK(C)[TOWED(C), USEDRAILWAYS_NOTFULL]
+------------------------
+2|ON-STATION(C)
+------------------------
+3|LOADED(C)
+------------------------
+OP|UNLOAD(C)[LOADED(C), ON-STATION(C)]
+------------------------
+4|EMPTY(C)
+------------------------
+5|LOADED(F)
+------------------------
+6|ON-STATION(B)
+------------------------
+7|IN-FRONT-OF(E,B)
+------------------------
+8|ON-STATION(A)
+------------------------
+9|IN-FRONT-OF(G,A)
+------------------------
+10|ON-STATION(D)
+------------------------
+11|IN-FRONT-OF(C,D)
+------------------------
+12|IN-FRONT-OF(F,C)
+------------------------
+13|EMPTY(D)
+------------------------
+14|EMPTY(B)
+------------------------
+15|LOADED(A)
+------------------------
+16|FREE-LOCOMOTIVE
+------------------------
+17|FREE(F)
+------------------------
+18|FREE(E)
+------------------------
+19|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+USEDRAILWAYS_NOTFULL is satisfied.
 Current Objective: TOWED(C)
 Apply operator: DETACH(C,D)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(C,D)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(C)
+------------------------
+OP|DETACH(C,D)[FREE(C), FREE-LOCOMOTIVE, IN-FRONT-OF(C,D)]
+------------------------
+3|TOWED(C)
+------------------------
+OP|PARK(C)[TOWED(C), USEDRAILWAYS_NOTFULL]
+------------------------
+4|ON-STATION(C)
+------------------------
+5|LOADED(C)
+------------------------
+OP|UNLOAD(C)[LOADED(C), ON-STATION(C)]
+------------------------
+6|EMPTY(C)
+------------------------
+7|LOADED(F)
+------------------------
+8|ON-STATION(B)
+------------------------
+9|IN-FRONT-OF(E,B)
+------------------------
+10|ON-STATION(A)
+------------------------
+11|IN-FRONT-OF(G,A)
+------------------------
+12|ON-STATION(D)
+------------------------
+13|IN-FRONT-OF(C,D)
+------------------------
+14|IN-FRONT-OF(F,C)
+------------------------
+15|EMPTY(D)
+------------------------
+16|EMPTY(B)
+------------------------
+17|LOADED(A)
+------------------------
+18|FREE-LOCOMOTIVE
+------------------------
+19|FREE(F)
+------------------------
+20|FREE(E)
+------------------------
+21|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(C,D) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(C) is satisfied.
 Plan: 7->DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)-F-G
 |-(E)-D
@@ -127,6 +634,7 @@ Plan: 7->DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 Loc[C]
 
 
+TOWED(C) is satisfied.
 Plan: 8->PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)-F-G
 |-(E)-D
@@ -134,6 +642,8 @@ Plan: 8->PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLO
 Loc[]
 
 
+ON-STATION(C) is satisfied.
+LOADED(C) is satisfied.
 Plan: 9->UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)-F-G
 |-(E)-D
@@ -141,12 +651,170 @@ Plan: 9->UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LO
 Loc[]
 
 
+EMPTY(C) is satisfied.
 Current Objective: LOADED(F)
 Apply operator: LOAD(F)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|ON-STATION(F)
+------------------------
+1|EMPTY(F)
+------------------------
+OP|LOAD(F)[EMPTY(F), ON-STATION(F)]
+------------------------
+2|LOADED(F)
+------------------------
+3|ON-STATION(B)
+------------------------
+4|IN-FRONT-OF(E,B)
+------------------------
+5|ON-STATION(A)
+------------------------
+6|IN-FRONT-OF(G,A)
+------------------------
+7|ON-STATION(D)
+------------------------
+8|IN-FRONT-OF(C,D)
+------------------------
+9|IN-FRONT-OF(F,C)
+------------------------
+10|EMPTY(D)
+------------------------
+11|EMPTY(B)
+------------------------
+12|LOADED(A)
+------------------------
+13|FREE-LOCOMOTIVE
+------------------------
+14|FREE(F)
+------------------------
+15|FREE(E)
+------------------------
+16|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
 Current Objective: ON-STATION(F)
 Apply operator: ATTACH(C,D)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(D)
+------------------------
+1|TOWED(C)
+------------------------
+OP|ATTACH(C,D)[TOWED(C), FREE(D)]
+------------------------
+2|ON-STATION(F)
+------------------------
+3|EMPTY(F)
+------------------------
+OP|LOAD(F)[EMPTY(F), ON-STATION(F)]
+------------------------
+4|LOADED(F)
+------------------------
+5|ON-STATION(B)
+------------------------
+6|IN-FRONT-OF(E,B)
+------------------------
+7|ON-STATION(A)
+------------------------
+8|IN-FRONT-OF(G,A)
+------------------------
+9|ON-STATION(D)
+------------------------
+10|IN-FRONT-OF(C,D)
+------------------------
+11|IN-FRONT-OF(F,C)
+------------------------
+12|EMPTY(D)
+------------------------
+13|EMPTY(B)
+------------------------
+14|LOADED(A)
+------------------------
+15|FREE-LOCOMOTIVE
+------------------------
+16|FREE(F)
+------------------------
+17|FREE(E)
+------------------------
+18|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(D) is satisfied.
 Current Objective: TOWED(C)
 Apply operator: COUPLE(C)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|ON-STATION(C)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(C)
+------------------------
+OP|COUPLE(C)[FREE(C), FREE-LOCOMOTIVE, ON-STATION(C)]
+------------------------
+3|TOWED(C)
+------------------------
+OP|ATTACH(C,D)[TOWED(C), FREE(D)]
+------------------------
+4|ON-STATION(F)
+------------------------
+5|EMPTY(F)
+------------------------
+OP|LOAD(F)[EMPTY(F), ON-STATION(F)]
+------------------------
+6|LOADED(F)
+------------------------
+7|ON-STATION(B)
+------------------------
+8|IN-FRONT-OF(E,B)
+------------------------
+9|ON-STATION(A)
+------------------------
+10|IN-FRONT-OF(G,A)
+------------------------
+11|ON-STATION(D)
+------------------------
+12|IN-FRONT-OF(C,D)
+------------------------
+13|IN-FRONT-OF(F,C)
+------------------------
+14|EMPTY(D)
+------------------------
+15|EMPTY(B)
+------------------------
+16|LOADED(A)
+------------------------
+17|FREE-LOCOMOTIVE
+------------------------
+18|FREE(F)
+------------------------
+19|FREE(E)
+------------------------
+20|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+ON-STATION(C) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(C) is satisfied.
 Plan: 10->COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)-F-G
 |-(E)-D
@@ -154,6 +822,7 @@ Plan: 10->COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DET
 Loc[C]
 
 
+TOWED(C) is satisfied.
 Plan: 11->ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)-F-G
 |-(E)-D-C
@@ -163,8 +832,120 @@ Loc[]
 
 Current Objective: ON-STATION(F)
 Apply operator: ATTACH(G,C)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(C)
+------------------------
+1|TOWED(G)
+------------------------
+OP|ATTACH(G,C)[TOWED(G), FREE(C)]
+------------------------
+2|ON-STATION(F)
+------------------------
+3|EMPTY(F)
+------------------------
+OP|LOAD(F)[EMPTY(F), ON-STATION(F)]
+------------------------
+4|LOADED(F)
+------------------------
+5|ON-STATION(B)
+------------------------
+6|IN-FRONT-OF(E,B)
+------------------------
+7|ON-STATION(A)
+------------------------
+8|IN-FRONT-OF(G,A)
+------------------------
+9|ON-STATION(D)
+------------------------
+10|IN-FRONT-OF(C,D)
+------------------------
+11|IN-FRONT-OF(F,C)
+------------------------
+12|EMPTY(D)
+------------------------
+13|EMPTY(B)
+------------------------
+14|LOADED(A)
+------------------------
+15|FREE-LOCOMOTIVE
+------------------------
+16|FREE(F)
+------------------------
+17|FREE(E)
+------------------------
+18|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(C) is satisfied.
 Current Objective: TOWED(G)
 Apply operator: DETACH(G,F)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(G,F)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(G)
+------------------------
+OP|DETACH(G,F)[FREE(G), FREE-LOCOMOTIVE, IN-FRONT-OF(G,F)]
+------------------------
+3|TOWED(G)
+------------------------
+OP|ATTACH(G,C)[TOWED(G), FREE(C)]
+------------------------
+4|ON-STATION(F)
+------------------------
+5|EMPTY(F)
+------------------------
+OP|LOAD(F)[EMPTY(F), ON-STATION(F)]
+------------------------
+6|LOADED(F)
+------------------------
+7|ON-STATION(B)
+------------------------
+8|IN-FRONT-OF(E,B)
+------------------------
+9|ON-STATION(A)
+------------------------
+10|IN-FRONT-OF(G,A)
+------------------------
+11|ON-STATION(D)
+------------------------
+12|IN-FRONT-OF(C,D)
+------------------------
+13|IN-FRONT-OF(F,C)
+------------------------
+14|EMPTY(D)
+------------------------
+15|EMPTY(B)
+------------------------
+16|LOADED(A)
+------------------------
+17|FREE-LOCOMOTIVE
+------------------------
+18|FREE(F)
+------------------------
+19|FREE(E)
+------------------------
+20|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(G,F) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(G) is satisfied.
 Plan: 12->DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)-F
 |-(E)-D-C
@@ -172,6 +953,7 @@ Plan: 12->DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)C
 Loc[G]
 
 
+TOWED(G) is satisfied.
 Plan: 13->ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)-F
 |-(E)-D-C-G
@@ -181,8 +963,120 @@ Loc[]
 
 Current Objective: ON-STATION(F)
 Apply operator: PARK(F)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|USEDRAILWAYS_NOTFULL
+------------------------
+1|TOWED(F)
+------------------------
+OP|PARK(F)[TOWED(F), USEDRAILWAYS_NOTFULL]
+------------------------
+2|ON-STATION(F)
+------------------------
+3|EMPTY(F)
+------------------------
+OP|LOAD(F)[EMPTY(F), ON-STATION(F)]
+------------------------
+4|LOADED(F)
+------------------------
+5|ON-STATION(B)
+------------------------
+6|IN-FRONT-OF(E,B)
+------------------------
+7|ON-STATION(A)
+------------------------
+8|IN-FRONT-OF(G,A)
+------------------------
+9|ON-STATION(D)
+------------------------
+10|IN-FRONT-OF(C,D)
+------------------------
+11|IN-FRONT-OF(F,C)
+------------------------
+12|EMPTY(D)
+------------------------
+13|EMPTY(B)
+------------------------
+14|LOADED(A)
+------------------------
+15|FREE-LOCOMOTIVE
+------------------------
+16|FREE(F)
+------------------------
+17|FREE(E)
+------------------------
+18|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+USEDRAILWAYS_NOTFULL is satisfied.
 Current Objective: TOWED(F)
 Apply operator: DETACH(F,A)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(F,A)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(F)
+------------------------
+OP|DETACH(F,A)[FREE(F), FREE-LOCOMOTIVE, IN-FRONT-OF(F,A)]
+------------------------
+3|TOWED(F)
+------------------------
+OP|PARK(F)[TOWED(F), USEDRAILWAYS_NOTFULL]
+------------------------
+4|ON-STATION(F)
+------------------------
+5|EMPTY(F)
+------------------------
+OP|LOAD(F)[EMPTY(F), ON-STATION(F)]
+------------------------
+6|LOADED(F)
+------------------------
+7|ON-STATION(B)
+------------------------
+8|IN-FRONT-OF(E,B)
+------------------------
+9|ON-STATION(A)
+------------------------
+10|IN-FRONT-OF(G,A)
+------------------------
+11|ON-STATION(D)
+------------------------
+12|IN-FRONT-OF(C,D)
+------------------------
+13|IN-FRONT-OF(F,C)
+------------------------
+14|EMPTY(D)
+------------------------
+15|EMPTY(B)
+------------------------
+16|LOADED(A)
+------------------------
+17|FREE-LOCOMOTIVE
+------------------------
+18|FREE(F)
+------------------------
+19|FREE(E)
+------------------------
+20|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(F,A) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(F) is satisfied.
 Plan: 14->DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)
 |-(E)-D-C-G
@@ -190,6 +1084,7 @@ Plan: 14->DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)D
 Loc[F]
 
 
+TOWED(F) is satisfied.
 Plan: 15->PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)
 |-(E)-D-C-G
@@ -197,6 +1092,8 @@ Plan: 15->PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)P
 Loc[]
 
 
+ON-STATION(F) is satisfied.
+EMPTY(F) is satisfied.
 Plan: 16->LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(A)
 |-(E)-D-C-G
@@ -204,10 +1101,104 @@ Plan: 16->LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNL
 Loc[]
 
 
+LOADED(F) is satisfied.
+ON-STATION(B) is satisfied.
 Current Objective: IN-FRONT-OF(E,B)
 Apply operator: ATTACH(A,F)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(F)
+------------------------
+1|TOWED(A)
+------------------------
+OP|ATTACH(A,F)[TOWED(A), FREE(F)]
+------------------------
+2|IN-FRONT-OF(E,B)
+------------------------
+3|ON-STATION(A)
+------------------------
+4|IN-FRONT-OF(G,A)
+------------------------
+5|ON-STATION(D)
+------------------------
+6|IN-FRONT-OF(C,D)
+------------------------
+7|IN-FRONT-OF(F,C)
+------------------------
+8|EMPTY(D)
+------------------------
+9|EMPTY(B)
+------------------------
+10|LOADED(A)
+------------------------
+11|FREE-LOCOMOTIVE
+------------------------
+12|FREE(F)
+------------------------
+13|FREE(E)
+------------------------
+14|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(F) is satisfied.
 Current Objective: TOWED(A)
 Apply operator: DETACH(A,B)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(A,B)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(A)
+------------------------
+OP|DETACH(A,B)[FREE(A), FREE-LOCOMOTIVE, IN-FRONT-OF(A,B)]
+------------------------
+3|TOWED(A)
+------------------------
+OP|ATTACH(A,F)[TOWED(A), FREE(F)]
+------------------------
+4|IN-FRONT-OF(E,B)
+------------------------
+5|ON-STATION(A)
+------------------------
+6|IN-FRONT-OF(G,A)
+------------------------
+7|ON-STATION(D)
+------------------------
+8|IN-FRONT-OF(C,D)
+------------------------
+9|IN-FRONT-OF(F,C)
+------------------------
+10|EMPTY(D)
+------------------------
+11|EMPTY(B)
+------------------------
+12|LOADED(A)
+------------------------
+13|FREE-LOCOMOTIVE
+------------------------
+14|FREE(F)
+------------------------
+15|FREE(E)
+------------------------
+16|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(A,B) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(A) is satisfied.
 Plan: 17->DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B
 |-(E)-D-C-G
@@ -215,6 +1206,7 @@ Plan: 17->DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)C
 Loc[A]
 
 
+TOWED(A) is satisfied.
 Plan: 18->ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B
 |-(E)-D-C-G
@@ -224,8 +1216,100 @@ Loc[]
 
 Current Objective: IN-FRONT-OF(E,B)
 Apply operator: ATTACH(G,A)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(A)
+------------------------
+1|TOWED(G)
+------------------------
+OP|ATTACH(G,A)[TOWED(G), FREE(A)]
+------------------------
+2|IN-FRONT-OF(E,B)
+------------------------
+3|ON-STATION(A)
+------------------------
+4|IN-FRONT-OF(G,A)
+------------------------
+5|ON-STATION(D)
+------------------------
+6|IN-FRONT-OF(C,D)
+------------------------
+7|IN-FRONT-OF(F,C)
+------------------------
+8|EMPTY(D)
+------------------------
+9|EMPTY(B)
+------------------------
+10|LOADED(A)
+------------------------
+11|FREE-LOCOMOTIVE
+------------------------
+12|FREE(F)
+------------------------
+13|FREE(E)
+------------------------
+14|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(A) is satisfied.
 Current Objective: TOWED(G)
 Apply operator: DETACH(G,C)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(G,C)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(G)
+------------------------
+OP|DETACH(G,C)[FREE(G), FREE-LOCOMOTIVE, IN-FRONT-OF(G,C)]
+------------------------
+3|TOWED(G)
+------------------------
+OP|ATTACH(G,A)[TOWED(G), FREE(A)]
+------------------------
+4|IN-FRONT-OF(E,B)
+------------------------
+5|ON-STATION(A)
+------------------------
+6|IN-FRONT-OF(G,A)
+------------------------
+7|ON-STATION(D)
+------------------------
+8|IN-FRONT-OF(C,D)
+------------------------
+9|IN-FRONT-OF(F,C)
+------------------------
+10|EMPTY(D)
+------------------------
+11|EMPTY(B)
+------------------------
+12|LOADED(A)
+------------------------
+13|FREE-LOCOMOTIVE
+------------------------
+14|FREE(F)
+------------------------
+15|FREE(E)
+------------------------
+16|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(G,C) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(G) is satisfied.
 Plan: 19->DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B
 |-(E)-D-C
@@ -233,6 +1317,7 @@ Plan: 19->DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)D
 Loc[G]
 
 
+TOWED(G) is satisfied.
 Plan: 20->ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B
 |-(E)-D-C
@@ -242,8 +1327,100 @@ Loc[]
 
 Current Objective: IN-FRONT-OF(E,B)
 Apply operator: ATTACH(C,G)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(G)
+------------------------
+1|TOWED(C)
+------------------------
+OP|ATTACH(C,G)[TOWED(C), FREE(G)]
+------------------------
+2|IN-FRONT-OF(E,B)
+------------------------
+3|ON-STATION(A)
+------------------------
+4|IN-FRONT-OF(G,A)
+------------------------
+5|ON-STATION(D)
+------------------------
+6|IN-FRONT-OF(C,D)
+------------------------
+7|IN-FRONT-OF(F,C)
+------------------------
+8|EMPTY(D)
+------------------------
+9|EMPTY(B)
+------------------------
+10|LOADED(A)
+------------------------
+11|FREE-LOCOMOTIVE
+------------------------
+12|FREE(F)
+------------------------
+13|FREE(E)
+------------------------
+14|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(G) is satisfied.
 Current Objective: TOWED(C)
 Apply operator: DETACH(C,D)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(C,D)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(C)
+------------------------
+OP|DETACH(C,D)[FREE(C), FREE-LOCOMOTIVE, IN-FRONT-OF(C,D)]
+------------------------
+3|TOWED(C)
+------------------------
+OP|ATTACH(C,G)[TOWED(C), FREE(G)]
+------------------------
+4|IN-FRONT-OF(E,B)
+------------------------
+5|ON-STATION(A)
+------------------------
+6|IN-FRONT-OF(G,A)
+------------------------
+7|ON-STATION(D)
+------------------------
+8|IN-FRONT-OF(C,D)
+------------------------
+9|IN-FRONT-OF(F,C)
+------------------------
+10|EMPTY(D)
+------------------------
+11|EMPTY(B)
+------------------------
+12|LOADED(A)
+------------------------
+13|FREE-LOCOMOTIVE
+------------------------
+14|FREE(F)
+------------------------
+15|FREE(E)
+------------------------
+16|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(C,D) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(C) is satisfied.
 Plan: 21->DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B
 |-(E)-D
@@ -251,6 +1428,7 @@ Plan: 21->DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)D
 Loc[C]
 
 
+TOWED(C) is satisfied.
 Plan: 22->ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B
 |-(E)-D
@@ -260,8 +1438,100 @@ Loc[]
 
 Current Objective: IN-FRONT-OF(E,B)
 Apply operator: ATTACH(D,C)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(C)
+------------------------
+1|TOWED(D)
+------------------------
+OP|ATTACH(D,C)[TOWED(D), FREE(C)]
+------------------------
+2|IN-FRONT-OF(E,B)
+------------------------
+3|ON-STATION(A)
+------------------------
+4|IN-FRONT-OF(G,A)
+------------------------
+5|ON-STATION(D)
+------------------------
+6|IN-FRONT-OF(C,D)
+------------------------
+7|IN-FRONT-OF(F,C)
+------------------------
+8|EMPTY(D)
+------------------------
+9|EMPTY(B)
+------------------------
+10|LOADED(A)
+------------------------
+11|FREE-LOCOMOTIVE
+------------------------
+12|FREE(F)
+------------------------
+13|FREE(E)
+------------------------
+14|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(C) is satisfied.
 Current Objective: TOWED(D)
 Apply operator: DETACH(D,E)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(D,E)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(D)
+------------------------
+OP|DETACH(D,E)[FREE(D), FREE-LOCOMOTIVE, IN-FRONT-OF(D,E)]
+------------------------
+3|TOWED(D)
+------------------------
+OP|ATTACH(D,C)[TOWED(D), FREE(C)]
+------------------------
+4|IN-FRONT-OF(E,B)
+------------------------
+5|ON-STATION(A)
+------------------------
+6|IN-FRONT-OF(G,A)
+------------------------
+7|ON-STATION(D)
+------------------------
+8|IN-FRONT-OF(C,D)
+------------------------
+9|IN-FRONT-OF(F,C)
+------------------------
+10|EMPTY(D)
+------------------------
+11|EMPTY(B)
+------------------------
+12|LOADED(A)
+------------------------
+13|FREE-LOCOMOTIVE
+------------------------
+14|FREE(F)
+------------------------
+15|FREE(E)
+------------------------
+16|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(D,E) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(D) is satisfied.
 Plan: 23->DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B
 |-(E)
@@ -269,6 +1539,7 @@ Plan: 23->DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETA
 Loc[D]
 
 
+TOWED(D) is satisfied.
 Plan: 24->ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B
 |-(E)
@@ -278,8 +1549,100 @@ Loc[]
 
 Current Objective: IN-FRONT-OF(E,B)
 Apply operator: ATTACH(E,B)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(B)
+------------------------
+1|TOWED(E)
+------------------------
+OP|ATTACH(E,B)[TOWED(E), FREE(B)]
+------------------------
+2|IN-FRONT-OF(E,B)
+------------------------
+3|ON-STATION(A)
+------------------------
+4|IN-FRONT-OF(G,A)
+------------------------
+5|ON-STATION(D)
+------------------------
+6|IN-FRONT-OF(C,D)
+------------------------
+7|IN-FRONT-OF(F,C)
+------------------------
+8|EMPTY(D)
+------------------------
+9|EMPTY(B)
+------------------------
+10|LOADED(A)
+------------------------
+11|FREE-LOCOMOTIVE
+------------------------
+12|FREE(F)
+------------------------
+13|FREE(E)
+------------------------
+14|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(B) is satisfied.
 Current Objective: TOWED(E)
 Apply operator: COUPLE(E)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|ON-STATION(E)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(E)
+------------------------
+OP|COUPLE(E)[FREE(E), FREE-LOCOMOTIVE, ON-STATION(E)]
+------------------------
+3|TOWED(E)
+------------------------
+OP|ATTACH(E,B)[TOWED(E), FREE(B)]
+------------------------
+4|IN-FRONT-OF(E,B)
+------------------------
+5|ON-STATION(A)
+------------------------
+6|IN-FRONT-OF(G,A)
+------------------------
+7|ON-STATION(D)
+------------------------
+8|IN-FRONT-OF(C,D)
+------------------------
+9|IN-FRONT-OF(F,C)
+------------------------
+10|EMPTY(D)
+------------------------
+11|EMPTY(B)
+------------------------
+12|LOADED(A)
+------------------------
+13|FREE-LOCOMOTIVE
+------------------------
+14|FREE(F)
+------------------------
+15|FREE(E)
+------------------------
+16|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+ON-STATION(E) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(E) is satisfied.
 Plan: 25->COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B
 |
@@ -287,6 +1650,7 @@ Plan: 25->COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH
 Loc[E]
 
 
+TOWED(E) is satisfied.
 Plan: 26->ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)
 |
@@ -294,10 +1658,99 @@ Plan: 26->ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH
 Loc[]
 
 
+IN-FRONT-OF(E,B) is satisfied.
 Current Objective: ON-STATION(A)
 Apply operator: ATTACH(D,E)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(E)
+------------------------
+1|TOWED(D)
+------------------------
+OP|ATTACH(D,E)[TOWED(D), FREE(E)]
+------------------------
+2|ON-STATION(A)
+------------------------
+3|IN-FRONT-OF(G,A)
+------------------------
+4|ON-STATION(D)
+------------------------
+5|IN-FRONT-OF(C,D)
+------------------------
+6|IN-FRONT-OF(F,C)
+------------------------
+7|EMPTY(D)
+------------------------
+8|EMPTY(B)
+------------------------
+9|LOADED(A)
+------------------------
+10|FREE-LOCOMOTIVE
+------------------------
+11|FREE(F)
+------------------------
+12|FREE(E)
+------------------------
+13|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(E) is satisfied.
 Current Objective: TOWED(D)
 Apply operator: DETACH(D,C)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(D,C)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(D)
+------------------------
+OP|DETACH(D,C)[FREE(D), FREE-LOCOMOTIVE, IN-FRONT-OF(D,C)]
+------------------------
+3|TOWED(D)
+------------------------
+OP|ATTACH(D,E)[TOWED(D), FREE(E)]
+------------------------
+4|ON-STATION(A)
+------------------------
+5|IN-FRONT-OF(G,A)
+------------------------
+6|ON-STATION(D)
+------------------------
+7|IN-FRONT-OF(C,D)
+------------------------
+8|IN-FRONT-OF(F,C)
+------------------------
+9|EMPTY(D)
+------------------------
+10|EMPTY(B)
+------------------------
+11|LOADED(A)
+------------------------
+12|FREE-LOCOMOTIVE
+------------------------
+13|FREE(F)
+------------------------
+14|FREE(E)
+------------------------
+15|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(D,C) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(D) is satisfied.
 Plan: 27->DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)
 |
@@ -305,6 +1758,7 @@ Plan: 27->DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH
 Loc[D]
 
 
+TOWED(D) is satisfied.
 Plan: 28->ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)-D
 |
@@ -314,8 +1768,96 @@ Loc[]
 
 Current Objective: ON-STATION(A)
 Apply operator: ATTACH(C,D)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(D)
+------------------------
+1|TOWED(C)
+------------------------
+OP|ATTACH(C,D)[TOWED(C), FREE(D)]
+------------------------
+2|ON-STATION(A)
+------------------------
+3|IN-FRONT-OF(G,A)
+------------------------
+4|ON-STATION(D)
+------------------------
+5|IN-FRONT-OF(C,D)
+------------------------
+6|IN-FRONT-OF(F,C)
+------------------------
+7|EMPTY(D)
+------------------------
+8|EMPTY(B)
+------------------------
+9|LOADED(A)
+------------------------
+10|FREE-LOCOMOTIVE
+------------------------
+11|FREE(F)
+------------------------
+12|FREE(E)
+------------------------
+13|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(D) is satisfied.
 Current Objective: TOWED(C)
 Apply operator: DETACH(C,G)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(C,G)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(C)
+------------------------
+OP|DETACH(C,G)[FREE(C), FREE-LOCOMOTIVE, IN-FRONT-OF(C,G)]
+------------------------
+3|TOWED(C)
+------------------------
+OP|ATTACH(C,D)[TOWED(C), FREE(D)]
+------------------------
+4|ON-STATION(A)
+------------------------
+5|IN-FRONT-OF(G,A)
+------------------------
+6|ON-STATION(D)
+------------------------
+7|IN-FRONT-OF(C,D)
+------------------------
+8|IN-FRONT-OF(F,C)
+------------------------
+9|EMPTY(D)
+------------------------
+10|EMPTY(B)
+------------------------
+11|LOADED(A)
+------------------------
+12|FREE-LOCOMOTIVE
+------------------------
+13|FREE(F)
+------------------------
+14|FREE(E)
+------------------------
+15|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(C,G) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(C) is satisfied.
 Plan: 29->DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)-D
 |
@@ -323,6 +1865,7 @@ Plan: 29->DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH
 Loc[C]
 
 
+TOWED(C) is satisfied.
 Plan: 30->ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)-D-C
 |
@@ -332,8 +1875,96 @@ Loc[]
 
 Current Objective: ON-STATION(A)
 Apply operator: ATTACH(G,C)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(C)
+------------------------
+1|TOWED(G)
+------------------------
+OP|ATTACH(G,C)[TOWED(G), FREE(C)]
+------------------------
+2|ON-STATION(A)
+------------------------
+3|IN-FRONT-OF(G,A)
+------------------------
+4|ON-STATION(D)
+------------------------
+5|IN-FRONT-OF(C,D)
+------------------------
+6|IN-FRONT-OF(F,C)
+------------------------
+7|EMPTY(D)
+------------------------
+8|EMPTY(B)
+------------------------
+9|LOADED(A)
+------------------------
+10|FREE-LOCOMOTIVE
+------------------------
+11|FREE(F)
+------------------------
+12|FREE(E)
+------------------------
+13|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(C) is satisfied.
 Current Objective: TOWED(G)
 Apply operator: DETACH(G,A)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(G,A)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(G)
+------------------------
+OP|DETACH(G,A)[FREE(G), FREE-LOCOMOTIVE, IN-FRONT-OF(G,A)]
+------------------------
+3|TOWED(G)
+------------------------
+OP|ATTACH(G,C)[TOWED(G), FREE(C)]
+------------------------
+4|ON-STATION(A)
+------------------------
+5|IN-FRONT-OF(G,A)
+------------------------
+6|ON-STATION(D)
+------------------------
+7|IN-FRONT-OF(C,D)
+------------------------
+8|IN-FRONT-OF(F,C)
+------------------------
+9|EMPTY(D)
+------------------------
+10|EMPTY(B)
+------------------------
+11|LOADED(A)
+------------------------
+12|FREE-LOCOMOTIVE
+------------------------
+13|FREE(F)
+------------------------
+14|FREE(E)
+------------------------
+15|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(G,A) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(G) is satisfied.
 Plan: 31->DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)-D-C
 |
@@ -341,6 +1972,7 @@ Plan: 31->DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUP
 Loc[G]
 
 
+TOWED(G) is satisfied.
 Plan: 32->ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)-D-C-G
 |
@@ -350,8 +1982,96 @@ Loc[]
 
 Current Objective: ON-STATION(A)
 Apply operator: PARK(A)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|USEDRAILWAYS_NOTFULL
+------------------------
+1|TOWED(A)
+------------------------
+OP|PARK(A)[TOWED(A), USEDRAILWAYS_NOTFULL]
+------------------------
+2|ON-STATION(A)
+------------------------
+3|IN-FRONT-OF(G,A)
+------------------------
+4|ON-STATION(D)
+------------------------
+5|IN-FRONT-OF(C,D)
+------------------------
+6|IN-FRONT-OF(F,C)
+------------------------
+7|EMPTY(D)
+------------------------
+8|EMPTY(B)
+------------------------
+9|LOADED(A)
+------------------------
+10|FREE-LOCOMOTIVE
+------------------------
+11|FREE(F)
+------------------------
+12|FREE(E)
+------------------------
+13|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+USEDRAILWAYS_NOTFULL is satisfied.
 Current Objective: TOWED(A)
 Apply operator: DETACH(A,F)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(A,F)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(A)
+------------------------
+OP|DETACH(A,F)[FREE(A), FREE-LOCOMOTIVE, IN-FRONT-OF(A,F)]
+------------------------
+3|TOWED(A)
+------------------------
+OP|PARK(A)[TOWED(A), USEDRAILWAYS_NOTFULL]
+------------------------
+4|ON-STATION(A)
+------------------------
+5|IN-FRONT-OF(G,A)
+------------------------
+6|ON-STATION(D)
+------------------------
+7|IN-FRONT-OF(C,D)
+------------------------
+8|IN-FRONT-OF(F,C)
+------------------------
+9|EMPTY(D)
+------------------------
+10|EMPTY(B)
+------------------------
+11|LOADED(A)
+------------------------
+12|FREE-LOCOMOTIVE
+------------------------
+13|FREE(F)
+------------------------
+14|FREE(E)
+------------------------
+15|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(A,F) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(A) is satisfied.
 Plan: 33->DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)-D-C-G
 |
@@ -359,6 +2079,7 @@ Plan: 33->DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETA
 Loc[A]
 
 
+TOWED(A) is satisfied.
 Plan: 34->PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)-D-C-G
 |-(A)
@@ -366,10 +2087,95 @@ Plan: 34->PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D
 Loc[]
 
 
+ON-STATION(A) is satisfied.
 Current Objective: IN-FRONT-OF(G,A)
 Apply operator: ATTACH(G,A)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(A)
+------------------------
+1|TOWED(G)
+------------------------
+OP|ATTACH(G,A)[TOWED(G), FREE(A)]
+------------------------
+2|IN-FRONT-OF(G,A)
+------------------------
+3|ON-STATION(D)
+------------------------
+4|IN-FRONT-OF(C,D)
+------------------------
+5|IN-FRONT-OF(F,C)
+------------------------
+6|EMPTY(D)
+------------------------
+7|EMPTY(B)
+------------------------
+8|LOADED(A)
+------------------------
+9|FREE-LOCOMOTIVE
+------------------------
+10|FREE(F)
+------------------------
+11|FREE(E)
+------------------------
+12|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(A) is satisfied.
 Current Objective: TOWED(G)
 Apply operator: DETACH(G,C)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(G,C)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(G)
+------------------------
+OP|DETACH(G,C)[FREE(G), FREE-LOCOMOTIVE, IN-FRONT-OF(G,C)]
+------------------------
+3|TOWED(G)
+------------------------
+OP|ATTACH(G,A)[TOWED(G), FREE(A)]
+------------------------
+4|IN-FRONT-OF(G,A)
+------------------------
+5|ON-STATION(D)
+------------------------
+6|IN-FRONT-OF(C,D)
+------------------------
+7|IN-FRONT-OF(F,C)
+------------------------
+8|EMPTY(D)
+------------------------
+9|EMPTY(B)
+------------------------
+10|LOADED(A)
+------------------------
+11|FREE-LOCOMOTIVE
+------------------------
+12|FREE(F)
+------------------------
+13|FREE(E)
+------------------------
+14|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(G,C) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(G) is satisfied.
 Plan: 35->DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)-D-C
 |-(A)
@@ -377,6 +2183,7 @@ Plan: 35->DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C
 Loc[G]
 
 
+TOWED(G) is satisfied.
 Plan: 36->ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)-D-C
 |-(A)-G
@@ -384,10 +2191,91 @@ Plan: 36->ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C
 Loc[]
 
 
+IN-FRONT-OF(G,A) is satisfied.
 Current Objective: ON-STATION(D)
 Apply operator: ATTACH(F,G)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(G)
+------------------------
+1|TOWED(F)
+------------------------
+OP|ATTACH(F,G)[TOWED(F), FREE(G)]
+------------------------
+2|ON-STATION(D)
+------------------------
+3|IN-FRONT-OF(C,D)
+------------------------
+4|IN-FRONT-OF(F,C)
+------------------------
+5|EMPTY(D)
+------------------------
+6|EMPTY(B)
+------------------------
+7|LOADED(A)
+------------------------
+8|FREE-LOCOMOTIVE
+------------------------
+9|FREE(F)
+------------------------
+10|FREE(E)
+------------------------
+11|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(G) is satisfied.
 Current Objective: TOWED(F)
 Apply operator: COUPLE(F)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|ON-STATION(F)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(F)
+------------------------
+OP|COUPLE(F)[FREE(F), FREE-LOCOMOTIVE, ON-STATION(F)]
+------------------------
+3|TOWED(F)
+------------------------
+OP|ATTACH(F,G)[TOWED(F), FREE(G)]
+------------------------
+4|ON-STATION(D)
+------------------------
+5|IN-FRONT-OF(C,D)
+------------------------
+6|IN-FRONT-OF(F,C)
+------------------------
+7|EMPTY(D)
+------------------------
+8|EMPTY(B)
+------------------------
+9|LOADED(A)
+------------------------
+10|FREE-LOCOMOTIVE
+------------------------
+11|FREE(F)
+------------------------
+12|FREE(E)
+------------------------
+13|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+ON-STATION(F) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(F) is satisfied.
 Plan: 37->COUPLE(F)ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)-D-C
 |-(A)-G
@@ -395,6 +2283,7 @@ Plan: 37->COUPLE(F)ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A
 Loc[F]
 
 
+TOWED(F) is satisfied.
 Plan: 38->ATTACH(F,G)COUPLE(F)ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)-D-C
 |-(A)-G-(F)
@@ -404,8 +2293,88 @@ Loc[]
 
 Current Objective: ON-STATION(D)
 Apply operator: ATTACH(C,F)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(F)
+------------------------
+1|TOWED(C)
+------------------------
+OP|ATTACH(C,F)[TOWED(C), FREE(F)]
+------------------------
+2|ON-STATION(D)
+------------------------
+3|IN-FRONT-OF(C,D)
+------------------------
+4|IN-FRONT-OF(F,C)
+------------------------
+5|EMPTY(D)
+------------------------
+6|EMPTY(B)
+------------------------
+7|LOADED(A)
+------------------------
+8|FREE-LOCOMOTIVE
+------------------------
+9|FREE(F)
+------------------------
+10|FREE(E)
+------------------------
+11|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(F) is satisfied.
 Current Objective: TOWED(C)
 Apply operator: DETACH(C,D)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(C,D)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(C)
+------------------------
+OP|DETACH(C,D)[FREE(C), FREE-LOCOMOTIVE, IN-FRONT-OF(C,D)]
+------------------------
+3|TOWED(C)
+------------------------
+OP|ATTACH(C,F)[TOWED(C), FREE(F)]
+------------------------
+4|ON-STATION(D)
+------------------------
+5|IN-FRONT-OF(C,D)
+------------------------
+6|IN-FRONT-OF(F,C)
+------------------------
+7|EMPTY(D)
+------------------------
+8|EMPTY(B)
+------------------------
+9|LOADED(A)
+------------------------
+10|FREE-LOCOMOTIVE
+------------------------
+11|FREE(F)
+------------------------
+12|FREE(E)
+------------------------
+13|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(C,D) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(C) is satisfied.
 Plan: 39->DETACH(C,D)ATTACH(F,G)COUPLE(F)ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)-D
 |-(A)-G-(F)
@@ -413,6 +2382,7 @@ Plan: 39->DETACH(C,D)ATTACH(F,G)COUPLE(F)ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F
 Loc[C]
 
 
+TOWED(C) is satisfied.
 Plan: 40->ATTACH(C,F)DETACH(C,D)ATTACH(F,G)COUPLE(F)ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)-D
 |-(A)-G-(F)-C
@@ -422,8 +2392,88 @@ Loc[]
 
 Current Objective: ON-STATION(D)
 Apply operator: PARK(D)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|USEDRAILWAYS_NOTFULL
+------------------------
+1|TOWED(D)
+------------------------
+OP|PARK(D)[TOWED(D), USEDRAILWAYS_NOTFULL]
+------------------------
+2|ON-STATION(D)
+------------------------
+3|IN-FRONT-OF(C,D)
+------------------------
+4|IN-FRONT-OF(F,C)
+------------------------
+5|EMPTY(D)
+------------------------
+6|EMPTY(B)
+------------------------
+7|LOADED(A)
+------------------------
+8|FREE-LOCOMOTIVE
+------------------------
+9|FREE(F)
+------------------------
+10|FREE(E)
+------------------------
+11|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+USEDRAILWAYS_NOTFULL is satisfied.
 Current Objective: TOWED(D)
 Apply operator: DETACH(D,E)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(D,E)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(D)
+------------------------
+OP|DETACH(D,E)[FREE(D), FREE-LOCOMOTIVE, IN-FRONT-OF(D,E)]
+------------------------
+3|TOWED(D)
+------------------------
+OP|PARK(D)[TOWED(D), USEDRAILWAYS_NOTFULL]
+------------------------
+4|ON-STATION(D)
+------------------------
+5|IN-FRONT-OF(C,D)
+------------------------
+6|IN-FRONT-OF(F,C)
+------------------------
+7|EMPTY(D)
+------------------------
+8|EMPTY(B)
+------------------------
+9|LOADED(A)
+------------------------
+10|FREE-LOCOMOTIVE
+------------------------
+11|FREE(F)
+------------------------
+12|FREE(E)
+------------------------
+13|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(D,E) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(D) is satisfied.
 Plan: 41->DETACH(D,E)ATTACH(C,F)DETACH(C,D)ATTACH(F,G)COUPLE(F)ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)
 |-(A)-G-(F)-C
@@ -431,6 +2481,7 @@ Plan: 41->DETACH(D,E)ATTACH(C,F)DETACH(C,D)ATTACH(F,G)COUPLE(F)ATTACH(G,A)DETACH
 Loc[D]
 
 
+TOWED(D) is satisfied.
 Plan: 42->PARK(D)DETACH(D,E)ATTACH(C,F)DETACH(C,D)ATTACH(F,G)COUPLE(F)ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)
 |-(A)-G-(F)-C
@@ -438,10 +2489,87 @@ Plan: 42->PARK(D)DETACH(D,E)ATTACH(C,F)DETACH(C,D)ATTACH(F,G)COUPLE(F)ATTACH(G,A
 Loc[]
 
 
+ON-STATION(D) is satisfied.
 Current Objective: IN-FRONT-OF(C,D)
 Apply operator: ATTACH(C,D)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(D)
+------------------------
+1|TOWED(C)
+------------------------
+OP|ATTACH(C,D)[TOWED(C), FREE(D)]
+------------------------
+2|IN-FRONT-OF(C,D)
+------------------------
+3|IN-FRONT-OF(F,C)
+------------------------
+4|EMPTY(D)
+------------------------
+5|EMPTY(B)
+------------------------
+6|LOADED(A)
+------------------------
+7|FREE-LOCOMOTIVE
+------------------------
+8|FREE(F)
+------------------------
+9|FREE(E)
+------------------------
+10|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(D) is satisfied.
 Current Objective: TOWED(C)
 Apply operator: DETACH(C,F)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(C,F)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(C)
+------------------------
+OP|DETACH(C,F)[FREE(C), FREE-LOCOMOTIVE, IN-FRONT-OF(C,F)]
+------------------------
+3|TOWED(C)
+------------------------
+OP|ATTACH(C,D)[TOWED(C), FREE(D)]
+------------------------
+4|IN-FRONT-OF(C,D)
+------------------------
+5|IN-FRONT-OF(F,C)
+------------------------
+6|EMPTY(D)
+------------------------
+7|EMPTY(B)
+------------------------
+8|LOADED(A)
+------------------------
+9|FREE-LOCOMOTIVE
+------------------------
+10|FREE(F)
+------------------------
+11|FREE(E)
+------------------------
+12|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(C,F) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(C) is satisfied.
 Plan: 43->DETACH(C,F)PARK(D)DETACH(D,E)ATTACH(C,F)DETACH(C,D)ATTACH(F,G)COUPLE(F)ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)
 |-(A)-G-(F)
@@ -449,6 +2577,7 @@ Plan: 43->DETACH(C,F)PARK(D)DETACH(D,E)ATTACH(C,F)DETACH(C,D)ATTACH(F,G)COUPLE(F
 Loc[C]
 
 
+TOWED(C) is satisfied.
 Plan: 44->ATTACH(C,D)DETACH(C,F)PARK(D)DETACH(D,E)ATTACH(C,F)DETACH(C,D)ATTACH(F,G)COUPLE(F)ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)
 |-(A)-G-(F)
@@ -456,10 +2585,83 @@ Plan: 44->ATTACH(C,D)DETACH(C,F)PARK(D)DETACH(D,E)ATTACH(C,F)DETACH(C,D)ATTACH(F
 Loc[]
 
 
+IN-FRONT-OF(C,D) is satisfied.
 Current Objective: IN-FRONT-OF(F,C)
 Apply operator: ATTACH(F,C)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|FREE(C)
+------------------------
+1|TOWED(F)
+------------------------
+OP|ATTACH(F,C)[TOWED(F), FREE(C)]
+------------------------
+2|IN-FRONT-OF(F,C)
+------------------------
+3|EMPTY(D)
+------------------------
+4|EMPTY(B)
+------------------------
+5|LOADED(A)
+------------------------
+6|FREE-LOCOMOTIVE
+------------------------
+7|FREE(F)
+------------------------
+8|FREE(E)
+------------------------
+9|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+FREE(C) is satisfied.
 Current Objective: TOWED(F)
 Apply operator: DETACH(F,G)
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+0|IN-FRONT-OF(F,G)
+------------------------
+1|FREE-LOCOMOTIVE
+------------------------
+2|FREE(F)
+------------------------
+OP|DETACH(F,G)[FREE(F), FREE-LOCOMOTIVE, IN-FRONT-OF(F,G)]
+------------------------
+3|TOWED(F)
+------------------------
+OP|ATTACH(F,C)[TOWED(F), FREE(C)]
+------------------------
+4|IN-FRONT-OF(F,C)
+------------------------
+5|EMPTY(D)
+------------------------
+6|EMPTY(B)
+------------------------
+7|LOADED(A)
+------------------------
+8|FREE-LOCOMOTIVE
+------------------------
+9|FREE(F)
+------------------------
+10|FREE(E)
+------------------------
+11|FREE(G)
+------------------------
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(F,G) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(F) is satisfied.
 Plan: 45->DETACH(F,G)ATTACH(C,D)DETACH(C,F)PARK(D)DETACH(D,E)ATTACH(C,F)DETACH(C,D)ATTACH(F,G)COUPLE(F)ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)
 |-(A)-G
@@ -467,6 +2669,7 @@ Plan: 45->DETACH(F,G)ATTACH(C,D)DETACH(C,F)PARK(D)DETACH(D,E)ATTACH(C,F)DETACH(C
 Loc[F]
 
 
+TOWED(F) is satisfied.
 Plan: 46->ATTACH(F,C)DETACH(F,G)ATTACH(C,D)DETACH(C,F)PARK(D)DETACH(D,E)ATTACH(C,F)DETACH(C,D)ATTACH(F,G)COUPLE(F)ATTACH(G,A)DETACH(G,C)PARK(A)DETACH(A,F)ATTACH(G,C)DETACH(G,A)ATTACH(C,D)DETACH(C,G)ATTACH(D,E)DETACH(D,C)ATTACH(E,B)COUPLE(E)ATTACH(D,C)DETACH(D,E)ATTACH(C,G)DETACH(C,D)ATTACH(G,A)DETACH(G,C)ATTACH(A,F)DETACH(A,B)LOAD(F)PARK(F)DETACH(F,A)ATTACH(G,C)DETACH(G,F)ATTACH(C,D)COUPLE(C)UNLOAD(C)PARK(C)DETACH(C,D)ATTACH(G,F)COUPLE(G)ATTACH(F,A)DETACH(F,G)LOAD(E)UNLOAD(G)
 |-B-(E)
 |-(A)-G
@@ -474,3 +2677,64 @@ Plan: 46->ATTACH(F,C)DETACH(F,G)ATTACH(C,D)DETACH(C,F)PARK(D)DETACH(D,E)ATTACH(C
 Loc[]
 
 
+IN-FRONT-OF(F,C) is satisfied.
+EMPTY(D) is satisfied.
+EMPTY(B) is satisfied.
+LOADED(A) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(F) is satisfied.
+FREE(E) is satisfied.
+FREE(G) is satisfied.
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+-^^^^-GOAL STACK END-^^^^-
+
+
+The plan has been created. It has 46 steps.
+The resolution plan is: 
+ATTACH(F,C); 
+DETACH(F,G); 
+ATTACH(C,D); 
+DETACH(C,F); 
+PARK(D); 
+DETACH(D,E); 
+ATTACH(C,F); 
+DETACH(C,D); 
+ATTACH(F,G); 
+COUPLE(F); 
+ATTACH(G,A); 
+DETACH(G,C); 
+PARK(A); 
+DETACH(A,F); 
+ATTACH(G,C); 
+DETACH(G,A); 
+ATTACH(C,D); 
+DETACH(C,G); 
+ATTACH(D,E); 
+DETACH(D,C); 
+ATTACH(E,B); 
+COUPLE(E); 
+ATTACH(D,C); 
+DETACH(D,E); 
+ATTACH(C,G); 
+DETACH(C,D); 
+ATTACH(G,A); 
+DETACH(G,C); 
+ATTACH(A,F); 
+DETACH(A,B); 
+LOAD(F); 
+PARK(F); 
+DETACH(F,A); 
+ATTACH(G,C); 
+DETACH(G,F); 
+ATTACH(C,D); 
+COUPLE(C); 
+UNLOAD(C); 
+PARK(C); 
+DETACH(C,D); 
+ATTACH(G,F); 
+COUPLE(G); 
+ATTACH(F,A); 
+DETACH(F,G); 
+LOAD(E); 
+UNLOAD(G); 

@@ -28,26 +28,26 @@ public class TrainParser {
 		
 		StateFactory.wagons = readStation(strWagons);
 		StateFactory.initialState = StateFactory.createState(readState(strInitialState), true);
-		System.out.println(StateFactory.initialState.getWagons());
+	//	System.out.println(StateFactory.initialState.getWagons());
 		StateFactory.finalState = StateFactory.createState(readState(strFinalState), true);
-		System.out.println(StateFactory.finalState.getWagons());
+	//	System.out.println(StateFactory.finalState.getWagons());
 	}
 	
 	private static int readMaxRailways(String strMaxRailways) {
-		System.out.println(strMaxRailways);
+	//	System.out.println(strMaxRailways);
 		return Integer.valueOf(strMaxRailways);
 	}
 
 	protected static WagonMap readStation(String strWagons)
 	{
-		System.out.println(strWagons);
+		//System.out.println(strWagons);
 		StringTokenizer strTkn=new StringTokenizer(strWagons, ",");
 		String str;
 		WagonMap wagons = new WagonMap();
 		while (strTkn.hasMoreElements()){
 			str=strTkn.nextToken();
 			wagons.put(str, new Wagon(str));
-			System.out.println(str);
+			//System.out.println(str);
 		}
 		return wagons;
 	}
@@ -78,13 +78,13 @@ public class TrainParser {
 	}
 	
 	protected static PredicateGroup readState(String state){
-		System.out.println(state);
+		//System.out.println(state);
 		StringTokenizer strTkn=new StringTokenizer(state, TrainParseConstants.SEPARATORS);
 		String str;
 		PredicateGroup predicates = new PredicateGroup();
 		while (strTkn.hasMoreElements()){
 			str=strTkn.nextToken();
-			System.out.println(str);
+			//System.out.println(str);
 			
 			if (str.contains(TrainParseConstants.PR_FREELOCOMOTIVE)) {
 				predicates.add(PredicateFactory.createPredicateFreeLocomotive());

@@ -15,7 +15,7 @@ import mai.par.trains.StateFactory;
 
 public class Main {
 
-	static String file = "problem1.txt"; // TODO: get file as parameter in args
+	static String file = "problem2.txt"; // TODO: get file as parameter in args
 	 
 	public static void main(String[] args) 
 	{
@@ -33,18 +33,10 @@ public class Main {
 			StateFactory.initialize();
 			s = readProblemFile();
 			TrainParser.tokenize(s);
-			
-			Log.log("Initial State: \n " + StateFactory.initialState.toString());
-			Log.log(StateFactory.initialState.getPredicatesAsString());
-			StateFactory.initialState.drawState();
-			Log.log("");
-			Log.log("Final State: \n" + StateFactory.finalState.toString());
-			Log.log(StateFactory.finalState.getPredicatesAsString());
-			StateFactory.finalState.drawState();
-			
+			logInitialFacts();
 			LinealPlanner.init(StateFactory.initialState, StateFactory.finalState);
 			LinealPlanner.createPlan();
-			
+			System.out.println("A log file has been created at ./log/"+file);
 			Log.close();
 		} 
 		catch (IOException e) {
@@ -52,6 +44,23 @@ public class Main {
 		}
 	}
 	
+	private static void logInitialFacts() 
+	{
+
+		//StateFactory.initialState.drawState();
+		//StateFactory.finalState.drawState();
+		Log.log("This is the log for "+file+", Here we will find the resolution plan found by the solver.\n"+ 
+				"The Initial State is the State the world begins in, the Final State, The State we wish to achieve through our plan");
+		Log.log("Initial State: \n " + StateFactory.initialState.toString());
+		Log.log(StateFactory.initialState.getPredicatesAsString());
+		
+		Log.log("");
+		Log.log("Final State: \n" + StateFactory.finalState.toString());
+		Log.log(StateFactory.finalState.getPredicatesAsString());
+		
+		
+	}
+
 	public static String readProblemFile() throws IOException
 	{
 		Path path = Paths.get("./tests/" + file);
