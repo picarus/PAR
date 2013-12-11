@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
 
 import mai.par.trains.predicates.Predicate;
 import mai.par.trains.predicates.PredicateFactory;
@@ -64,7 +63,7 @@ public class Railways extends ArrayList<Railway> {
 		
 		Collections.sort(lolPredicate, new Comparator<PredicateGroup>(){
 			public int compare(PredicateGroup pg1, PredicateGroup pg2){
-				return pg2.size()-pg1.size();
+				return pg1.size()-pg2.size();
 			}
 		});
 		

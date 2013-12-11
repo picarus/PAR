@@ -27,13 +27,13 @@ public class PredicateGroup extends ArrayList<Predicate> implements Stackable
 	public PredicateGroup removeDuplicates(State finalState) {
 		PredicateGroup cpg=new PredicateGroup(finalState.getPredicateGroup()); // copy the original
 		Predicate pred;
-		System.out.println(cpg.size());
+		//System.out.println(cpg.size());
 		for (Predicate p:this){
 			pred=cpg.contains(p);
 			if (pred!=null)
 				cpg.remove(pred);
 		}
-		System.out.println(cpg.size());
+		//System.out.println(cpg.size());
 		return cpg;
 	}
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import mai.par.Log;
 import mai.par.trains.operators.Operator;
 import mai.par.trains.operators.OperatorAttach;
 import mai.par.trains.operators.OperatorCouple;
@@ -527,7 +526,7 @@ public class State implements Stackable{
 		for (Predicate pred:predicateGroup){
 			if (!isCompliant(pred)){
 				System.out.println("ERROR: Predicate not compliant in Group");
-				//System.out.println(pred);
+				System.out.println(pred);
 				return false;
 			}
 		}

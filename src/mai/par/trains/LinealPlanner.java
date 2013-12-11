@@ -1,6 +1,5 @@
 package mai.par.trains;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,11 +32,11 @@ public final class LinealPlanner {
 		pg.addAll(pgNew);
 	}
 	
-	private static void sortLUWagons(WagonMap wagonsToLoad) 
+	/*private static void sortLUWagons(WagonMap wagonsToLoad) 
 	{
 		// TODO They should be sorted like we agreed to avoid rearranging
 		
-	}
+	}*/
 
 	public static void createPlanMove(PredicateGroup pg){
 		// push all railways configuration 1 by 1 starting from the station 
@@ -51,7 +50,7 @@ public final class LinealPlanner {
 	
 	}
 	
-	private static List<PredicateGroup> sortMoveWagons(List<PredicateGroup> lPG)
+	/*private static List<PredicateGroup> sortMoveWagons(List<PredicateGroup> lPG)
 	{
 		List<PredicateGroup> preds = new ArrayList<PredicateGroup>();
 		Railways clone = new Railways(currentState.railways, currentState.wagons);
@@ -65,7 +64,7 @@ public final class LinealPlanner {
 			}
 		}
 		return preds;
-	}
+	}*/
 
 	public static void createPlan() 
 	{
@@ -76,6 +75,7 @@ public final class LinealPlanner {
 		WagonMap onStationOnInitialState=initialState.getWagonsOnStation(wagonsLU);
 		wagonsLU.difference(onStationOnFinalState);
 		wagonsLU.difference(onStationOnInitialState);
+		onStationOnFinalState.difference(onStationOnInitialState);
 		
 		goalStack.push(finalState);
 		PredicateGroup pg=new PredicateGroup();
@@ -138,7 +138,7 @@ public final class LinealPlanner {
 		PredicateGroup predicateGroup;
 		boolean changePlan;
 		boolean changeGoalStack;
-		boolean verbose=false;
+		//boolean verbose=false;
 		
 		while ( !goalStack.empty() )
 		{

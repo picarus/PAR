@@ -18,19 +18,19 @@ The first stack element to be addressed is at the top  of the stack. Maintaining
 
 Initial Stack: 
 --VVVV--GOAL  STACK--VVVV--
-0|ON-STATION(B)
+0|ON-STATION(D)
 ------------------------
-1|IN-FRONT-OF(E,B)
+1|IN-FRONT-OF(C,D)
 ------------------------
-2|ON-STATION(A)
+2|IN-FRONT-OF(F,C)
 ------------------------
-3|IN-FRONT-OF(G,A)
+3|ON-STATION(B)
 ------------------------
-4|ON-STATION(D)
+4|IN-FRONT-OF(E,B)
 ------------------------
-5|IN-FRONT-OF(C,D)
+5|ON-STATION(A)
 ------------------------
-6|IN-FRONT-OF(F,C)
+6|IN-FRONT-OF(G,A)
 ------------------------
 7|EMPTY(D)
 ------------------------
@@ -64,6 +64,9 @@ Loc[]
 
 Solution Step by Step: 
 
+ON-STATION(D) is satisfied.
+IN-FRONT-OF(C,D) is satisfied.
+IN-FRONT-OF(F,C) is satisfied.
 ON-STATION(B) is satisfied.
 IN-FRONT-OF(E,B) is satisfied.
 Current Objective: ON-STATION(A)
@@ -80,33 +83,27 @@ OP|ATTACH(A,E)[TOWED(A), FREE(E)]
 ------------------------
 3|IN-FRONT-OF(G,A)
 ------------------------
-4|ON-STATION(D)
+4|EMPTY(D)
 ------------------------
-5|IN-FRONT-OF(C,D)
+5|EMPTY(C)
 ------------------------
-6|IN-FRONT-OF(F,C)
+6|EMPTY(B)
 ------------------------
-7|EMPTY(D)
+7|EMPTY(G)
 ------------------------
-8|EMPTY(C)
+8|LOADED(F)
 ------------------------
-9|EMPTY(B)
+9|LOADED(E)
 ------------------------
-10|EMPTY(G)
+10|LOADED(A)
 ------------------------
-11|LOADED(F)
+11|FREE-LOCOMOTIVE
 ------------------------
-12|LOADED(E)
+12|FREE(F)
 ------------------------
-13|LOADED(A)
+13|FREE(E)
 ------------------------
-14|FREE-LOCOMOTIVE
-------------------------
-15|FREE(F)
-------------------------
-16|FREE(E)
-------------------------
-17|FREE(G)
+14|FREE(G)
 ------------------------
 |-(A)-G
 |-B-(E)
@@ -136,33 +133,27 @@ OP|ATTACH(A,E)[TOWED(A), FREE(E)]
 ------------------------
 5|IN-FRONT-OF(G,A)
 ------------------------
-6|ON-STATION(D)
+6|EMPTY(D)
 ------------------------
-7|IN-FRONT-OF(C,D)
+7|EMPTY(C)
 ------------------------
-8|IN-FRONT-OF(F,C)
+8|EMPTY(B)
 ------------------------
-9|EMPTY(D)
+9|EMPTY(G)
 ------------------------
-10|EMPTY(C)
+10|LOADED(F)
 ------------------------
-11|EMPTY(B)
+11|LOADED(E)
 ------------------------
-12|EMPTY(G)
+12|LOADED(A)
 ------------------------
-13|LOADED(F)
+13|FREE-LOCOMOTIVE
 ------------------------
-14|LOADED(E)
+14|FREE(F)
 ------------------------
-15|LOADED(A)
+15|FREE(E)
 ------------------------
-16|FREE-LOCOMOTIVE
-------------------------
-17|FREE(F)
-------------------------
-18|FREE(E)
-------------------------
-19|FREE(G)
+16|FREE(G)
 ------------------------
 |-(A)-G
 |-B-(E)
@@ -203,33 +194,27 @@ OP|ATTACH(G,F)[TOWED(G), FREE(F)]
 ------------------------
 3|IN-FRONT-OF(G,A)
 ------------------------
-4|ON-STATION(D)
+4|EMPTY(D)
 ------------------------
-5|IN-FRONT-OF(C,D)
+5|EMPTY(C)
 ------------------------
-6|IN-FRONT-OF(F,C)
+6|EMPTY(B)
 ------------------------
-7|EMPTY(D)
+7|EMPTY(G)
 ------------------------
-8|EMPTY(C)
+8|LOADED(F)
 ------------------------
-9|EMPTY(B)
+9|LOADED(E)
 ------------------------
-10|EMPTY(G)
+10|LOADED(A)
 ------------------------
-11|LOADED(F)
+11|FREE-LOCOMOTIVE
 ------------------------
-12|LOADED(E)
+12|FREE(F)
 ------------------------
-13|LOADED(A)
+13|FREE(E)
 ------------------------
-14|FREE-LOCOMOTIVE
-------------------------
-15|FREE(F)
-------------------------
-16|FREE(E)
-------------------------
-17|FREE(G)
+14|FREE(G)
 ------------------------
 |-(A)-G
 |-B-(E)
@@ -259,33 +244,27 @@ OP|ATTACH(G,F)[TOWED(G), FREE(F)]
 ------------------------
 5|IN-FRONT-OF(G,A)
 ------------------------
-6|ON-STATION(D)
+6|EMPTY(D)
 ------------------------
-7|IN-FRONT-OF(C,D)
+7|EMPTY(C)
 ------------------------
-8|IN-FRONT-OF(F,C)
+8|EMPTY(B)
 ------------------------
-9|EMPTY(D)
+9|EMPTY(G)
 ------------------------
-10|EMPTY(C)
+10|LOADED(F)
 ------------------------
-11|EMPTY(B)
+11|LOADED(E)
 ------------------------
-12|EMPTY(G)
+12|LOADED(A)
 ------------------------
-13|LOADED(F)
+13|FREE-LOCOMOTIVE
 ------------------------
-14|LOADED(E)
+14|FREE(F)
 ------------------------
-15|LOADED(A)
+15|FREE(E)
 ------------------------
-16|FREE-LOCOMOTIVE
-------------------------
-17|FREE(F)
-------------------------
-18|FREE(E)
-------------------------
-19|FREE(G)
+16|FREE(G)
 ------------------------
 |-(A)-G
 |-B-(E)
@@ -326,33 +305,27 @@ OP|PARK(A)[TOWED(A), USEDRAILWAYS_NOTFULL]
 ------------------------
 3|IN-FRONT-OF(G,A)
 ------------------------
-4|ON-STATION(D)
+4|EMPTY(D)
 ------------------------
-5|IN-FRONT-OF(C,D)
+5|EMPTY(C)
 ------------------------
-6|IN-FRONT-OF(F,C)
+6|EMPTY(B)
 ------------------------
-7|EMPTY(D)
+7|EMPTY(G)
 ------------------------
-8|EMPTY(C)
+8|LOADED(F)
 ------------------------
-9|EMPTY(B)
+9|LOADED(E)
 ------------------------
-10|EMPTY(G)
+10|LOADED(A)
 ------------------------
-11|LOADED(F)
+11|FREE-LOCOMOTIVE
 ------------------------
-12|LOADED(E)
+12|FREE(F)
 ------------------------
-13|LOADED(A)
+13|FREE(E)
 ------------------------
-14|FREE-LOCOMOTIVE
-------------------------
-15|FREE(F)
-------------------------
-16|FREE(E)
-------------------------
-17|FREE(G)
+14|FREE(G)
 ------------------------
 |-(A)-G
 |-B-(E)
@@ -382,33 +355,27 @@ OP|PARK(A)[TOWED(A), USEDRAILWAYS_NOTFULL]
 ------------------------
 5|IN-FRONT-OF(G,A)
 ------------------------
-6|ON-STATION(D)
+6|EMPTY(D)
 ------------------------
-7|IN-FRONT-OF(C,D)
+7|EMPTY(C)
 ------------------------
-8|IN-FRONT-OF(F,C)
+8|EMPTY(B)
 ------------------------
-9|EMPTY(D)
+9|EMPTY(G)
 ------------------------
-10|EMPTY(C)
+10|LOADED(F)
 ------------------------
-11|EMPTY(B)
+11|LOADED(E)
 ------------------------
-12|EMPTY(G)
+12|LOADED(A)
 ------------------------
-13|LOADED(F)
+13|FREE-LOCOMOTIVE
 ------------------------
-14|LOADED(E)
+14|FREE(F)
 ------------------------
-15|LOADED(A)
+15|FREE(E)
 ------------------------
-16|FREE-LOCOMOTIVE
-------------------------
-17|FREE(F)
-------------------------
-18|FREE(E)
-------------------------
-19|FREE(G)
+16|FREE(G)
 ------------------------
 |-(A)-G
 |-B-(E)
@@ -448,33 +415,27 @@ OP|ATTACH(G,A)[TOWED(G), FREE(A)]
 ------------------------
 2|IN-FRONT-OF(G,A)
 ------------------------
-3|ON-STATION(D)
+3|EMPTY(D)
 ------------------------
-4|IN-FRONT-OF(C,D)
+4|EMPTY(C)
 ------------------------
-5|IN-FRONT-OF(F,C)
+5|EMPTY(B)
 ------------------------
-6|EMPTY(D)
+6|EMPTY(G)
 ------------------------
-7|EMPTY(C)
+7|LOADED(F)
 ------------------------
-8|EMPTY(B)
+8|LOADED(E)
 ------------------------
-9|EMPTY(G)
+9|LOADED(A)
 ------------------------
-10|LOADED(F)
+10|FREE-LOCOMOTIVE
 ------------------------
-11|LOADED(E)
+11|FREE(F)
 ------------------------
-12|LOADED(A)
+12|FREE(E)
 ------------------------
-13|FREE-LOCOMOTIVE
-------------------------
-14|FREE(F)
-------------------------
-15|FREE(E)
-------------------------
-16|FREE(G)
+13|FREE(G)
 ------------------------
 |-(A)-G
 |-B-(E)
@@ -502,34 +463,81 @@ OP|ATTACH(G,A)[TOWED(G), FREE(A)]
 ------------------------
 4|IN-FRONT-OF(G,A)
 ------------------------
-5|ON-STATION(D)
+5|EMPTY(D)
 ------------------------
-6|IN-FRONT-OF(C,D)
+6|EMPTY(C)
 ------------------------
-7|IN-FRONT-OF(F,C)
+7|EMPTY(B)
 ------------------------
-8|EMPTY(D)
+8|EMPTY(G)
 ------------------------
-9|EMPTY(C)
+9|LOADED(F)
 ------------------------
-10|EMPTY(B)
+10|LOADED(E)
 ------------------------
-11|EMPTY(G)
+11|LOADED(A)
 ------------------------
-12|LOADED(F)
+12|FREE-LOCOMOTIVE
 ------------------------
-13|LOADED(E)
+13|FREE(F)
 ------------------------
-14|LOADED(A)
+14|FREE(E)
 ------------------------
-15|FREE-LOCOMOTIVE
+15|FREE(G)
 ------------------------
-16|FREE(F)
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
 ------------------------
-17|FREE(E)
-------------------------
-18|FREE(G)
-------------------------
+-^^^^-GOAL STACK END-^^^^-
+
+IN-FRONT-OF(G,F) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(G) is satisfied.
+Plan: 7->DETACH(G,F)PARK(A)DETACH(A,E)ATTACH(G,F)COUPLE(G)ATTACH(A,E)DETACH(A,G)
+|-(A)
+|-B-(E)
+|-D-C-(F)
+Loc[G]
+
+
+TOWED(G) is satisfied.
+Plan: 8->ATTACH(G,A)DETACH(G,F)PARK(A)DETACH(A,E)ATTACH(G,F)COUPLE(G)ATTACH(A,E)DETACH(A,G)
+|-(A)-G
+|-B-(E)
+|-D-C-(F)
+Loc[]
+
+
+IN-FRONT-OF(G,A) is satisfied.
+EMPTY(D) is satisfied.
+EMPTY(C) is satisfied.
+EMPTY(B) is satisfied.
+EMPTY(G) is satisfied.
+LOADED(F) is satisfied.
+LOADED(E) is satisfied.
+LOADED(A) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(F) is satisfied.
+FREE(E) is satisfied.
+FREE(G) is satisfied.
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+-^^^^-GOAL STACK END-^^^^-
+
+
+The plan has been created. It has 8 steps.
+The resolution plan is: 
+ATTACH(G,A); 
+DETACH(G,F); 
+PARK(A); 
+DETACH(A,E); 
+ATTACH(G,F); 
+COUPLE(G); 
+ATTACH(A,E); 
+DETACH(A,G); 
+-
 |-(A)-G
 |-B-(E)
 |-D-C-(F)
@@ -558,6 +566,34 @@ Loc[]
 IN-FRONT-OF(G,A) is satisfied.
 ON-STATION(D) is satisfied.
 IN-FRONT-OF(C,D) is satisfied.
+IN-FRONT-OF(F,C) is satisfied.
+EMPTY(D) is satisfied.
+EMPTY(C) is satisfied.
+EMPTY(B) is satisfied.
+EMPTY(G) is satisfied.
+LOADED(F) is satisfied.
+LOADED(E) is satisfied.
+LOADED(A) is satisfied.
+FREE-LOCOMOTIVE is satisfied.
+FREE(F) is satisfied.
+FREE(E) is satisfied.
+FREE(G) is satisfied.
+New Stack:
+--VVVV--GOAL  STACK--VVVV--
+-^^^^-GOAL STACK END-^^^^-
+
+
+The plan has been created. It has 8 steps.
+The resolution plan is: 
+ATTACH(G,A); 
+DETACH(G,F); 
+PARK(A); 
+DETACH(A,E); 
+ATTACH(G,F); 
+COUPLE(G); 
+ATTACH(A,E); 
+DETACH(A,G); 
+ONT-OF(C,D) is satisfied.
 IN-FRONT-OF(F,C) is satisfied.
 EMPTY(D) is satisfied.
 EMPTY(C) is satisfied.
