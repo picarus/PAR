@@ -1,1 +1,1 @@
-java -cp ".\bin;"  -Xmx400m -Xms400m mai.par.Main -t "problem1.txt" 
+java -cp ".\bin;"  -Xmx400m -Xms400m mai.par.Main -t "problem1.txt"

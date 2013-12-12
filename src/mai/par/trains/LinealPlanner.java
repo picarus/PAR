@@ -103,11 +103,12 @@ public final class LinealPlanner {
 		//System.out.println(goalStack);
 		logIntroduction();
 		solve();
-		
+		System.out.println("The plan has been created succesfully in " + plan.size() + " steps.");
 		// solution
 		//System.out.println(goalStack);
 		//System.out.println("\nSteps: "+plan.size());
 		logResolution();
+		
 	}
 
 	private static void logResolution() {
@@ -118,6 +119,7 @@ public final class LinealPlanner {
 		{	
 			Log.log(step + "; ");
 		}
+		System.out.println("");
 	}
 
 	private static void logIntroduction() {

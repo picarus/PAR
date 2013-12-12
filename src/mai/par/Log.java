@@ -21,8 +21,9 @@ public class Log
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		try {
-			br = Files.newBufferedWriter(path, Charset.forName("UTF-8"), new OpenOption[] {StandardOpenOption.WRITE});
+		try 
+		{
+			br = Files.newBufferedWriter(path, Charset.forName("UTF-8"), new OpenOption[] {StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING});
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -31,7 +32,8 @@ public class Log
 	
 	public static void log(String message)
 	{
-		try {
+		try 
+		{
 			br.write(message);
 			br.write("\n");
 		} 

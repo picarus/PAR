@@ -326,21 +326,3 @@ ATTACH(B,C);
 COUPLE(B); 
 PARK(C); 
 DETACH(C,A); 
-
-EMPTY(B) is satisfied.
-EMPTY(A) is satisfied.
-FREE-LOCOMOTIVE is satisfied.
-FREE(A) is satisfied.
-New Stack:
---VVVV--GOAL  STACK--VVVV--
--^^^^-GOAL STACK END-^^^^-
-
-
-The plan has been created. It has 6 steps.
-The resolution plan is: 
-ATTACH(A,B); 
-COUPLE(A); 
-ATTACH(B,C); 
-COUPLE(B); 
-PARK(C); 
-DETACH(C,A); 
